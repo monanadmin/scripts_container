@@ -71,8 +71,8 @@ echo -e "\033[1;32m==>\033[0m Moduling environment for MONAN model...\n"
 . setenv.bash
 
 # Standart directories variables:---------------------------------------
-DIRHOMES=${DIR_SCRIPTS}/scripts_CD-CT;  mkdir -p ${DIRHOMES}  
-DIRHOMED=${DIR_DADOS}/scripts_CD-CT;    mkdir -p ${DIRHOMED}  
+DIRHOMES=${DIR_SCRIPTS}/scripts_container;  mkdir -p ${DIRHOMES}  
+DIRHOMED=${DIR_DADOS}/scripts_container;    mkdir -p ${DIRHOMED}  
 SCRIPTS=${DIRHOMES}/scripts;            mkdir -p ${SCRIPTS}
 DATAIN=${DIRHOMED}/datain;              mkdir -p ${DATAIN}
 DATAOUT=${DIRHOMED}/dataout;            mkdir -p ${DATAOUT}
@@ -103,9 +103,9 @@ $(sed -i "s;MONANDIR=.*$;MONANDIR=$MONANDIR;" setenv.bash)
 #
 # ATTENTION, please:
 # 
-# scripts_CD-CT versions up to 1.1.0 run MONAN-Model versions up to 1.3.0
+# scripts_container versions up to 1.1.0 run MONAN-Model versions up to 1.3.0
 #
-# scripts_CD-CT versions 1.2.0 onwards run MONAN-Model versions 1.3.1 onwards
+# scripts_container versions 1.2.0 onwards run MONAN-Model versions 1.3.1 onwards
 #
 #=====================================================================================
 
@@ -117,9 +117,9 @@ echo "**************************************************************************
 echo "*"
 echo "* ATTENTION, please:"
 echo "*"
-echo "* scripts_CD-CT versions up to 1.1.0 run MONAN-Model only versions up to 1.3.0"
+echo "* scripts_container versions up to 1.1.0 run MONAN-Model only versions up to 1.3.0"
 echo "*"
-echo "* scripts_CD-CT versions 1.2.0 onwards run MONAN-Model only versions 1.3.1 onwards"
+echo "* scripts_container versions 1.2.0 onwards run MONAN-Model only versions 1.3.1 onwards"
 echo "*"
 echo "********************************************************************************"
 
