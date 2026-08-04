@@ -51,7 +51,7 @@ FCST=${4};        #FCST=24
 start_date=${YYYYMMDDHHi:0:4}-${YYYYMMDDHHi:4:2}-${YYYYMMDDHHi:6:2}_${YYYYMMDDHHi:8:2}:00:00
 OPERDIREXP=${OPERDIR}/${EXP}
 BNDDIR=${OPERDIREXP}/0p25/brutos/${YYYYMMDDHHi:0:4}/${YYYYMMDDHHi:4:2}/${YYYYMMDDHHi:6:2}/${YYYYMMDDHHi:8:2}
-GCCCIS=/p/monan/CIs/${EXP}
+GCCCIS=/p/projetos/monan_adm/monan/CIs/${EXP}
 export DIRRUN=${DIRHOMED}/run.${YYYYMMDDHHi}; rm -fr ${DIRRUN}; mkdir -p ${DIRRUN}
 #-------------------------------------------------------
 mkdir -p ${DATAIN}/${YYYYMMDDHHi}

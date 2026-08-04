@@ -28,7 +28,10 @@ cd ${DIRRUN}
 export OMP_NUM_THREADS=1
 date
 #time mpirun -ppn ${MODEL_ncpn} -np ${MODEL_ncores} --depth=1 --cpu-bind depth ./\${executable}
-time mpirun -np ${MODEL_ncores} ./\${executable}
+#time mpirun -np ${MODEL_ncores} ./\${executable}
+
+time mpirun --ppn ${MODEL_ncpn} -np ${MODEL_ncores} --depth=${MODEL_nthreads} --cpu-bind depth ./\${executable}
+
 date
 
 #

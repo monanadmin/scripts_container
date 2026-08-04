@@ -43,8 +43,8 @@ export MONANDIR=/mnt/beegfs/carlos.souza/issues/735-tag-convert-teste/scripts_CD
 
 # PRE-Static phase:
 export STATIC_QUEUE="pesqextra"
-export STATIC_ncores=256
-export STATIC_nnodes=1
+export STATIC_ncores=1024
+export STATIC_nnodes=4
 export STATIC_ncpn=256
 export STATIC_jobname="Pre.static"
 export STATIC_walltime="02:00:00"
@@ -59,21 +59,21 @@ export DEGRIB_jobname="Pre.degrib"
 
 # PRE-Init Atmosphere phase:
 export INITATMOS_QUEUE="pesqextra"
-export INITATMOS_ncores=256
-export INITATMOS_nnodes=1
+export INITATMOS_ncores=1024
+export INITATMOS_nnodes=4
 export INITATMOS_ncpn=256
 export INITATMOS_jobname="Pre.InitAtmos"
 ### export INITATMOS_walltime="01:00:00" not used yet - using STATIC_walltime
 
-
 # Model phase:
 export MODEL_QUEUE="pesqextra"
-export MODEL_ncores=1024
-export MODEL_nnodes=4
+export MODEL_ncores=2048
+export MODEL_nnodes=8
+export MODEL_ncpus=256
 export MODEL_ncpn=256
+export MODEL_nthreads=1
 export MODEL_jobname="Model.MONAN"
 export MODEL_walltime="8:00:00"
-
 
 # Post phase:
 export POST_QUEUE="pesqextra"
@@ -82,7 +82,6 @@ export POST_nnodes=1
 export POST_ncpn=32
 export POST_jobname="Post.MONAN"
 export POST_walltime="8:00:00"
-
 
 # Products phase:
 export PRODS_QUEUE="pesqextra"
@@ -109,7 +108,7 @@ export MPI_PARAMS="-iface ib0 -bind-to core -map-by core"
 export PIO=
 export NETCDFDIR=${NETCDF}
 export PNETCDFDIR=${PNETCDF}
-export DIRDADOS=/p/monan/dados/MONAN_v1.4.x
+export DIRDADOS=/p/projetos/monan_adm/monan/dados/MONAN_v1.4.x
 export OPERDIR=/oper/dados/ioper/tempo
 
 # Colors:
