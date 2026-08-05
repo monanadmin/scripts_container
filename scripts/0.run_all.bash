@@ -50,11 +50,11 @@ FCST=24
 
 
 # STEP 1: Installing and compiling the A-MONAN model and utility programs:
-#time ./1.install_monan.bash ${github_link} ${monan_branch} ${convertmpas_branch}
+time ./1.install_monan.bash ${github_link} ${monan_branch} ${convertmpas_branch}
 #exit
 
 # STEP 2: Executing the pre-processing fase. Preparing all CI/CC files needed:
-#time ${SCRIPTS}/2.pre_processing.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST} 
+time ${SCRIPTS}/2.pre_processing.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST} 
 #exit
 
 # STEP 3: Executing the Model run:
@@ -62,7 +62,5 @@ time ${SCRIPTS}/3.run_model.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST}
 
 
 # STEP 4: Executing the Post of Model run:
-#time ${SCRIPTS}/4.run_post.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST} 
-exit
+time ${SCRIPTS}/4.run_post.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST} 
 
-time ${SCRIPTS}/make_template.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST}
