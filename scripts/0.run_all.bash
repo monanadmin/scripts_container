@@ -58,9 +58,9 @@ time ./2.pre_processing.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST}
 #exit
 
 # STEP 3: Executing the Model run:
-time ./3.run_model.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST} 
+#time ./3.run_model.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST} 
 
 
 # STEP 4: Executing the Post of Model run:
-time ./4.run_post.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST} 
+#time ./4.run_post.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST} 
 

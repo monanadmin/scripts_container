@@ -42,28 +42,37 @@ export MONANDIR=/mnt/beegfs/carlos.souza/issues/735-tag-convert-teste/scripts_CD
 # Submiting variables:
 
 # PRE-Static phase:
+
 export STATIC_QUEUE="pesqextra"
-export STATIC_ncores=1024
+export STATIC_ncores=128
 export STATIC_nnodes=4
-export STATIC_ncpn=256
+export STATIC_ncpus=32
+export STATIC_ncpn=32
+export STATIC_nthreads=1
 export STATIC_jobname="Pre.static"
 export STATIC_walltime="02:00:00"
 
 # PRE-Degrib phase:
+
 export DEGRIB_QUEUE="pesqextra"
 export DEGRIB_ncores=1
 export DEGRIB_nnodes=1
+export DEGRIB_ncpus=1
 export DEGRIB_ncpn=1
+export DEGRIB_nthreads=1
 export DEGRIB_jobname="Pre.degrib"
-### export DEGRIB_walltime="00:30:00" not used yet - using STATIC_walltime
+export DEGRIB_walltime="02:00:00"
 
 # PRE-Init Atmosphere phase:
+
 export INITATMOS_QUEUE="pesqextra"
-export INITATMOS_ncores=1024
+export INITATMOS_ncores=512
 export INITATMOS_nnodes=4
-export INITATMOS_ncpn=256
+export INITATMOS_ncpus=128
+export INITATMOS_ncpn=128
+export INITATMOS_nthreads=1
 export INITATMOS_jobname="Pre.InitAtmos"
-### export INITATMOS_walltime="01:00:00" not used yet - using STATIC_walltime
+export INITATMOS_walltime="02:00:00"
 
 # Model phase:
 export MODEL_QUEUE="pesqextra"
@@ -76,10 +85,13 @@ export MODEL_jobname="Model.MONAN"
 export MODEL_walltime="8:00:00"
 
 # Post phase:
+
 export POST_QUEUE="pesqextra"
-### export POST_ncores=1 not used yet
+export POST_ncores=32
 export POST_nnodes=1
+export POST_ncpus=32
 export POST_ncpn=32
+export POST_nthreads=1
 export POST_jobname="Post.MONAN"
 export POST_walltime="8:00:00"
 
