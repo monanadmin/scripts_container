@@ -27,8 +27,8 @@ echo -e "\033[1;32m==>\033[0m Moduling environment for MONAN model...\n"
 
 
 # Standart directories variables:---------------------------------------
-DIRHOMES=${DIR_SCRIPTS}/scripts_CD-CT; mkdir -p ${DIRHOMES}  
-DIRHOMED=${DIR_DADOS}/scripts_CD-CT;   mkdir -p ${DIRHOMED}  
+DIRHOMES=${DIR_SCRIPTS}/scripts_container; mkdir -p ${DIRHOMES}  
+DIRHOMED=${DIR_DADOS}/scripts_container;   mkdir -p ${DIRHOMED}  
 SCRIPTS=${DIRHOMES}/scripts;           mkdir -p ${SCRIPTS}
 DATAIN=${DIRHOMED}/datain;             mkdir -p ${DATAIN}
 DATAOUT=${DIRHOMED}/dataout;           mkdir -p ${DATAOUT}
@@ -40,17 +40,17 @@ EXECS=${DIRHOMED}/execs;               mkdir -p ${EXECS}
 
 # Input variables:-----------------------------------------------------
 github_link="https://github.com/monanadmin/MONAN-Model.git"
-monan_branch=release/1.4.1-rc
-convertmpas_branch=release/1.2.0
+monan_branch=1.4.4
+convertmpas_branch=1.2.0
 EXP=GFS
 RES=1024002
-YYYYMMDDHHi=2024010100
+YYYYMMDDHHi=2026071500
 FCST=24
 #----------------------------------------------------------------------
 
 
 # STEP 1: Installing and compiling the A-MONAN model and utility programs:
-#time ${SCRIPTS}/1.install_monan.bash ${github_link} ${monan_branch} ${convertmpas_branch}
+#time ./1.install_monan.bash ${github_link} ${monan_branch} ${convertmpas_branch}
 #exit
 
 # STEP 2: Executing the pre-processing fase. Preparing all CI/CC files needed:
@@ -59,10 +59,10 @@ FCST=24
 
 # STEP 3: Executing the Model run:
 time ${SCRIPTS}/3.run_model.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST} 
-exit
+
 
 # STEP 4: Executing the Post of Model run:
-time ${SCRIPTS}/4.run_post.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST} 
+#time ${SCRIPTS}/4.run_post.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST} 
 exit
 
 time ${SCRIPTS}/make_template.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST}
