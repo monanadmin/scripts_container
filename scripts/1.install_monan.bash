@@ -45,7 +45,7 @@ function checkout_system() {
       echo -e "${RED}==>${NC} Please check if you have this branch. Exiting ..."
       exit -1
   fi
-  git log -1 --name-only
+  git log | head -1
 }
 #-----------------------------------------------------------------------------#
 
