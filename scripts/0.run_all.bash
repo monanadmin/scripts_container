@@ -44,7 +44,7 @@ monan_branch=1.4.4
 convertmpas_branch=1.2.0
 EXP=GFS
 RES=1024002
-YYYYMMDDHHi=2026071500
+YYYYMMDDHHi=2025061000
 FCST=24
 #----------------------------------------------------------------------
 
