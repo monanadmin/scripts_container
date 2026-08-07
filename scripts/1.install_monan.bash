@@ -154,18 +154,77 @@ rm -fr $MONANDIR/src/core_atmosphere/inc $MONANDIR/src/core_init_atmosphere/inc
 #CR: TODO: maybe later move this make script to main scripts directory.
 
 #downloading monan.SIF 
-if [[ "${MACHINE}" == *SIF && ! -f "${DIR_SCRIPTS}/monan.sif" ]]; then
-    echo -e "${GREEN}==>${NC} downloading container monan.sif from dataserver......\n"
-    wget -O "${DIR_SCRIPTS}/monan.sif" https://dataserver.cptec.inpe.br/dataserver_dimnt/monan/MONAN-Model/monan.sif
-fi
+#if [[ "${MACHINE}" == *SIF && ! -f "${DIR_SCRIPTS}/monan.sif" ]]; then
+#    echo -e "${GREEN}==>${NC} downloading container monan.sif from dataserver......\n"
+#    wget -O "${DIR_SCRIPTS}/monan.sif" https://dataserver.cptec.inpe.br/dataserver_dimnt/monan/MONAN-Model/monan.sif
+#fi
 
 
 if [[ "${MACHINE}" == "desktopSIF" ]]; then
-    echo -e "${GREEN}==>${NC} Installing apptainer and slurm on desktop......\n"
-    cp "${SCRIPTS}/monan-pc_install.sh" "${DIR_SCRIPTS}/"
-    bash "${DIR_SCRIPTS}/monan-pc_install.sh"
-#    ./${DIR_SCRIPTS}/monan-pc_install.sh  
+
+    echo -e "${GREEN}==>${NC} Checking Slurm and Apptainer..."
+
+    if command -v singularity >/dev/null 2>&1 || command -v apptainer >/dev/null 2>&1; then
+        echo -e "${GREEN}==>${NC} Apptainer/Singularity: OK"
+        apptainer_ok=true
+    else
+        echo -e "${RED}==>${NC} Apptainer/Singularity: NOT FOUND"
+        apptainer_ok=false
+    fi
+
+    if command -v sinfo >/dev/null 2>&1; then
+        echo -e "${GREEN}==>${NC} Slurm: OK"
+        slurm_ok=true
+    else
+        echo -e "${RED}==>${NC} Slurm: NOT FOUND"
+        slurm_ok=false
+    fi
+
+
+
+    if ! $apptainer_ok || ! $slurm_ok; then
+
+        read -p "Install Apptainer and Slurm? [Y/n] " confirma
+        confirma=${confirma:-Y}
+
+        if [[ "$confirma" =~ ^[Yy]$ ]]; then
+            echo -e "${GREEN}==>${NC} Installing Slurm and apptainer/singularity..."
+            cp "${SCRIPTS}/monan-pc_install.sh" "${DIR_SCRIPTS}/"
+            sudo bash "${DIR_SCRIPTS}/monan-pc_install.sh"
+            rm -fr "${DIR_SCRIPTS}/monan-pc_install.sh"
+        else
+            echo -e "${RED}==>${NC} Installation cancelled."
+            exit 1
+        fi
+
+    else
+        echo -e "${GREEN}==>${NC} All dependencies are already installed."
+    fi
+
 fi
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 echo ""
