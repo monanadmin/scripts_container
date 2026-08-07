@@ -43,21 +43,21 @@ github_link="https://github.com/monanadmin/MONAN-Model.git"
 monan_branch=1.4.4
 convertmpas_branch=1.2.0
 EXP=GFS
-RES=1024002        #Options: 40962=120km;163842=60km;655362=30Km;1024002=24km;2621442=15Km;5898242=10Km
+RES=40962        #Options: 2562=480km;10242=240km;40962=120km;163842=60km;655362=30Km;1024002=24km;2621442=15Km;5898242=10Km
 YYYYMMDDHHi=2025061000
-FCST=06
+FCST=12
 #----------------------------------------------------------------------
 
 
 # STEP 1: Installing and compiling the A-MONAN model and utility programs:
-time ./1.install_monan.bash ${github_link} ${monan_branch} ${convertmpas_branch}
+#time ./1.install_monan.bash ${github_link} ${monan_branch} ${convertmpas_branch}
 
 # STEP 2: Executing the pre-processing fase. Preparing all CI/CC files needed:
-time ./2.pre_processing.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST} 
+#time ./2.pre_processing.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST} 
 
 # STEP 3: Executing the Model run:
-time ./3.run_model.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST} 
+#time ./3.run_model.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST} 
 
 # STEP 4: Executing the Post of Model run:
-time ./4.run_post.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST} 
+#time ./4.run_post.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST} 
 
