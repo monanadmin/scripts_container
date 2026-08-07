@@ -160,6 +160,14 @@ if [[ "${MACHINE}" == *SIF && ! -f "${DIR_SCRIPTS}/monan.sif" ]]; then
 fi
 
 
+if [[ "${MACHINE}" == "desktopSIF" ]]; then
+    echo -e "${GREEN}==>${NC} Installing apptainer and slurm on desktop......\n"
+    cp "${SCRIPTS}/monan-pc_install.sh" "${DIR_SCRIPTS}/"
+    bash "${DIR_SCRIPTS}/monan-pc_install.sh"
+#    ./${DIR_SCRIPTS}/monan-pc_install.sh  
+fi
+
+
 echo ""
 echo -e  "${GREEN}==>${NC} Making compile script...\n"
 
