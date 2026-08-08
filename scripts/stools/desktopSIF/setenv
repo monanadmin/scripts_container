@@ -32,9 +32,9 @@ export INITIAL_CONDITION=/mnt/beegfs/monan/CIs
 
 # PRE-Static phase:
 export STATIC_QUEUE="batch"
-export STATIC_ncores=8
+export STATIC_ncores=4
 export STATIC_nnodes=1
-export STATIC_ncpn=8
+export STATIC_ncpn=4
 export STATIC_jobname="Pre.static"
 export STATIC_walltime="02:00:00"
 
