@@ -7,13 +7,6 @@ module load apptainer/1.5.1
 # Container path
 export SINGULARITY=${SIF_PATH}/monan.sif
 
-
-
-
-
-
-
-
 # Set environment variables and importants directories-------------------------------------------------- 
 
 
@@ -24,8 +17,8 @@ export DIR_DADOS=$(dirname $(dirname $(pwd)))
 export MONANDIR=/mnt/beegfs/carlos.souza/issues/735-tag-convert-teste/scripts_CD-CT/sources/MONAN-Model_release/1.4.1-rc
 
 # Datain path
-export DIRDADOS=/mnt/beegfs/monan/dados/MONAN_v0.5.0/MONAN_datain/datain
-export INITIAL_CONDITION=/mnt/beegfs/monan/CIs
+export DIRDADOS=/p/projetos/monan_adm/monan/dados/MONAN_v1.4.x
+export INITIAL_CONDITION=/p/projetos/monan_adm/monan/CIs
 
 
 # Submiting variables:
