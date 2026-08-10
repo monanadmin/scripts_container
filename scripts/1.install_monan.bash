@@ -154,10 +154,10 @@ rm -fr $MONANDIR/src/core_atmosphere/inc $MONANDIR/src/core_init_atmosphere/inc
 #CR: TODO: maybe later move this make script to main scripts directory.
 
 #downloading monan.SIF 
-#if [[ "${MACHINE}" == *SIF && ! -f "${DIR_SCRIPTS}/monan.sif" ]]; then
-#    echo -e "${GREEN}==>${NC} downloading container monan.sif from dataserver......\n"
-#    wget -O "${DIR_SCRIPTS}/monan.sif" https://dataserver.cptec.inpe.br/dataserver_dimnt/monan/MONAN-Model/monan.sif
-#fi
+if [[ "${MACHINE}" == *SIF && ! -f "${DIR_SCRIPTS}/monan.sif" ]]; then
+    echo -e "${GREEN}==>${NC} downloading container monan.sif from dataserver......\n"
+    wget -O "${DIR_SCRIPTS}/monan.sif" https://dataserver.cptec.inpe.br/dataserver_dimnt/monan/MONAN-Model/monan.sif
+fi
 
 
 if [[ "${MACHINE}" == "desktopSIF" ]]; then
@@ -202,30 +202,6 @@ if [[ "${MACHINE}" == "desktopSIF" ]]; then
     fi
 
 fi
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 echo ""
 echo -e  "${GREEN}==>${NC} Making compile script...\n"
