@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export MACHINE="jaci"   # < egeon | egeonSIF | jaci | jaciSIF | desktopSIF | sdumontSIF | sdumont2SIF >
+export MACHINE="desktopSIF"   # < egeon | egeonSIF | jaci | jaciSIF | desktopSIF | sdumontSIF | sdumont2SIF >
 
 export SCRIPTS="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
