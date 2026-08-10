@@ -1,0 +1,155 @@
+MONAN Container Execution Procedure
+===================================
+
+Environment
+-----------
+
+Operating system: SUSE Linux Enterprise Server 15 SP6
+Container runtime: Apptainer/Singularity
+Machine configuration: jaciSIF
+
+This procedure describes the installation and execution of the MONAN Model using the SIF container on jaci  environment.
+
+
+1. Clone the scripts_container repository
+------------------------------------------
+
+$ git clone https://github.com/monanadmin/scripts_container.git
+$ cd scripts_container/
+$ git checkout develop
+$ cd scripts/
+
+
+4. Configure the execution environment
+--------------------------------------
+
+Check the MACHINE configuration in setenv.bash:
+
+$ grep "MACHINE=" setenv.bash
+
+For jaci using the SIF container, the expected configuration is:
+
+export MACHINE="jaciSIF"
+
+
+6. Recommended test configuration
+---------------------------------
+
+A recommended initial test uses 2562 horizontal grid cells (480 km).
+
+Other examples of resolution options are:
+
+2562     = 480 km
+10242    = 240 km
+40962    = 120 km
+163842   = 60 km
+655362   = 30 km
+1024002  = 24 km
+2621442  = 15 km
+5898242  = 10 km
+
+Initial configuration of scripts_container/scripts/0.run_all.bash:
+
+github_link="https://github.com/monanadmin/MONAN-Model.git"
+monan_branch=1.4.4
+convertmpas_branch=1.2.0
+EXP=GFS
+RES=2562   # choose your resolution here
+YYYYMMDDHHi=2025061000
+FCST=12
+
+
+7. Adjusting the CPU Core Configuration
+---------------------------------
+
+The number of CPU cores used by each MONAN phase can be configured in:
+
+scripts_container/scripts/stools/jaciSIF/setenv
+
+Before running the experiment, you can adjust the number of CPU cores according to the available resources on jaci.
+
+The main variables are:
+
+export STATIC_ncores=4
+export DEGRIB_ncores=1
+export INITATMOS_ncores=8
+export MODEL_ncores=8
+export POST_ncores=8
+
+For example, the following configuration uses:
+
+STATIC: 4 CPU cores
+DEGRIB: 1 CPU core
+INITATMOS: 8 CPU cores
+MODEL: 8 CPU cores
+POST: 8 CPU cores
+
+
+8. Run all steps automatically
+------------------------------
+
+The complete workflow can also be executed using the 0.run_all.bash script.
+
+Configure the input variables at the beginning of the script:
+
+github_link="https://github.com/monanadmin/MONAN-Model.git"
+monan_branch=1.4.4
+convertmpas_branch=1.2.0
+EXP=GFS
+RES=2562
+YYYYMMDDHHi=2025061000
+FCST=12
+
+The script runs the complete workflow, including:
+
+1. Installing and compiling the MONAN model and utility programs
+2. Executing the pre-processing phase. Preparing all CI/CC files needed
+3. Executing the MONAN Model phase
+4. Executing the post-processing phase
+
+Uncomment the four lines:
+
+time ./1.install_monan.bash ${github_link} ${monan_branch} ${convertmpas_branch}
+time ./2.pre_processing.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST} 
+time ./3.run_model.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST} 
+time ./4.run_post.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST} 
+
+Then execute:
+
+$ ./0.run_all.bash
+
+9. Run the steps individually
+-----------------------------
+
+The MONAN workflow can be executed step by step.
+
+
+Step 1 - Install and compile the MONAN model and utility programs:
+
+$ ./1.install_monan.bash https://github.com/monanadmin/MONAN-Model.git 1.4.4 1.2.0
+
+
+Step 2 - Execute the pre-processing phase:
+
+$ ./2.pre_processing.bash GFS 2562 2025061000 12
+
+
+Step 3 - Execute the MONAN Model phase:
+
+$ ./3.run_model.bash GFS 2562 2025061000 12
+
+
+Step 4 - Execute the post-processing phase:
+
+$ ./4.run_post.bash GFS 2562 2025061000 12
+
+
+10. Homologation
+----------------
+
+This procedure was successfully homologated on:
+
+Operating system: SUSE Linux Enterprise Server 15 SP6
+Container type: SIF
+Machine configuration: jaciSIF
+
