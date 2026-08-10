@@ -160,49 +160,6 @@ if [[ "${MACHINE}" == *SIF && ! -f "${DIR_SCRIPTS}/monan.sif" ]]; then
 fi
 
 
-if [[ "${MACHINE}" == "desktopSIF" ]]; then
-
-    echo -e "${GREEN}==>${NC} Checking Slurm and Apptainer..."
-
-    if command -v singularity >/dev/null 2>&1 || command -v apptainer >/dev/null 2>&1; then
-        echo -e "${GREEN}==>${NC} Apptainer/Singularity: OK"
-        apptainer_ok=true
-    else
-        echo -e "${RED}==>${NC} Apptainer/Singularity: NOT FOUND"
-        apptainer_ok=false
-    fi
-
-    if command -v sinfo >/dev/null 2>&1; then
-        echo -e "${GREEN}==>${NC} Slurm: OK"
-        slurm_ok=true
-    else
-        echo -e "${RED}==>${NC} Slurm: NOT FOUND"
-        slurm_ok=false
-    fi
-
-
-
-    if ! $apptainer_ok || ! $slurm_ok; then
-
-        read -p "Install Apptainer and Slurm? [Y/n] " confirma
-        confirma=${confirma:-Y}
-
-        if [[ "$confirma" =~ ^[Yy]$ ]]; then
-            echo -e "${GREEN}==>${NC} Installing Slurm and apptainer/singularity..."
-            cp "${SCRIPTS}/monan-pc_install.sh" "${DIR_SCRIPTS}/"
-            sudo bash "${DIR_SCRIPTS}/monan-pc_install.sh"
-            rm -fr "${DIR_SCRIPTS}/monan-pc_install.sh"
-        else
-            echo -e "${RED}==>${NC} Installation cancelled."
-            exit 1
-        fi
-
-    else
-        echo -e "${GREEN}==>${NC} All dependencies are already installed."
-    fi
-
-fi
-
 echo ""
 echo -e  "${GREEN}==>${NC} Making compile script...\n"
 
