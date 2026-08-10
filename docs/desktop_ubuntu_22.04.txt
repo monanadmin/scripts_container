@@ -221,5 +221,4 @@ The recommended initial test resolution is 2562 horizontal grid cells (480 km).
 
 RES=2562
 
-The procedure may be extended with additional environment-specific configuration files as new systems, machines, and operating systems are homologated.
 
