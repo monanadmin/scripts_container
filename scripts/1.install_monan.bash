@@ -156,7 +156,8 @@ rm -fr $MONANDIR/src/core_atmosphere/inc $MONANDIR/src/core_init_atmosphere/inc
 #downloading monan.SIF 
 if [[ "${MACHINE}" == *SIF && ! -f "${DIR_SCRIPTS}/monan.sif" ]]; then
     echo -e "${GREEN}==>${NC} downloading container monan.sif from dataserver......\n"
-    wget -O "${DIR_SCRIPTS}/monan.sif" https://dataserver.cptec.inpe.br/dataserver_dimnt/monan/MONAN-Model/monan.sif
+    wget -O "${DIR_SCRIPTS}/monan.sif" https://dataserver.cptec.inpe.br/dataserver_dimnt/monan_adm/MONAN/CONTAINER_DATA/monan.sif
+    
 fi
 
 
