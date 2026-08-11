@@ -53,7 +53,7 @@ FCST=12
 #time ./1.install_monan.bash ${github_link} ${monan_branch} ${convertmpas_branch}
 
 # STEP 2: Executing the pre-processing fase. Preparing all CI/CC files needed:
-time ./2.pre_processing.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST} 
+#time ./2.pre_processing.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST} 
 
 # STEP 3: Executing the Model run:
 #time ./3.run_model.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST} 
