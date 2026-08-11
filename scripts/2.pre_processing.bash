@@ -104,14 +104,26 @@ fi
 
 
 # Degrib phase:---------------------------------------------------------------------
-echo -e  "${GREEN}==>${NC} Submiting Degrib...\n"
-time ./make_degrib.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST}
+REQUIRED_FILE=("${EXP}:${YYYYMMDDHHi:0:4}-${YYYYMMDDHHi:4:2}-${YYYYMMDDHHi:6:2}_${YYYYMMDDHHi:8:2}")
+if [ ! -s ${DATAOUT}/${YYYYMMDDHHi}/Pre/${REQUIRED_FILE} ] 
+then
+   echo -e  "${GREEN}==>${NC} Submiting Degrib...\n"
+   time ./make_degrib.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST}
+else
+   echo -e "${GREEN}==>${NC} File ${REQUIRED_FILE} already exist in ${DATAOUT}/${YYYYMMDDHHi}/Pre.\n"
+fi
 #----------------------------------------------------------------------------------
 
 
 # Init Atmosphere phase:------------------------------------------------------------
-echo -e  "${GREEN}==>${NC} Submiting Init Atmosphere...\n"
-time ./make_initatmos.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST}
+REQUIRED_FILE=("x1.${RES}.init.nc")
+if [ ! -s ${DATAOUT}/${YYYYMMDDHHi}/Pre/${REQUIRED_FILE} ]                      
+then
+   echo -e  "${GREEN}==>${NC} Submiting Init Atmosphere...\n"
+   time ./make_initatmos.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST}
+else                                                                            
+   echo -e "${GREEN}==>${NC} File ${REQUIRED_FILE} already exist in ${DATAOUT}/${YYYYMMDDHHi}/Pre.\n"
+fi
 #----------------------------------------------------------------------------------
 
 
