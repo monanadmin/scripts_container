@@ -8,7 +8,7 @@ Operating system: Ubuntu 22.04 Desktop
 Container runtime: Apptainer/Singularity
 Machine configuration: desktopSIF
 
-This procedure describes the installation and execution of the MONAN Model using the SIF container on an Ubuntu 22.04 desktop environment.
+This procedure describes the installation and execution of the MONAN Model using the SIF container only on an Ubuntu 22.04 desktop environment.
 
 Prerequisites
 -------------
