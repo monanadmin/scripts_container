@@ -30,7 +30,7 @@ echo "\${CURRENT_HOST}" | sed "s,\..*$,," > \${HOSTFILE}
 
 date
 time singularity exec --bind ${SCRIPTS}/.. --bind /home ${SINGULARITY} bash -c "
-   mpirun -np ${INITATMOS_ncores} --hostfile \${HOSTFILE} ./\${executable}
+   mpirun -np ${STATIC_ncores} --hostfile \${HOSTFILE} ./\${executable}
 "
 date
 
@@ -38,7 +38,7 @@ grep "Finished running" log.init_atmosphere.0000.out >& /dev/null
 if [ \$? -ne 0 ]; then
    echo "  BUMMER: Static generation failed for some yet unknown reason."
    echo " "
-   tail -10 ${STATICPATH}/log.init_atmosphere.0000.out
+   tail -30 ${DIRRUN}/log.init_atmosphere.0000.out
    echo " "
    exit 21
 fi

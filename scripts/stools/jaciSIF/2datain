@@ -1,9 +1,5 @@
 #!/bin/bash
 
-rsync -rv --chmod=ugo=rw ${DIRDADOS}/MONAN_datain/datain/fixed ${DATAIN}
-rsync -rv --chmod=ugo=rwx ${DIRDADOS}/MONAN_datain/execs ${DIRHOMED}
-ln -sf ${DIRDADOS}/MONAN_datain/datain/WPS_GEOG ${DATAIN}
-
 if [ ! -e "${DATAIN}/WPS_GEOG" ]; then
     if [ ! -f "WPS_GEOG.tar.gz" ]; then
         if wget "https://dataserver.cptec.inpe.br/dataserver_dimnt/monan/MONAN-Model/monan_datain/WPS_GEOG.tar.gz"; then
