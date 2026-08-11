@@ -212,7 +212,7 @@ $ ./4.run_post.bash GFS 2562 2025061000 12
 10. Homologation
 ----------------
 
-This procedure was successfully homologated on:
+This procedure was successfully homologated only on:
 
 Operating system: Ubuntu 22.04 Desktop
 Container type: SIF
