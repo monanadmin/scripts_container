@@ -43,6 +43,7 @@ monan-x64.sif
 monan-x64.sif.tar.gz
 monan.sif -> monan-x64.sif
 
+The script 1 (1.install_monan.bash) will download monan.sif automatically
 
 3. Clone the scripts_container repository
 ------------------------------------------
@@ -217,8 +218,8 @@ Operating system: Ubuntu 22.04 Desktop
 Container type: SIF
 Machine configuration: desktopSIF
 
-The recommended initial test resolution is 2562 horizontal grid cells (480 km).
+The recommended initial test resolution is 2562 horizontal grid cells (480 km). RES=2562
 
-RES=2562
+
 
 
