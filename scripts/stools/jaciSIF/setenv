@@ -25,9 +25,9 @@ export INITIAL_CONDITION=/p/projetos/monan_adm/monan/CIs
 
 # PRE-Static phase:
 export STATIC_QUEUE="pesqextra"
-export STATIC_ncores=256
+export STATIC_ncores=128
 export STATIC_nnodes=1
-export STATIC_ncpn=256
+export STATIC_ncpn=128
 export STATIC_jobname="Pre.static"
 export STATIC_walltime="02:00:00"
 
