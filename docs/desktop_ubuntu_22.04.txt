@@ -26,6 +26,8 @@ $ cd MONAN
 2. Download and extract the MONAN container
 -------------------------------------------
 
+The step below is performed automatically by script 1 (1.install_monan.bash). If it does not work, you can try downloading the monan.sif file manually.
+
 $ wget https://dataserver.cptec.inpe.br/dataserver_dimnt/monan/MONAN-Model/monan-x64.sif.tar.gz
 $ tar -xzvf monan-x64.sif.tar.gz
 
@@ -42,8 +44,6 @@ Expected output:
 monan-x64.sif
 monan-x64.sif.tar.gz
 monan.sif -> monan-x64.sif
-
-The script 1 (1.install_monan.bash) will download monan.sif automatically
 
 3. Clone the scripts_container repository
 ------------------------------------------
