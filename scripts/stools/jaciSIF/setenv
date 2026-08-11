@@ -41,18 +41,18 @@ export DEGRIB_jobname="Pre.degrib"
 
 # PRE-Init Atmosphere phase:
 export INITATMOS_QUEUE="pesqextra"
-export INITATMOS_ncores=256
+export INITATMOS_ncores=128
 export INITATMOS_nnodes=1
-export INITATMOS_ncpn=256
+export INITATMOS_ncpn=128
 export INITATMOS_jobname="Pre.InitAtmos"
 ### export INITATMOS_walltime="01:00:00" not used yet - using STATIC_walltime
 
 
 # Model phase:
 export MODEL_QUEUE="pesqextra"
-export MODEL_ncores=256
+export MODEL_ncores=128
 export MODEL_nnodes=1
-export MODEL_ncpn=256
+export MODEL_ncpn=128
 export MODEL_jobname="Model.MONAN"
 export MODEL_walltime="8:00:00"
 
