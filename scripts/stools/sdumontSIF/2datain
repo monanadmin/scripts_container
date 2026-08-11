@@ -2,11 +2,11 @@
 
 if [ ! -e "${DATAIN}/WPS_GEOG" ]; then
     if [ ! -f "WPS_GEOG.tar.gz" ]; then
-        if wget "https://dataserver.cptec.inpe.br/dataserver_dimnt/monan/MONAN-Model/monan_datain/WPS_GEOG.tar.gz"; then
+        if wget "https://dataserver.cptec.inpe.br/dataserver_dimnt/monan_adm/MONAN/CONTAINER_DATA/WPS_GEOG.tar.gz"; then
             echo "wget OK!"
         else
             echo "wget error!"
-            echo "Link: https://dataserver.cptec.inpe.br/dataserver_dimnt/monan/MONAN-Model/monan_datain/WPS_GEOG.tar.gz"
+            echo "Link: https://dataserver.cptec.inpe.br/dataserver_dimnt/monan_adm/MONAN/CONTAINER_DATA/WPS_GEOG.tar.gz"
             exit 1
         fi
     fi
@@ -16,11 +16,11 @@ if [ ! -e "${DATAIN}/WPS_GEOG" ]; then
 fi
 if [ ! -e "${DATAIN}/fixed" ]; then
     if [ ! -f "fixed.tar.gz" ]; then
-        if wget "https://dataserver.cptec.inpe.br/dataserver_dimnt/monan/MONAN-Model/monan_datain/fixed.tar.gz"; then
+        if wget "https://dataserver.cptec.inpe.br/dataserver_dimnt/monan_adm/MONAN/CONTAINER_DATA/fixed.tar.gz"; then
             echo "wget OK!"
         else
             echo "wget error"
-            echo "Link: https://dataserver.cptec.inpe.br/dataserver_dimnt/monan/MONAN-Model/monan_datain/fixed.tar.gz"
+            echo "Link: https://dataserver.cptec.inpe.br/dataserver_dimnt/monan_adm/MONAN/CONTAINER_DATA/fixed.tar.gz"
             exit 1
         fi
     fi
