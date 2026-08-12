@@ -93,37 +93,37 @@ source ${STOOLS}/2datain
 
 
 # Creating the x1.${RES}.static.nc file once, if does not exist yet:---------------
-#if [ ! -s ${DATAIN}/fixed/x1.${RES}.static.nc ]
-#then
+if [ ! -s ${DATAIN}/fixed/x1.${RES}.static.nc ]
+then
    echo -e "${GREEN}==>${NC} Creating static.bash for submiting init_atmosphere to create x1.${RES}.static.nc...\n"
    time ./make_static.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST}
-#else
-#   echo -e "${GREEN}==>${NC} File x1.${RES}.static.nc already exist in ${DATAIN}/fixed.\n"
-#fi
+else
+   echo -e "${GREEN}==>${NC} File x1.${RES}.static.nc already exist in ${DATAIN}/fixed.\n"
+fi
 #----------------------------------------------------------------------------------
 
 
 # Degrib phase:---------------------------------------------------------------------
-#REQUIRED_FILE=("${EXP}:${YYYYMMDDHHi:0:4}-${YYYYMMDDHHi:4:2}-${YYYYMMDDHHi:6:2}_${YYYYMMDDHHi:8:2}")
-#if [ ! -s ${DATAOUT}/${YYYYMMDDHHi}/Pre/${REQUIRED_FILE} ] 
-#then
+REQUIRED_FILE=("${EXP}:${YYYYMMDDHHi:0:4}-${YYYYMMDDHHi:4:2}-${YYYYMMDDHHi:6:2}_${YYYYMMDDHHi:8:2}")
+if [ ! -s ${DATAOUT}/${YYYYMMDDHHi}/Pre/${REQUIRED_FILE} ] 
+then
    echo -e  "${GREEN}==>${NC} Submiting Degrib...\n"
    time ./make_degrib.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST}
-#else
-#   echo -e "${GREEN}==>${NC} File ${REQUIRED_FILE} already exist in ${DATAOUT}/${YYYYMMDDHHi}/Pre.\n"
-#fi
+else
+   echo -e "${GREEN}==>${NC} File ${REQUIRED_FILE} already exist in ${DATAOUT}/${YYYYMMDDHHi}/Pre.\n"
+fi
 #----------------------------------------------------------------------------------
 
 
 # Init Atmosphere phase:------------------------------------------------------------
-#REQUIRED_FILE=("x1.${RES}.init.nc")
-#if [ ! -s ${DATAOUT}/${YYYYMMDDHHi}/Pre/${REQUIRED_FILE} ]                      
-#then
+REQUIRED_FILE=("x1.${RES}.init.nc")
+if [ ! -s ${DATAOUT}/${YYYYMMDDHHi}/Pre/${REQUIRED_FILE} ]                      
+then
    echo -e  "${GREEN}==>${NC} Submiting Init Atmosphere...\n"
    time ./make_initatmos.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST}
-#else                                                                            
-#   echo -e "${GREEN}==>${NC} File ${REQUIRED_FILE} already exist in ${DATAOUT}/${YYYYMMDDHHi}/Pre.\n"
-#fi
+else                                                                            
+   echo -e "${GREEN}==>${NC} File ${REQUIRED_FILE} already exist in ${DATAOUT}/${YYYYMMDDHHi}/Pre.\n"
+fi
 #----------------------------------------------------------------------------------
 
 
