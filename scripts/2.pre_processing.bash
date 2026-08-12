@@ -91,6 +91,24 @@ mkdir -p ${DATAIN}
 # Datain
 source ${STOOLS}/2datain
 
+echo ""
+echo "********************************************************************************"
+echo "*"
+echo "* ATTENTION, please:"
+echo "*"
+echo "********************************************************************************"
+echo ""
+read -p "Do you want to download the ready-made static file?  ? [Y/n]" confirma
+confirma=${confirma:-Y}
+
+if [[ "${confirma}" =~ ^[Yy]$ ]]
+then
+   echo ""
+   echo -e "${GREEN}==>${NC} OK, downloading static file...."
+   wget -P "${DATAIN}/fixed" "https://dataserver.cptec.inpe.br/dataserver_dimnt/monan_adm/MONAN/CONTAINER_DATA/x1.2562.static.nc"
+   echo ""
+fi
+
 
 # Creating the x1.${RES}.static.nc file once, if does not exist yet:---------------
 if [ ! -s ${DATAIN}/fixed/x1.${RES}.static.nc ]
