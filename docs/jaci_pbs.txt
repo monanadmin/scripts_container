@@ -68,22 +68,6 @@ scripts_container/scripts/stools/jaciSIF/setenv
 
 Before running the experiment, you can adjust the number of CPU cores according to the available resources on jaci.
 
-The main variables are:
-
-export STATIC_ncores=4
-export DEGRIB_ncores=1
-export INITATMOS_ncores=8
-export MODEL_ncores=8
-export POST_ncores=8
-
-For example, the following configuration uses:
-
-STATIC: 4 CPU cores
-DEGRIB: 1 CPU core
-INITATMOS: 8 CPU cores
-MODEL: 8 CPU cores
-POST: 8 CPU cores
-
 
 8. Run all steps automatically
 ------------------------------
