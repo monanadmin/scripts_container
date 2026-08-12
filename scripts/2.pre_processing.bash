@@ -105,7 +105,7 @@ if [[ "${confirma}" =~ ^[Yy]$ ]]
 then
    echo ""
    echo -e "${GREEN}==>${NC} OK, downloading static file...."
-   wget -P "${DATAIN}/fixed" "https://dataserver.cptec.inpe.br/dataserver_dimnt/monan_adm/MONAN/CONTAINER_DATA/x1.2562.static.nc"
+   wget -P "${DATAIN}/fixed" "https://dataserver.cptec.inpe.br/dataserver_dimnt/monan_adm/MONAN/CONTAINER_DATA/x1.${RES}.static.nc"
    echo ""
 fi
 
