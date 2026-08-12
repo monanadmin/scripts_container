@@ -1,0 +1,3 @@
+#!/bin/bash
+
+gpmetis -minconn -contig -niter=200 x1.${RES}.graph.info ${cores}

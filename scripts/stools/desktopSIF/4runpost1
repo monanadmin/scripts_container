@@ -1,0 +1,3 @@
+#!/bin/bash
+
+${DIRRUN}/PostAtmos_node.${node}.sh

@@ -1,0 +1,24 @@
+#!/bin/bash
+
+if [ ! -e "${DATAIN}/${YYYYMMDDHHi}/gfs.t00z.pgrb2.0p25.f000.${YYYYMMDDHHi}.grib2" ]; then
+   if wget "http://dataserver.cptec.inpe.br/dataserver_dimnt/monan/MONAN-Model/monan_datain/CIs/${EXP}/${YYYYMMDDHHi:0:4}/${YYYYMMDDHHi}/gfs.t00z.pgrb2.0p25.f000.${YYYYMMDDHHi}.grib2" \
+            -O "${DATAIN}/${YYYYMMDDHHi}/gfs.t00z.pgrb2.0p25.f000.${YYYYMMDDHHi}.grib2"; then
+        echo "wget OK!"
+    else
+        echo "wget error!"
+        echo "Link: http://dataserver.cptec.inpe.br/dataserver_dimnt/monan/MONAN-Model/monan_datain/CIs/${EXP}/${YYYYMMDDHHi:0:4}/${YYYYMMDDHHi}/gfs.t00z.pgrb2.0p25.f000.${YYYYMMDDHHi}.grib2"
+        exit 1
+    fi
+fi
+
+files_needed=("${DATAIN}/fixed/x1.${RES}.static.nc" "${DATAIN}/fixed/Vtable.${EXP}" "${DATAIN}/${YYYYMMDDHHi}/gfs.t${YYYYMMDDHHi:8:2}z.pgrb2.0p25.f000.${YYYYMMDDHHi}.grib2")
+for file in "${files_needed[@]}"
+do
+  if [ ! -s "${file}" ]
+  then
+    echo -e  "\n${RED}==>${NC} ***** ATTENTION *****\n"
+    echo -e  "${RED}==>${NC} [${0}] At least the file ${file} was not generated. \n"
+    exit -1
+  fi
+done
+

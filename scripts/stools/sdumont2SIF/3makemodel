@@ -1,0 +1,59 @@
+#!/bin/bash
+
+cat << EOF0 > ${DIRRUN}/model.bash 
+#!/bin/bash -x
+#SBATCH --job-name=${MODEL_jobname}
+#SBATCH --nodes=${MODEL_nnodes}
+#SBATCH --ntasks=${MODEL_ncores}
+#SBATCH --tasks-per-node=${MODEL_ncpn}
+#SBATCH --partition=${MODEL_QUEUE}
+#SBATCH --time=${MODEL_walltime}
+#SBATCH --output=${DATAOUT}/${YYYYMMDDHHi}/Model/logs/model.bash.o%j    # File name for standard output
+#SBATCH --error=${DATAOUT}/${YYYYMMDDHHi}/Model/logs/model.bash.e%j     # File name for standard error output
+#SBATCH --exclusive
+##SBATCH --mem=500000
+
+
+export executable=atmosphere_model
+
+ulimit -c unlimited
+ulimit -v unlimited
+ulimit -s unlimited
+
+. ${SCRIPTS}/setenv.bash
+
+cd ${DIRRUN}
+
+
+date
+time srun --mpi=pmi2 --ntasks=\${SLURM_NTASKS} singularity exec --bind ${SCRIPTS}/.. --bind /home ${SINGULARITY} bash -c '
+   export OMPI_MCA_btl=openib,self,vader
+   export OMPI_MCA_btl_openib_if_include=mlx5_0:1
+   export OMPI_MCA_btl_openib_allow_ib=1
+   export OMPI_MCA_oob_tcp_if_include=ib0
+   export OMPI_MCA_plm=isolated
+   export OMPI_MCA_rmaps_base_oversubscribe=1
+   export OMP_NUM_THREADS=1
+   export HYDRA_ALLOW_RUN_AS_ROOT=1
+   ./\${executable}
+'
+date
+
+#
+# move dataout, clean up and remove files/links
+#
+
+mv MONAN_DIAG_* ${DATAOUT}/${YYYYMMDDHHi}/Model
+mv MONAN_HIST_* ${DATAOUT}/${YYYYMMDDHHi}/Model
+cp -f ${EXECS}/MONAN-VERSION.txt ${DATAOUT}/${YYYYMMDDHHi}/Model
+cp -f ${EXECS}/MONAN-VERSION.txt ${DATAOUT}/${YYYYMMDDHHi}/Model/logs/
+cp -f ${DIRHOMES}/VERSION.txt ${DATAOUT}/${YYYYMMDDHHi}/Model/logs/SCRIPTSCDCT-VERSION.txt
+cp -f ${MONANDIR}/README.md ${DATAOUT}/${YYYYMMDDHHi}/Model/logs/
+
+mv log.atmosphere.*.out ${DATAOUT}/${YYYYMMDDHHi}/Model/logs
+mv log.atmosphere.*.err ${DATAOUT}/${YYYYMMDDHHi}/Model/logs
+mv namelist.atmosphere ${DATAOUT}/${YYYYMMDDHHi}/Model/logs
+mv stream* ${DATAOUT}/${YYYYMMDDHHi}/Model/logs
+
+
+EOF0

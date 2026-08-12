@@ -1,0 +1,4 @@
+#!/bin/bash
+
+qsub -W block=true ${DIRRUN}/initatmos.bash
+#qsub -Wblock=true ${DIRRUN}/initatmos.bash

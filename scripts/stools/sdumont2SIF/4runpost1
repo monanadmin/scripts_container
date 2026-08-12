@@ -1,0 +1,3 @@
+#!/bin/bash
+
+jobid[${node}]=$(sbatch --parsable ${DIRRUN}/PostAtmos_node.${node}.sh)

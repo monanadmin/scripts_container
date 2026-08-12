@@ -1,0 +1,6 @@
+#!/bin/bash
+
+singularity exec --bind ${SCRIPTS}/.. --bind ${DIRDADOS} --bind /home ${SINGULARITY} bash -l -c '
+   make clean
+   make  2>&1 | tee make.convert.output
+'

@@ -1,0 +1,56 @@
+#!/bin/bash
+
+cat << EOF0 > ${DIRRUN}/degrib.bash 
+#!/bin/bash -x
+
+ulimit -s unlimited
+ulimit -c unlimited
+ulimit -v unlimited
+
+export PMIX_MCA_gds=hash
+
+
+export LD_LIBRARY_PATH=\$LD_LIBRARY_PATH:${HOME}/local/lib64
+
+cd ${DIRRUN}
+. ${SCRIPTS}/setenv.bash
+
+ldd ungrib.exe
+
+rm -f GRIBFILE.* namelist.wps
+
+
+sed -e "s,#LABELI#,${start_date},g;s,#PREFIX#,GFS,g" \
+	${DIRRUN}/namelist.wps.TEMPLATE > ${DIRRUN}/namelist.wps
+
+date
+singularity exec --bind ${SCRIPTS}/.. --bind /home ${SINGULARITY} bash -c '
+   ./link_grib.csh ${DATAIN}/${YYYYMMDDHHi}/gfs.t${YYYYMMDDHHi:8:2}z.pgrb2.0p25.f000.${YYYYMMDDHHi}.grib2
+   time ungrib.exe
+'
+date
+
+
+grep "Successful completion of program ungrib.exe" ${DIRRUN}/ungrib.log >& /dev/null
+
+if [ \$? -ne 0 ]; then
+   echo "  BUMMER: Ungrib generation failed for some yet unknown reason."
+   echo " "
+   tail -10 ${DIRRUN}/ungrib.log
+   echo " "
+   exit 21
+fi
+
+#
+# clean up and remove links
+#
+   mv ungrib.log ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs/ungrib.${start_date}.log
+   mv namelist.wps ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs/namelist.${start_date}.wps
+   mv GFS\:${start_date:0:13} ${DATAOUT}/${YYYYMMDDHHi}/Pre
+
+   rm -fr ${DATAIN}/${YYYYMMDDHHi}
+
+echo "End of degrib Job"
+
+
+EOF0

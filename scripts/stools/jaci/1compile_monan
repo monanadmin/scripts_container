@@ -1,0 +1,3 @@
+#!/bin/bash
+
+. ${MONANDIR}/make-all.sh

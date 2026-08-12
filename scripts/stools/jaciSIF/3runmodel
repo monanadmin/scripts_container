@@ -1,0 +1,4 @@
+#!/bin/bash
+
+qsub -W block=true ${DIRRUN}/model.bash
+#qsub -Wblock=true ${DIRRUN}/model.bash

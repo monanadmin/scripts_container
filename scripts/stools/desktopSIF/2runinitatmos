@@ -1,0 +1,3 @@
+#!/bin/bash
+
+${DIRRUN}/initatmos.bash

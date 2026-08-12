@@ -1,0 +1,225 @@
+MONAN Container Execution Procedure
+===================================
+
+Environment
+-----------
+
+Operating system: Ubuntu 22.04 Desktop
+Container runtime: Apptainer/Singularity
+Machine configuration: desktopSIF
+
+This procedure describes the installation and execution of the MONAN Model using the SIF container only on an Ubuntu 22.04 desktop environment.
+
+Prerequisites
+-------------
+
+Apptainer or Singularity must be installed on the desktop or notebook before starting this procedure.
+
+
+1. Create the MONAN working directory
+-------------------------------------
+
+$ mkdir MONAN
+$ cd MONAN
+
+
+2. Download and extract the MONAN container
+-------------------------------------------
+
+The step below is performed automatically by script 1 (1.install_monan.bash). If it does not work, you can try downloading the monan.sif file manually.
+
+$ wget https://dataserver.cptec.inpe.br/dataserver_dimnt/monan/MONAN-Model/monan-x64.sif.tar.gz
+$ tar -xzvf monan-x64.sif.tar.gz
+
+Create a symbolic link to the SIF container:
+
+$ ln -s monan-x64.sif monan.sif
+
+Check the files:
+
+$ ls -1
+
+Expected output:
+
+monan-x64.sif
+monan-x64.sif.tar.gz
+monan.sif -> monan-x64.sif
+
+3. Clone the scripts_container repository
+------------------------------------------
+
+$ git clone https://github.com/monanadmin/scripts_container.git
+$ cd scripts_container/
+$ git checkout develop
+$ cd scripts/
+
+
+4. Configure the execution environment
+--------------------------------------
+
+Check the MACHINE configuration in setenv.bash:
+
+$ grep "MACHINE=" setenv.bash
+
+For an Ubuntu 22.04 desktop using the SIF container, the expected configuration is:
+
+export MACHINE="desktopSIF"
+
+The available MACHINE options are:
+
+egeon
+egeonSIF
+jaci
+jaciSIF
+desktopSIF
+sdumontSIF
+sdumont2SIF
+
+
+5. Check the available initial dates
+------------------------------------
+
+Before running the pre-processing, check the dates available in the MONAN Data Server:
+
+https://dataserver.cptec.inpe.br/dataserver_dimnt/monan/MONAN-Model/monan_datain/CIs/GFS/
+
+Select a YYYYMMDDHHi date corresponding to the available GFS initial conditions.
+
+
+6. Recommended test configuration
+---------------------------------
+
+When running MONAN on a desktop or notebook, it is recommended to start with a low horizontal resolution because the available CPU cores and RAM may be limited.
+
+A recommended initial test uses 2562 horizontal grid cells (480 km).
+
+Other examples of resolution options are:
+
+2562     = 480 km
+10242    = 240 km
+40962    = 120 km
+163842   = 60 km
+655362   = 30 km
+1024002  = 24 km
+2621442  = 15 km
+5898242  = 10 km
+
+Initial configuration of scripts_container/scripts/0.run_all.bash:
+
+github_link="https://github.com/monanadmin/MONAN-Model.git"
+monan_branch=1.4.4
+convertmpas_branch=1.2.0
+EXP=GFS
+RES=2562
+YYYYMMDDHHi=2025061000
+FCST=12
+
+The date above is only an example. Always check the Data Server for available initial conditions before running the experiment.
+
+
+7. Adjusting the CPU Core Configuration
+---------------------------------
+
+The number of CPU cores used by each MONAN phase can be configured in:
+
+scripts_container/scripts/stools/desktopSIF/setenv
+
+Before running the experiment, adjust the number of CPU cores according to the available resources of the desktop or notebook.
+
+The main variables are:
+
+export STATIC_ncores=4
+export DEGRIB_ncores=1
+export INITATMOS_ncores=8
+export MODEL_ncores=8
+export POST_ncores=8
+
+For example, the following configuration uses:
+
+STATIC: 4 CPU cores
+DEGRIB: 1 CPU core
+INITATMOS: 8 CPU cores
+MODEL: 8 CPU cores
+POST: 8 CPU cores
+
+For a desktop or notebook with fewer CPU cores, these values should be reduced accordingly. The total number of CPU cores requested by a phase must be compatible with the available CPU resources.
+
+
+8. Run all steps automatically
+------------------------------
+
+The complete workflow can also be executed using the 0.run_all.bash script.
+
+Configure the input variables at the beginning of the script:
+
+github_link="https://github.com/monanadmin/MONAN-Model.git"
+monan_branch=1.4.4
+convertmpas_branch=1.2.0
+EXP=GFS
+RES=2562
+YYYYMMDDHHi=2025061000
+FCST=12
+
+The script runs the complete workflow, including:
+
+1. Installing and compiling the MONAN model and utility programs
+2. Executing the pre-processing phase. Preparing all CI/CC files needed
+3. Executing the MONAN Model phase
+4. Executing the post-processing phase
+
+Uncomment the four lines:
+
+time ./1.install_monan.bash ${github_link} ${monan_branch} ${convertmpas_branch}
+time ./2.pre_processing.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST} 
+time ./3.run_model.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST} 
+time ./4.run_post.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST} 
+
+Then execute:
+
+$ ./0.run_all.bash
+
+For initial homologation tests on a desktop or notebook, it is recommended to first run the individual steps. This makes it easier to identify problems related to installation, compilation, input data, memory, CPU resources, or model execution.
+
+After the individual steps have been successfully validated, 0.run_all.bash can be used to execute the complete workflow.
+
+
+9. Run the steps individually
+-----------------------------
+
+The MONAN workflow can be executed step by step.
+
+
+Step 1 - Install and compile the MONAN model and utility programs:
+
+$ ./1.install_monan.bash https://github.com/monanadmin/MONAN-Model.git 1.4.4 1.2.0
+
+
+Step 2 - Execute the pre-processing phase:
+
+$ ./2.pre_processing.bash GFS 2562 2025061000 12
+
+
+Step 3 - Execute the MONAN Model phase:
+
+$ ./3.run_model.bash GFS 2562 2025061000 12
+
+
+Step 4 - Execute the post-processing phase:
+
+$ ./4.run_post.bash GFS 2562 2025061000 12
+
+
+10. Homologation
+----------------
+
+This procedure was successfully homologated only on:
+
+Operating system: Ubuntu 22.04 Desktop
+Container type: SIF
+Machine configuration: desktopSIF
+
+The recommended initial test resolution is 2562 horizontal grid cells (480 km). RES=2562
+
+
+
+

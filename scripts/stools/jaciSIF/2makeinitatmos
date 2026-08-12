@@ -1,0 +1,44 @@
+#!/bin/bash
+
+cat << EOF0 > ${DIRRUN}/initatmos.bash 
+#!/bin/bash -x
+#PBS -N ${INITATMOS_jobname}
+#PBS -q ${INITATMOS_QUEUE}
+#PBS -l select=${INITATMOS_nnodes}:ncpus=${INITATMOS_ncpn}:mpiprocs=${INITATMOS_ncpn}
+#PBS -l place=scatter
+#PBS -l place=excl
+#PBS -l walltime=${STATIC_walltime}
+#PBS -j oe
+#PBS -o ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs/initatmos.bash.o$PBS_JOBID
+#PBS -e ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs/initatmos.bash.e$PBS_JOBID
+
+
+export executable=init_atmosphere_model
+
+ulimit -c unlimited
+ulimit -v unlimited
+ulimit -s unlimited
+
+
+. ${SCRIPTS}/setenv.bash
+
+cd ${DIRRUN}
+
+
+export CURRENT_HOST=\$(cat \$PBS_NODEFILE)
+export HOSTFILE=${DIRRUN}/hostfile
+echo "\${CURRENT_HOST}" | sed "s,\..*$,," > \${HOSTFILE}
+
+date
+time singularity exec --bind ${SCRIPTS}/.. --bind /home ${SINGULARITY} bash -c "
+   mpirun -np ${INITATMOS_ncores} --hostfile \${HOSTFILE} ./\${executable}
+"
+date
+
+
+mv ${DIRRUN}/log.init_atmosphere.0000.out ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs/log.init_atmosphere.0000.x1.${RES}.init.nc.${YYYYMMDDHHi}.out
+mv ${DIRRUN}/namelist.init_atmosphere ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs
+mv ${DIRRUN}/streams.init_atmosphere ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs
+mv ${DIRRUN}/x1.${RES}.init.nc ${DATAOUT}/${YYYYMMDDHHi}/Pre
+
+EOF0

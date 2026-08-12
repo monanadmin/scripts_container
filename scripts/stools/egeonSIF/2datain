@@ -1,0 +1,5 @@
+#!/bin/bash
+
+rsync -rv --chmod=ugo=rw ${DIRDADOS}/MONAN_datain/datain/fixed ${DATAIN}
+ln -sf ${DIRDADOS}/MONAN_datain/datain/WPS_GEOG ${DATAIN}
+

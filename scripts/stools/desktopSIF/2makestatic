@@ -1,0 +1,44 @@
+#!/bin/bash
+
+cat << EOF0 > ${DIRRUN}/static.bash
+#!/bin/bash -x
+
+export executable=init_atmosphere_model
+
+ulimit -s unlimited
+ulimit -c unlimited
+ulimit -v unlimited
+
+. ${SCRIPTS}/setenv.bash
+
+cd ${DIRRUN}
+
+date
+time singularity exec --bind ${SCRIPTS}/.. --bind /home ${SINGULARITY} bash -c '
+   export OMPI_MCA_btl=self,tcp,vader
+   export OMPI_MCA_rmaps_base_oversubscribe=1
+   export OMP_NUM_THREADS=1
+   export HYDRA_ALLOW_RUN_AS_ROOT=1
+   mpirun -np \${STATIC_ncores} ./\${executable}
+'
+date
+
+grep "Finished running" log.init_atmosphere.0000.out >& /dev/null
+if [ \$? -ne 0 ]; then
+   echo "  BUMMER: Static generation failed for some yet unknown reason."
+   echo " "
+   tail -10 ${STATICPATH}/log.init_atmosphere.0000.out
+   echo " "
+   exit 21
+fi
+
+echo "  ####################################"
+echo "  ### Static completed - \$(date) ####"
+echo "  ####################################"
+echo " "
+
+
+mv log.init_atmosphere.0000.out ${DATAOUT}/logs/log.init_atmosphere.0000.x1.${RES}.static.nc.out
+
+
+EOF0

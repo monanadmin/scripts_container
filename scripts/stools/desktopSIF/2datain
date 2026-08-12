@@ -1,0 +1,36 @@
+#!/bin/bash
+
+if [ ! -e "${DATAIN}/WPS_GEOG" ]; then
+  # if wget -r -np -nH --cut-dirs=4 -R "index.html*" -P "${DATAIN}" "https://dataserver.cptec.inpe.br/dataserver_dimnt/monan_adm/MONAN/CONTAINER_DATA/WPS_GEOG/"; then 
+   #    echo "wget OK!"
+     if [ ! -f "WPS_GEOG.tar.gz" ]; then
+         if wget "https://dataserver.cptec.inpe.br/dataserver_dimnt/monan_adm/MONAN/CONTAINER_DATA/WPS_GEOG.tar.gz"; then
+           echo "wget OK!"
+         else
+           echo "wget error!"
+           echo "Link: https://dataserver.cptec.inpe.br/dataserver_dimnt/monan_adm/MONAN/CONTAINER_DATA/WPS_GEOG.tar.gz"
+       #   echo "link: https://dataserver.cptec.inpe.br/dataserver_dimnt/monan_adm/MONAN/CONTAINER_DATA/WPS_GEOG"
+           exit 1
+         fi
+     fi
+    mkdir -p "${DATAIN}/WPS_GEOG"
+    tar -xzvf WPS_GEOG.tar.gz -C "${DATAIN}/"
+    rm WPS_GEOG.tar.gz
+fi
+if [ ! -e "${DATAIN}/fixed" ]; then
+     #if wget -r -np -nH --cut-dirs=4 -R "index.html*" -P "${DATAIN}" "https://dataserver.cptec.inpe.br/dataserver_dimnt/monan_adm/MONAN/CONTAINER_DATA/fixed/"; then 
+        #echo "wget OK!"
+     if [ ! -f "fixed.tar.gz" ]; then
+          if wget "https://dataserver.cptec.inpe.br/dataserver_dimnt/monan_adm/MONAN/CONTAINER_DATA/fixed.tar.gz"; then
+             echo "wget OK!"
+          else
+             echo "wget error"
+             echo "Link: https://dataserver.cptec.inpe.br/dataserver_dimnt/monan_adm/MONAN/CONTAINER_DATA/fixed.tar.gz"
+       #     echo "link: https://dataserver.cptec.inpe.br/dataserver_dimnt/monan_adm/MONAN/CONTAINER_DATA/fixed"
+             exit 1
+          fi
+    fi
+    mkdir -p "${DATAIN}/fixed"
+    tar -xzvf fixed.tar.gz -C "${DATAIN}/"
+    rm fixed.tar.gz
+fi

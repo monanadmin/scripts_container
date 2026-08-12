@@ -1,0 +1,4 @@
+#!/bin/bash
+
+qsub -W block=true ${DIRRUN}/static.bash
+#qsub -Wblock=true ${DIRRUN}/static.bash

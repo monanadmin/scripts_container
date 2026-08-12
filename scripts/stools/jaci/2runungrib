@@ -1,0 +1,4 @@
+#!/bin/bash
+
+qsub -W block=true ${DIRRUN}/degrib.bash
+#qsub -Wblock=true ${DIRRUN}/degrib.bash

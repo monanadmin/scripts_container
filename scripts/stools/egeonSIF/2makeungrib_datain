@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# Se nao existir CI no diretorio do IO,
+# busca no nosso dir /beegfs/monan/CIs, se nao existir tbm, aborta!
+if [ ! -s ${BNDDIR}/gfs.t${YYYYMMDDHHi:8:2}z.pgrb2.0p25.f000.${YYYYMMDDHHi}.grib2 ]
+then
+   if [ ! -s ${GCCCIS}/${YYYYMMDDHHi:0:4}/${YYYYMMDDHHi}/gfs.t${YYYYMMDDHHi:8:2}z.pgrb2.0p25.f000.${YYYYMMDDHHi}.grib2 ]
+   then
+      echo -e "${RED}==>${NC}Condicao de contorno inexistente !"
+      echo -e "${RED}==>${NC}Check ${BNDDIR} or."
+      echo -e "${RED}==>${NC}Check ${GCCCIS}"
+      exit 1
+   else
+      BNDDIR=${GCCCIS}/${YYYYMMDDHHi:0:4}/${YYYYMMDDHHi}
+   fi
+fi
+
+files_needed=("${DATAIN}/fixed/x1.${RES}.static.nc" "${DATAIN}/fixed/Vtable.${EXP}" "${BNDDIR}/gfs.t${YYYYMMDDHHi:8:2}z.pgrb2.0p25.f000.${YYYYMMDDHHi}.grib2")
+for file in "${files_needed[@]}"
+do
+  if [ ! -s "${file}" ]
+  then
+    echo -e  "\n${RED}==>${NC} ***** ATTENTION *****\n"
+    echo -e  "${RED}==>${NC} [${0}] At least the file ${file} was not generated. \n"
+    exit -1
+  fi
+done
+
+cp -f ${BNDDIR}/gfs.t${YYYYMMDDHHi:8:2}z.pgrb2.0p25.f000.${YYYYMMDDHHi}.grib2 ${DATAIN}/${YYYYMMDDHHi}
+

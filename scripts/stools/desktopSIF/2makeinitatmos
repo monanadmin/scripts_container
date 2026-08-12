@@ -1,0 +1,35 @@
+#!/bin/bash
+
+cat << EOF0 > ${DIRRUN}/initatmos.bash 
+#!/bin/bash -x
+
+export executable=init_atmosphere_model
+
+ulimit -c unlimited
+ulimit -v unlimited
+ulimit -s unlimited
+
+
+. ${SCRIPTS}/setenv.bash
+
+cd ${DIRRUN}
+
+
+
+date
+time singularity exec --bind ${SCRIPTS}/.. --bind /home ${SINGULARITY} bash -c '
+   export OMPI_MCA_btl=self,tcp,vader
+   export OMPI_MCA_rmaps_base_oversubscribe=1
+   export OMP_NUM_THREADS=1
+   export HYDRA_ALLOW_RUN_AS_ROOT=1
+   mpirun -np \${INITATMOS_ncores} ./\${executable}
+'
+date
+
+
+mv ${DIRRUN}/log.init_atmosphere.0000.out ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs/log.init_atmosphere.0000.x1.${RES}.init.nc.${YYYYMMDDHHi}.out
+mv ${DIRRUN}/namelist.init_atmosphere ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs
+mv ${DIRRUN}/streams.init_atmosphere ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs
+mv ${DIRRUN}/x1.${RES}.init.nc ${DATAOUT}/${YYYYMMDDHHi}/Pre
+
+EOF0

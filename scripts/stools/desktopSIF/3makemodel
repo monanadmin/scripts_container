@@ -1,0 +1,44 @@
+#!/bin/bash
+
+cat << EOF0 > ${DIRRUN}/model.bash 
+#!/bin/bash -x
+
+export executable=atmosphere_model
+
+ulimit -c unlimited
+ulimit -v unlimited
+ulimit -s unlimited
+
+. ${SCRIPTS}/setenv.bash
+
+cd ${DIRRUN}
+
+
+date
+time singularity exec --bind ${SCRIPTS}/.. --bind /home ${SINGULARITY} bash -c '
+   export OMPI_MCA_btl=self,tcp,vader
+   export OMPI_MCA_rmaps_base_oversubscribe=1
+   export OMP_NUM_THREADS=1
+   export HYDRA_ALLOW_RUN_AS_ROOT=1
+   mpirun -np \${MODEL_ncores} ./\${executable}
+'
+date
+
+#
+# move dataout, clean up and remove files/links
+#
+
+mv MONAN_DIAG_* ${DATAOUT}/${YYYYMMDDHHi}/Model
+mv MONAN_HIST_* ${DATAOUT}/${YYYYMMDDHHi}/Model
+cp -f ${EXECS}/MONAN-VERSION.txt ${DATAOUT}/${YYYYMMDDHHi}/Model
+cp -f ${EXECS}/MONAN-VERSION.txt ${DATAOUT}/${YYYYMMDDHHi}/Model/logs/
+cp -f ${DIRHOMES}/VERSION.txt ${DATAOUT}/${YYYYMMDDHHi}/Model/logs/SCRIPTSCDCT-VERSION.txt
+cp -f ${MONANDIR}/README.md ${DATAOUT}/${YYYYMMDDHHi}/Model/logs/
+
+mv log.atmosphere.*.out ${DATAOUT}/${YYYYMMDDHHi}/Model/logs
+mv log.atmosphere.*.err ${DATAOUT}/${YYYYMMDDHHi}/Model/logs
+mv namelist.atmosphere ${DATAOUT}/${YYYYMMDDHHi}/Model/logs
+mv stream* ${DATAOUT}/${YYYYMMDDHHi}/Model/logs
+
+
+EOF0
