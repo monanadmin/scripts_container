@@ -10,9 +10,9 @@
 
 ## Get Started
 
-You can run MONAN container on jaci, egeon or desktop ubuntu environment. For each one you can choose:
+You can run MONAN container on jaci, egeon or desktop ubuntu 22.04 environment. For each one you can choose:
 - Jaci environment -->  https://github.com/monanadmin/scripts_container/blob/develop/docs/jaci_pbs.txt
 - Egeon environment --> https://github.com/monanadmin/scripts_container/blob/develop/docs/egeon_slurm.txt
-- Desktop ubuntu environment  -->  https://github.com/monanadmin/scripts_container/blob/develop/docs/desktop_ubuntu_22.04.txt
+- Desktop ubuntu 22.04 environment  -->  https://github.com/monanadmin/scripts_container/blob/develop/docs/desktop_ubuntu_22.04.txt
 
 
