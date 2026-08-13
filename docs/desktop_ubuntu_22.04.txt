@@ -16,6 +16,7 @@ Prerequisites
 Apptainer or Singularity must be installed on the desktop or notebook before starting this procedure.
 
 
+
 1. Create the MONAN working directory
 -------------------------------------
 
@@ -23,12 +24,13 @@ $ mkdir MONAN
 $ cd MONAN
 
 
+
 2. Download and extract the MONAN container
 -------------------------------------------
 
 The step below is performed automatically by script 1 (1.install_monan.bash). If it does not work, you can try downloading the monan.sif file manually.
 
-$ wget https://dataserver.cptec.inpe.br/dataserver_dimnt/monan/MONAN-Model/monan-x64.sif.tar.gz
+$ wget https://dataserver.cptec.inpe.br/dataserver_dimnt/monan_adm/MONAN/CONTAINER_DATA/monan-x64.sif.tar.gz
 $ tar -xzvf monan-x64.sif.tar.gz
 
 Create a symbolic link to the SIF container:
@@ -45,6 +47,8 @@ monan-x64.sif
 monan-x64.sif.tar.gz
 monan.sif -> monan-x64.sif
 
+
+
 3. Clone the scripts_container repository
 ------------------------------------------
 
@@ -52,6 +56,7 @@ $ git clone https://github.com/monanadmin/scripts_container.git
 $ cd scripts_container/
 $ git checkout develop
 $ cd scripts/
+
 
 
 4. Configure the execution environment
@@ -76,14 +81,16 @@ sdumontSIF
 sdumont2SIF
 
 
+
 5. Check the available initial dates
 ------------------------------------
 
 Before running the pre-processing, check the dates available in the MONAN Data Server:
 
-https://dataserver.cptec.inpe.br/dataserver_dimnt/monan/MONAN-Model/monan_datain/CIs/GFS/
+https://dataserver.cptec.inpe.br/dataserver_dimnt/monan_adm/MONAN/CONTAINER_DATA/CIs/GFS/
 
 Select a YYYYMMDDHHi date corresponding to the available GFS initial conditions.
+
 
 
 6. Recommended test configuration
@@ -117,6 +124,7 @@ FCST=12
 The date above is only an example. Always check the Data Server for available initial conditions before running the experiment.
 
 
+
 7. Adjusting the CPU Core Configuration
 ---------------------------------
 
@@ -143,6 +151,7 @@ MODEL: 8 CPU cores
 POST: 8 CPU cores
 
 For a desktop or notebook with fewer CPU cores, these values should be reduced accordingly. The total number of CPU cores requested by a phase must be compatible with the available CPU resources.
+
 
 
 8. Run all steps automatically
@@ -183,6 +192,7 @@ For initial homologation tests on a desktop or notebook, it is recommended to fi
 After the individual steps have been successfully validated, 0.run_all.bash can be used to execute the complete workflow.
 
 
+
 9. Run the steps individually
 -----------------------------
 
@@ -207,6 +217,7 @@ $ ./3.run_model.bash GFS 2562 2025061000 12
 Step 4 - Execute the post-processing phase:
 
 $ ./4.run_post.bash GFS 2562 2025061000 12
+
 
 
 10. Homologation
