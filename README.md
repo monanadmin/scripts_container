@@ -3,9 +3,9 @@
 
 ## History
 
-**0.1.0**
--First implementation of scripts container
-- Defined default version of MONAN-Model (1.4.4) and convert_mpas (1.2.0).
+### Version 0.1.0
+- First implementation of scripts container
+- Running default version of MONAN-Model (1.4.4) and convert_mpas (1.2.0).
 
 ## Get Started
 
