@@ -26,7 +26,7 @@ $ cd MONAN
 
 
 2. Homebrew install
--------------------------------------
+-------------------
 $ /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 $ echo >> /Users/paiva/.zprofile
 $ echo 'eval "$(/opt/homebrew/bin/brew shellenv zsh)"' >> /Users/paiva/.zprofile
@@ -38,7 +38,7 @@ Homebrew 6.0.17
 
 
 3. Lima install
--------------------------------------
+---------------
 $ brew install lima
 $ limactl --version
 limactl version 2.2.0
@@ -46,7 +46,7 @@ limactl version 2.2.0
 
 
 4. Create an apptainer VM
--------------------------------------
+-------------------------
 $ limactl start template://apptainer --cpus 4 --memory 8
 $ limactl stop apptainer
 $ limactl edit apptainer
@@ -87,7 +87,7 @@ monan.sif -> monan-arm64.sif
 
 
 6. Clone the scripts_container repository
-------------------------------------------
+-----------------------------------------
 
 $ git clone https://github.com/monanadmin/scripts_container.git
 $ cd scripts_container/
@@ -163,7 +163,7 @@ The date above is only an example. Always check the Data Server for available in
 
 
 10. Adjusting the CPU Core Configuration
----------------------------------
+----------------------------------------
 
 The number of CPU cores used by each MONAN phase can be configured in:
 
@@ -192,7 +192,7 @@ For a desktop or notebook with fewer CPU cores, these values should be reduced a
 
 
 11. Run all steps automatically
-------------------------------
+-------------------------------
 
 The complete workflow can also be executed using the 0.run_all.bash script.
 
@@ -231,7 +231,7 @@ After the individual steps have been successfully validated, 0.run_all.bash can 
 
 
 12. Run the steps individually
------------------------------
+------------------------------
 
 The MONAN workflow can be executed step by step.
 
