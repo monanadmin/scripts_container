@@ -51,8 +51,8 @@ $ limactl start template://apptainer --cpus 4 --memory 8
 $ limactl stop apptainer
 $ limactl edit apptainer
 mounts: 
-- location: "~/MONAN"	
-writable: true
+  - location: "~/MONAN"	
+    writable: true
 $ limactl start apptainer
 $ limactl shell apptainer
 paiva@lima-apptainer:/Users/paiva$ uname -m
