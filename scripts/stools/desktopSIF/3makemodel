@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cat << EOF0 > ${DIRRUN}/model.bash 
-#!/bin/bash -x
+#!/bin/bash
 
 export executable=atmosphere_model
 

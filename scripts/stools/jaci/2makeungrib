@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cat << EOF0 > ${DIRRUN}/degrib.bash 
-#!/bin/bash -x
+#!/bin/bash
 #PBS -N ${DEGRIB_jobname}
 #PBS -q ${DEGRIB_QUEUE}
 #PBS -l select=${DEGRIB_nnodes}:ncpus=${DEGRIB_ncpn}:mpiprocs=${DEGRIB_ncpn}

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cat > ${DIRRUN}/PostAtmos_node.${node}.sh <<EOSH
-#!/bin/bash -x
+#!/bin/bash
 
 . ${SCRIPTS}/setenv.bash
 

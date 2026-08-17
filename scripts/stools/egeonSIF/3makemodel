@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cat << EOF0 > ${DIRRUN}/model.bash 
-#!/bin/bash -x
+#!/bin/bash
 #SBATCH --job-name=${MODEL_jobname}
 #SBATCH --nodes=${MODEL_nnodes}
 #SBATCH --ntasks=${MODEL_ncores}
