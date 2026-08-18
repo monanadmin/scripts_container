@@ -17,7 +17,7 @@ cd ${DIRRUN}
 
 
 date
-time singularity exec --bind ${SCRIPTS}/.. --bind /home ${SINGULARITY} bash -c '
+time singularity --quiet exec --bind ${SCRIPTS}/.. --bind /home ${SINGULARITY} bash -c '
    export OMPI_MCA_btl=self,tcp,vader
    export OMPI_MCA_rmaps_base_oversubscribe=1
    export OMP_NUM_THREADS=1

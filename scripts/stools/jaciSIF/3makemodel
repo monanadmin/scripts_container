@@ -32,7 +32,7 @@ echo "\${CURRENT_HOST}" | sed "s,\..*$,," > \${HOSTFILE}
 
 date
 which singularity
-time singularity exec --bind ${SCRIPTS}/.. ${SINGULARITY} bash -c "
+time singularity --quiet exec --bind ${SCRIPTS}/.. ${SINGULARITY} bash -c "
    mpirun -np ${MODEL_ncores} --hostfile \${HOSTFILE} ./\${executable}
 "
 date

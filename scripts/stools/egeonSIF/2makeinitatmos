@@ -26,7 +26,7 @@ cd ${DIRRUN}
 
 
 date
-time srun --mpi=pmi2 --ntasks=\${SLURM_NTASKS} singularity exec --bind ${SCRIPTS}/.. --bind ${DIRDADOS} --bind /home ${SINGULARITY} bash -c '
+time srun --mpi=pmi2 --ntasks=\${SLURM_NTASKS} singularity --quiet exec --bind ${SCRIPTS}/.. --bind ${DIRDADOS} --bind /home ${SINGULARITY} bash -c '
    export OMPI_MCA_btl=openib,self,vader
    export OMPI_MCA_btl_openib_if_include=mlx5_0:1
    export OMPI_MCA_btl_openib_allow_ib=1
