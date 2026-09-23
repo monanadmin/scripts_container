@@ -144,9 +144,11 @@ cp -f ${DATAIN}/fixed/*TBL ${DIRRUN}
 cp -f ${DATAIN}/fixed/*DBL ${DIRRUN}
 cp -f ${DATAIN}/fixed/*DATA ${DIRRUN}
 cp -f ${DATAIN}/fixed/x1.${RES}.static.nc ${DIRRUN}
+cp -f ${DATAIN}/fixed/x1.${RES}.ugwp_oro_data.nc ${DIRRUN}
 cp -f ${DATAIN}/fixed/x1.${RES}.graph.info.part.${cores} ${DIRRUN}
 cp -f ${DATAOUT}/${YYYYMMDDHHi}/Pre/x1.${RES}.init.nc ${DIRRUN}
 cp -f ${DATAIN}/fixed/Vtable.GFS ${DIRRUN}
+cp -f ${DATAIN}/fixed/ugwp_limb_tau.nc ${DIRRUN}
 
 
 if [ ${EXP} = "GFS" ]
@@ -160,6 +162,7 @@ s,#CONFIG_DT#,${CONFIG_DT},g;s,#CONFIG_LEN_DISP#,${CONFIG_LEN_DISP},g;s,#CONFIG_
 fi
 cp -f ${SCRIPTS}/namelists/stream_list.atmosphere.output ${DIRRUN}
 cp -f ${SCRIPTS}/namelists/stream_list.atmosphere.diagnostics${VARTABLE} ${DIRRUN}/stream_list.atmosphere.diagnostics
+cp -f ${SCRIPTS}/namelists/stream_list.atmosphere.diag_ugwp${VARTABLE} ${DIRRUN}/stream_list.atmosphere.diag_ugwp
 cp -f ${SCRIPTS}/namelists/stream_list.atmosphere.surface ${DIRRUN}
 
 

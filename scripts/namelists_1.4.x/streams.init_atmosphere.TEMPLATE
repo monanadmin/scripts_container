@@ -1,19 +1,13 @@
 <streams>
 <immutable_stream name="input"
                   type="input"
-                  filename_template="x1.#RES#.grid.nc"
+                  filename_template="x1.#RES#.static.nc"
                   input_interval="initial_only" />
 
 <immutable_stream name="output"
                   type="output"
-                  filename_template="x1.#RES#.static.nc"
+                  filename_template="x1.#RES#.init.nc"
                   packages="initial_conds" 
-                  output_interval="initial_only" />
-
-<immutable_stream name="ugwp_oro_data"
-                  type="output"
-                  filename_template="x1.#RES#.ugwp_oro_data.nc"
-                  packages="gwd_gsl_stage_out"
                   output_interval="initial_only" />
 
 <immutable_stream name="surface"

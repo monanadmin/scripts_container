@@ -1,0 +1,5 @@
+#!/bin/bash
+
+singularity --quiet exec --bind ${SCRIPTS}/.. ${SINGULARITY} bash -c '
+   grads -blc "run ${DIRRUN}/qctlinfo.gs" | awk "/dset/,/endvars/" > ${DIRRUN}/qctlinfo.ctl
+'
