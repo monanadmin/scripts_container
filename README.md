@@ -13,4 +13,3 @@ You can run MONAN container on jaci, egeon or desktop ubuntu 22.04 environment. 
 - Jaci machine -->  https://github.com/monanadmin/scripts_container/blob/develop/docs/jaci_pbs.txt
 - Egeon machine --> https://github.com/monanadmin/scripts_container/blob/develop/docs/egeon_slurm.txt
 - Desktop ubuntu -->  https://github.com/monanadmin/scripts_container/blob/develop/docs/desktop_ubuntu_22.04.txt
-- Pomerode machine --> https://github.com/monanadmin/scripts_container/blob/develop/docs/pomerode_nvhpc_slurm.txt
