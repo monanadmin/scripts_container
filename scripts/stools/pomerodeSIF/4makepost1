@@ -8,7 +8,7 @@ cat > ${DIRRUN}/PostAtmos_node.${node}.sh <<EOSH
 #SBATCH --time=${POST_walltime}
 #SBATCH --output=${DATAOUT}/${YYYYMMDDHHi}/Post/logs/PostAtmos_node.${node}.o%j    # File name for standard output
 #SBATCH --error=${DATAOUT}/${YYYYMMDDHHi}/Post/logs/PostAtmos_node.${node}.e%j     # File name for standard error output
-#SBATCH --exclusive
+#SBATCH --mem=64G
 
 . ${SCRIPTS}/setenv.bash
 
