@@ -151,15 +151,15 @@ rm -f  $MONANDIR/make*.output.atmosphere $MONANDIR/make*.output.init_atmosphere 
 rm -fr $MONANDIR/src/core_atmosphere/inc $MONANDIR/src/core_init_atmosphere/inc
 
 
-if [[ "${MACHINE}" == *SIF && ! -f "${DIR_SCRIPTS}/monan.sif" ]]; then
-    if [[ "${MACHINE}" == "pomerodeSIF" ]]; then
-        echo -e "${GREEN}==>${NC} downloading Pomerode container from dataserver......\n"
-        wget -O "${DIR_SCRIPTS}/monan.sif" "https://dataserver.cptec.inpe.br/dataserver_dimnt/monan_adm/MONAN/CONTAINER_DATA/monan-nvhpc25.11_X64.sif"
-    else
-        echo -e "${GREEN}==>${NC} downloading container from dataserver......\n"
-        wget -O "${DIR_SCRIPTS}/monan.sif"  "https://dataserver.cptec.inpe.br/dataserver_dimnt/monan_adm/MONAN/CONTAINER_DATA/monan.sif"
-    fi
-fi
+#if [[ "${MACHINE}" == *SIF && ! -f "${DIR_SCRIPTS}/monan.sif" ]]; then
+#    if [[ "${MACHINE}" == "pomerodeSIF" ]]; then
+#        echo -e "${GREEN}==>${NC} downloading Pomerode container from dataserver......\n"
+#        wget -O "${DIR_SCRIPTS}/monan.sif" "https://dataserver.cptec.inpe.br/dataserver_dimnt/monan_adm/MONAN/CONTAINER_DATA/monan-nvhpc25.11_X64.sif"
+#    else
+#        echo -e "${GREEN}==>${NC} downloading container from dataserver......\n"
+#        wget -O "${DIR_SCRIPTS}/monan.sif"  "https://dataserver.cptec.inpe.br/dataserver_dimnt/monan_adm/MONAN/CONTAINER_DATA/monan.sif"
+#    fi
+#fi
 
 
 
