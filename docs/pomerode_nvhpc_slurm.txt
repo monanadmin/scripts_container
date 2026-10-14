@@ -10,6 +10,8 @@ Machine configuration: pomerodeSIF
 
 This procedure describes the installation and execution of the MONAN Model using the SIF container only on the pomerode cluster environment.
 
+ATTENTION!!!!!!   This procedure was tested only 480 km and 120 km resolution. 
+
 Prerequisites
 -------------
 
