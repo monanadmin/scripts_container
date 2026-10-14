@@ -32,7 +32,7 @@ $ cd MONAN
 
 The step below is performed automatically by script 1 (1.install_monan.bash). If it does not work, you can try downloading the monan.sif file manually.
 
-$ wget https://dataserver.cptec.inpe.br/dataserver_dimnt/monan_adm/MONAN/CONTAINER_DATA/monan-nvhpc25.11_X64.sif
+$ wget https://dataserver.cptec.inpe.br/dataserver_dimnt/monan/CONTAINER_DATA/monan-nvhpc25.11_X64.sif
 
 Create a symbolic link to the SIF container:
 
@@ -88,7 +88,7 @@ sdumont2SIF
 
 Before running the pre-processing, check the dates available in the MONAN Data Server:
 
-https://dataserver.cptec.inpe.br/dataserver_dimnt/monan_adm/MONAN/CONTAINER_DATA/CIs/GFS/
+https://dataserver.cptec.inpe.br/dataserver_dimnt/monan/CONTAINER_DATA/CIs/GFS/
 
 Select a YYYYMMDDHHi date corresponding to the available GFS initial conditions.
 
