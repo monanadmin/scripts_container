@@ -16,7 +16,7 @@ This procedure describes the installation and execution of the MONAN Model using
 
 $ git clone https://github.com/monanadmin/scripts_container.git
 $ cd scripts_container/
-$ git checkout develop
+$ git checkout <tag_number>
 $ cd scripts/
 
 

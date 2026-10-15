@@ -89,7 +89,7 @@ monan.sif -> monan-mpich4.3.0_ARM64.sif
 
 $ git clone https://github.com/monanadmin/scripts_container.git
 $ cd scripts_container/
-$ git checkout develop
+$ git checkout <tag_number>
 $ cd scripts/
 
 
