@@ -27,17 +27,13 @@ $ cd MONAN
 
 2. Download and extract the MONAN container
 -------------------------------------------
-
-The step below is performed automatically by script 1 (1.install_monan.bash). If it does not work, you can try downloading the monan.sif file manually.
-
+Download the MONAN container image file: 
 $ wget https://dataserver.cptec.inpe.br/dataserver_dimnt/monan/CONTAINER_DATA/monan-mpich4.3.0_X64.sif
 
 Create a symbolic link to the SIF container:
-
 $ ln -s monan-mpich4.3.0_X64.sif monan.sif
 
 Check the files:
-
 $ ls -1
 
 Expected output:
@@ -228,7 +224,4 @@ Container type: SIF
 Machine configuration: desktopSIF
 
 The recommended initial test resolution is 2562 horizontal grid cells (480 km). RES=2562
-
-
-
 

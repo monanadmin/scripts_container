@@ -234,4 +234,3 @@ Machine configuration: pomerodeSIF
 
 The recommended initial test resolution is 2562 horizontal grid cells (480 km). RES=2562
 
-
