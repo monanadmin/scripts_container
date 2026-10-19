@@ -123,13 +123,17 @@ else
    exit -1
 fi
 
-if [ -s ${DIRRUN}/x1.${RES}.ugwp_oro_data.nc ]
+MONAN_VERSION=$(cat ${DIRHOMES}/execs/MONAN-VERSION.txt | sed "s/.$/x/")
+if [[ "${MONAN_VERSION}" == "2.0.x" ]]
 then
-   mv ${DIRRUN}/x1.${RES}.ugwp_oro_data.nc ${DATAIN}/fixed
-   chmod 755 ${DATAIN}/fixed/*
-else
-   echo -e  "${RED}==>${NC} File ${DIRRUN}/x1.${RES}.ugwp_oro_data.nc was not created. \n"
-   exit -1
+   if [ -s ${DIRRUN}/x1.${RES}.ugwp_oro_data.nc ]
+   then
+      mv ${DIRRUN}/x1.${RES}.ugwp_oro_data.nc ${DATAIN}/fixed
+      chmod 755 ${DATAIN}/fixed/*
+   else
+      echo -e  "${RED}==>${NC} File ${DIRRUN}/x1.${RES}.ugwp_oro_data.nc was not created. \n"
+      exit -1
+   fi
 fi
 
 rm -fr ${DIRRUN}
