@@ -82,37 +82,65 @@ IFS=":" read -r h m s <<< "${t_strout}"
 printf -v t_strout "%02d:%02d:%02d" "$h" "$m" "$s"
 
 # Calculating default parameters for different resolutions
-if [ $RES -eq 1024002 ]; then  #24Km
-   NLAT=721  #180/0.25
-   NLON=1441 #360/0.25
+if [ $RES -eq 2562 ]; then  #480 Km
+   NLAT=46  #180/4 + 1
+   NLON=91 #360/4 + 1
    STARTLAT=-90.0
    STARTLON=0.0
    ENDLAT=90.0
    ENDLON=360.0
-elif [ $RES -eq 2621442 ]; then  #15Km
-   NLAT=1201 #180/0.15
-   NLON=2401 #360/0.15
+elif [ $RES -eq 10242 ]; then  #240 Km
+   NLAT=91  #180/2 + 1
+   NLON=181 #360/2 + 1
    STARTLAT=-90.0
    STARTLON=0.0
    ENDLAT=90.0
    ENDLON=360.0
-elif [ $RES -eq 2562 ]; then  #480Km
-   NLAT=150 #180/1.2
-   NLON=300 #360/1.2
+elif [ $RES -eq 40962 ]; then  #120 Km
+   NLAT=181 #180/1 + 1
+   NLON=361 #360/1 + 1
    STARTLAT=-90.0
    STARTLON=0.0
    ENDLAT=90.0
    ENDLON=360.0
-elif [ $RES -eq 40962 ]; then  #120Km
-   NLAT=150 #180/1.2
-   NLON=300 #360/1.2
+elif [ $RES -eq 163842 ]; then  #60 Km
+   NLAT=361 #180/0.5 + 1
+   NLON=721 #360/0.5 + 1
    STARTLAT=-90.0
    STARTLON=0.0
    ENDLAT=90.0
    ENDLON=360.0
-elif [ $RES -eq 5898242 ]; then  #10Km
-   NLAT=1801 #180/0.10 (+1)
-   NLON=3601 #360/0.10 (+1)
+elif [ $RES -eq 655362 ]; then  #30 Km
+   NLAT=721 #180/0.25 + 1
+   NLON=1441 #360/0.25 + 1
+   STARTLAT=-90.0
+   STARTLON=0.0
+   ENDLAT=90.0
+   ENDLON=360.0
+elif [ $RES -eq 1024002 ]; then  #24 Km
+   NLAT=901 #180/0.2 + 1
+   NLON=1801 #360/0.2 + 1
+   STARTLAT=-90.0
+   STARTLON=0.0
+   ENDLAT=90.0
+   ENDLON=360.0
+elif [ $RES -eq 2621442 ]; then  #15 Km
+   NLAT=1441 #180/0.125 + 1
+   NLON=2881 #360/0.125 + 1
+   STARTLAT=-90.0
+   STARTLON=0.0
+   ENDLAT=90.0
+   ENDLON=360.0
+elif [ $RES -eq 5898242 ]; then  #10 Km
+   NLAT=2161 #180/0.0833 +1
+   NLON=4321 #360/0.0833 +1
+   STARTLAT=-90.0
+   STARTLON=0.0
+   ENDLAT=90.0
+   ENDLON=360.0
+elif [ $RES -eq 65536002 ]; then  #3 Km
+   NLAT=7201 #180/0.025 +1
+   NLON=14401 #360/0.025 +1
    STARTLAT=-90.0
    STARTLON=0.0
    ENDLAT=90.0
