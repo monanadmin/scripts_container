@@ -96,7 +96,7 @@ echo "convert_mpas branch name in use: ${tag_or_branch_name_CONVERT_MPAS}"
 # Local variables:-----------------------------------------------------
 MONANDIR=${SOURCES}/MONAN-Model_${tag_or_branch_name_MONAN}
 CONVERT_MPAS_DIR=${SOURCES}/convert_mpas_${tag_or_branch_name_CONVERT_MPAS}
-$(sed -i "s;MONANDIR=.*$;MONANDIR=$MONANDIR;" setenv.bash)
+$(sed -i "s;MONANDIR=.*$;MONANDIR=$MONANDIR;" ${STOOLS}/setenv)
 #----------------------------------------------------------------------
 
 #=====================================================================================
@@ -151,14 +151,20 @@ rm -f  $MONANDIR/make*.output.atmosphere $MONANDIR/make*.output.init_atmosphere 
 rm -fr $MONANDIR/src/core_atmosphere/inc $MONANDIR/src/core_init_atmosphere/inc
 
 
-#CR: TODO: maybe later move this make script to main scripts directory.
+#Download automatico do .SIF
+#if [[ "${MACHINE}" == *SIF && ! -f "${DIR_SCRIPTS}/monan.sif" ]]; then
+#    if [[ "${MACHINE}" == "pomerodeSIF" ]]; then
+#        echo -e "${GREEN}==>${NC} downloading Pomerode container from dataserver......\n"
+#        wget -O "${DIR_SCRIPTS}/monan.sif" "https://dataserver.cptec.inpe.br/dataserver_dimnt/monan/CONTAINER_DATA/monan-nvhpc25.11_X64.sif"
+#    elif [[ "${MACHINE}" == "desktopSIF" && ( "$(uname -m)" == "arm64" || "$(uname -m)" == "aarch64" ) ]]; then
+#        echo -e "${GREEN}==>${NC} downloading ARM64 container from dataserver......\n"
+#        wget -O "${DIR_SCRIPTS}/monan.sif" "https://dataserver.cptec.inpe.br/dataserver_dimnt/monan/CONTAINER_DATA/monan-mpich4.3.0_ARM64.sif"
+#    else
+#        echo -e "${GREEN}==>${NC} downloading container from dataserver......\n"
+#        wget -O "${DIR_SCRIPTS}/monan.sif" "https://dataserver.cptec.inpe.br/dataserver_dimnt/monan/CONTAINER_DATA/monan.sif"
+#    fi
+#fi
 
-#downloading monan.SIF 
-if [[ "${MACHINE}" == *SIF && ! -f "${DIR_SCRIPTS}/monan.sif" ]]; then
-    echo -e "${GREEN}==>${NC} downloading container monan.sif from dataserver......\n"
-    wget -O "${DIR_SCRIPTS}/monan.sif" https://dataserver.cptec.inpe.br/dataserver_dimnt/monan_adm/MONAN/CONTAINER_DATA/monan.sif
-    
-fi
 
 
 echo ""

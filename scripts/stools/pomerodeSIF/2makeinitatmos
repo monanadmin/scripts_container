@@ -1,0 +1,41 @@
+#!/bin/bash
+
+cat << EOF0 > ${DIRRUN}/initatmos.bash 
+#!/bin/bash
+#SBATCH --job-name=${INITATMOS_jobname}
+#SBATCH --partition=${INITATMOS_QUEUE} 
+#SBATCH --nodes=${INITATMOS_nnodes}                         # depends on how many boundary files are available
+#SBATCH --ntasks=${INITATMOS_ncores}
+#SBATCH --tasks-per-node=${INITATMOS_ncores}               # only for benchmark
+##SBATCH --gres=${INITATMOS_gres}
+#SBATCH --time=${STATIC_walltime}
+#SBATCH --output=${DATAOUT}/${YYYYMMDDHHi}/Pre/logs/initatmos.bash.o%j    # File name for standard output
+#SBATCH --error=${DATAOUT}/${YYYYMMDDHHi}/Pre/logs/initatmos.bash.e%j     # File name for standard error output
+#SBATCH --mem=256G
+
+export executable=init_atmosphere_model
+
+ulimit -c unlimited
+ulimit -v unlimited
+ulimit -s unlimited
+
+
+. ${SCRIPTS}/setenv.bash
+
+cd ${DIRRUN}
+
+
+
+date
+singularity --quiet exec --bind ${SCRIPTS}/.. ${SINGULARITY} bash -c '
+   mpirun -np ${INITATMOS_ncores} ./\${executable}
+'
+date
+
+
+mv ${DIRRUN}/log.init_atmosphere.0000.out ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs/log.init_atmosphere.0000.x1.${RES}.init.nc.${YYYYMMDDHHi}.out
+mv ${DIRRUN}/namelist.init_atmosphere ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs
+mv ${DIRRUN}/streams.init_atmosphere ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs
+mv ${DIRRUN}/x1.${RES}.init.nc ${DATAOUT}/${YYYYMMDDHHi}/Pre
+
+EOF0

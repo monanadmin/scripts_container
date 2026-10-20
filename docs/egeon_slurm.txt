@@ -11,13 +11,41 @@ Machine configuration: egeonSIF
 This procedure describes the installation and execution of the MONAN Model using the SIF container on egeon environment.
 
 
-1. Clone the scripts_container repository
+
+1. Create the MONAN working directory
+-------------------------------------
+
+$ mkdir MONAN
+$ cd MONAN
+
+
+
+2. Download and extract the MONAN container
+-------------------------------------------
+Download the MONAN container image file:
+$ wget https://dataserver.cptec.inpe.br/dataserver_dimnt/monan/CONTAINER_DATA/monan-mpich4.3.0_X64.sif
+
+Create a symbolic link to the SIF container:
+$ ln -s monan-mpich4.3.0_X64.sif monan.sif
+
+Check the files:
+$ ls -1
+
+Expected output:
+
+monan-mpich4.3.0_X64.sif
+monan.sif -> monan-mpich4.3.0_X64.sif
+
+
+
+3. Clone the scripts_container repository
 ------------------------------------------
 
 $ git clone https://github.com/monanadmin/scripts_container.git
 $ cd scripts_container/
-$ git checkout develop
+$ git checkout <tag_number>
 $ cd scripts/
+
 
 
 4. Configure the execution environment
@@ -32,7 +60,8 @@ For egeon using the SIF container, the expected configuration is:
 export MACHINE="egeonSIF"
 
 
-6. Recommended test configuration
+
+5. Recommended test configuration
 ---------------------------------
 
 A recommended initial test uses 2562 horizontal grid cells (480 km).
@@ -59,7 +88,8 @@ YYYYMMDDHHi=2025061000
 FCST=12
 
 
-7. Adjusting the CPU Core Configuration
+
+6. Adjusting the CPU Core Configuration
 ---------------------------------
 
 The number of CPU cores used by each MONAN phase can be configured in:
@@ -69,7 +99,8 @@ scripts_container/scripts/stools/egeonSIF/setenv
 Before running the experiment, you can adjust the number of CPU cores according to the available resources on egeon.
 
 
-8. Run all steps automatically
+
+7. Run all steps automatically
 ------------------------------
 
 The complete workflow can also be executed using the 0.run_all.bash script.
@@ -102,7 +133,9 @@ Then execute:
 
 $ ./0.run_all.bash
 
-9. Run the steps individually
+
+
+8. Run the steps individually
 -----------------------------
 
 The MONAN workflow can be executed step by step.
@@ -128,7 +161,8 @@ Step 4 - Execute the post-processing phase:
 $ ./4.run_post.bash GFS 2562 2025061000 12
 
 
-10. Homologation
+
+9. Homologation
 ----------------
 
 This procedure was successfully homologated on:
@@ -136,3 +170,4 @@ This procedure was successfully homologated on:
 Operating system: Red Hat Enterprise Linux 8.5 (Ootpa)
 Container type: SIF
 Machine configuration: egeonSIF
+

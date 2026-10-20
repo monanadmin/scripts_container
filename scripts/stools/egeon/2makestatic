@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cat << EOF0 > ${DIRRUN}/static.bash
-#!/bin/bash -x
+#!/bin/bash
 #SBATCH --job-name=${STATIC_jobname}
 #SBATCH --nodes=${STATIC_nnodes}
 #SBATCH --ntasks=${STATIC_ncores}

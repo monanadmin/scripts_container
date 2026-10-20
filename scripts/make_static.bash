@@ -101,6 +101,9 @@ sed -e "s,#RES#,${RES},g" \
 cp -f ${SCRIPTS}/setenv.bash ${DIRRUN}
 mkdir -p ${DATAOUT}/logs
 rm -f ${DIRRUN}/static.bash 
+rm -fr ${DATAIN}/fixed/x1.${RES}.static.nc
+rm -fr ${DATAIN}/fixed/x1.${RES}.ugwp_oro_data.nc
+
 source ${STOOLS}/2makestatic
 chmod a+x ${DIRRUN}/static.bash
 
@@ -114,9 +117,23 @@ mv ${DIRRUN}/static.bash ${DATAOUT}/logs/
 if [ -s ${DIRRUN}/x1.${RES}.static.nc ]
 then
    mv ${DIRRUN}/x1.${RES}.static.nc ${DATAIN}/fixed
+   chmod 755 ${DATAIN}/fixed/*
 else
    echo -e  "${RED}==>${NC} File ${DIRRUN}/x1.${RES}.static.nc was not created. \n"
    exit -1
+fi
+
+MONAN_VERSION=$(cat ${DIRHOMES}/execs/MONAN-VERSION.txt | sed "s/.$/x/")
+if [[ "${MONAN_VERSION}" == "2.0.x" ]]
+then
+   if [ -s ${DIRRUN}/x1.${RES}.ugwp_oro_data.nc ]
+   then
+      mv ${DIRRUN}/x1.${RES}.ugwp_oro_data.nc ${DATAIN}/fixed
+      chmod 755 ${DATAIN}/fixed/*
+   else
+      echo -e  "${RED}==>${NC} File ${DIRRUN}/x1.${RES}.ugwp_oro_data.nc was not created. \n"
+      exit -1
+   fi
 fi
 
 rm -fr ${DIRRUN}

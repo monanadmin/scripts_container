@@ -1,19 +1,22 @@
-MONAN Container Execution Procedure
+​​MONAN Container Execution Procedure
 ===================================
 
 Environment
 -----------
 
-Operating system: Ubuntu 22.04 Desktop
+Operating system: pomerode cluster X86-64
 Container runtime: Apptainer/Singularity
-Machine configuration: desktopSIF
+Machine configuration: pomerodeSIF
 
-This procedure describes the installation and execution of the MONAN Model using the SIF container only on an Ubuntu 22.04 desktop environment.
+This procedure describes the installation and execution of the MONAN Model using the SIF container only on the pomerode cluster environment.
+
+ATTENTION!!!!!!   This procedure was tested only 480 km and 120 km resolution. 
 
 Prerequisites
 -------------
 
-Apptainer or Singularity must be installed on the desktop or notebook before starting this procedure.
+Access to the Pomerode cluster facility.
+
 
 
 1. Create the MONAN working directory
@@ -23,17 +26,17 @@ $ mkdir MONAN
 $ cd MONAN
 
 
+
 2. Download and extract the MONAN container
 -------------------------------------------
 
 The step below is performed automatically by script 1 (1.install_monan.bash). If it does not work, you can try downloading the monan.sif file manually.
 
-$ wget https://dataserver.cptec.inpe.br/dataserver_dimnt/monan/MONAN-Model/monan-x64.sif.tar.gz
-$ tar -xzvf monan-x64.sif.tar.gz
+$ wget https://dataserver.cptec.inpe.br/dataserver_dimnt/monan/CONTAINER_DATA/monan-nvhpc25.11_X64.sif
 
 Create a symbolic link to the SIF container:
 
-$ ln -s monan-x64.sif monan.sif
+$ ln -s monan-nvhpc25.11_X64.sif monan.sif
 
 Check the files:
 
@@ -41,17 +44,19 @@ $ ls -1
 
 Expected output:
 
-monan-x64.sif
-monan-x64.sif.tar.gz
-monan.sif -> monan-x64.sif
+monan-nvhpc25.11_X64.sif
+monan.sif -> monan-nvhpc25.11_X64.sif
+
+
 
 3. Clone the scripts_container repository
-------------------------------------------
+-----------------------------------------
 
 $ git clone https://github.com/monanadmin/scripts_container.git
 $ cd scripts_container/
-$ git checkout develop
+$ git checkout <tag_number>
 $ cd scripts/
+
 
 
 4. Configure the execution environment
@@ -63,7 +68,7 @@ $ grep "MACHINE=" setenv.bash
 
 For an Ubuntu 22.04 desktop using the SIF container, the expected configuration is:
 
-export MACHINE="desktopSIF"
+export MACHINE="pomerodeSIF"
 
 The available MACHINE options are:
 
@@ -71,9 +76,11 @@ egeon
 egeonSIF
 jaci
 jaciSIF
+pomerodeSIF
 desktopSIF
 sdumontSIF
 sdumont2SIF
+
 
 
 5. Check the available initial dates
@@ -81,9 +88,10 @@ sdumont2SIF
 
 Before running the pre-processing, check the dates available in the MONAN Data Server:
 
-https://dataserver.cptec.inpe.br/dataserver_dimnt/monan/MONAN-Model/monan_datain/CIs/GFS/
+https://dataserver.cptec.inpe.br/dataserver_dimnt/monan/CONTAINER_DATA/CIs/GFS/
 
 Select a YYYYMMDDHHi date corresponding to the available GFS initial conditions.
+
 
 
 6. Recommended test configuration
@@ -107,7 +115,7 @@ Other examples of resolution options are:
 Initial configuration of scripts_container/scripts/0.run_all.bash:
 
 github_link="https://github.com/monanadmin/MONAN-Model.git"
-monan_branch=1.4.4
+monan_branch=develop
 convertmpas_branch=1.2.0
 EXP=GFS
 RES=2562
@@ -117,8 +125,9 @@ FCST=12
 The date above is only an example. Always check the Data Server for available initial conditions before running the experiment.
 
 
+
 7. Adjusting the CPU Core Configuration
----------------------------------
+----------------------------------------
 
 The number of CPU cores used by each MONAN phase can be configured in:
 
@@ -128,32 +137,35 @@ Before running the experiment, adjust the number of CPU cores according to the a
 
 The main variables are:
 
-export STATIC_ncores=4
+export STATIC_ncores=64
 export DEGRIB_ncores=1
-export INITATMOS_ncores=8
+export INITATMOS_ncores=64
+export MODEL_gres="gpu:1"
 export MODEL_ncores=8
-export POST_ncores=8
+export POST_ncores=32
 
 For example, the following configuration uses:
 
-STATIC: 4 CPU cores
+STATIC: 64 CPU cores
 DEGRIB: 1 CPU core
-INITATMOS: 8 CPU cores
+INITATMOS: 64 CPU cores
+MODEL_gres: 1 GPU A100
 MODEL: 8 CPU cores
-POST: 8 CPU cores
+POST: 32 CPU cores
 
 For a desktop or notebook with fewer CPU cores, these values should be reduced accordingly. The total number of CPU cores requested by a phase must be compatible with the available CPU resources.
 
 
+
 8. Run all steps automatically
-------------------------------
+-------------------------------
 
 The complete workflow can also be executed using the 0.run_all.bash script.
 
 Configure the input variables at the beginning of the script:
 
 github_link="https://github.com/monanadmin/MONAN-Model.git"
-monan_branch=1.4.4
+monan_branch=develop
 convertmpas_branch=1.2.0
 EXP=GFS
 RES=2562
@@ -183,8 +195,9 @@ For initial homologation tests on a desktop or notebook, it is recommended to fi
 After the individual steps have been successfully validated, 0.run_all.bash can be used to execute the complete workflow.
 
 
+
 9. Run the steps individually
------------------------------
+------------------------------
 
 The MONAN workflow can be executed step by step.
 
@@ -209,17 +222,15 @@ Step 4 - Execute the post-processing phase:
 $ ./4.run_post.bash GFS 2562 2025061000 12
 
 
+
 10. Homologation
 ----------------
 
 This procedure was successfully homologated only on:
 
-Operating system: Ubuntu 22.04 Desktop
+Operating system: pomerode cluster X86-64
 Container type: SIF
-Machine configuration: desktopSIF
+Machine configuration: pomerodeSIF
 
 The recommended initial test resolution is 2562 horizontal grid cells (480 km). RES=2562
-
-
-
 

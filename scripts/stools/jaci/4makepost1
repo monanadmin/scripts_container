@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cat > ${DIRRUN}/PostAtmos_node.${node}.sh <<EOSH
-#!/bin/bash -x
+#!/bin/bash
 #PBS -N MO.Pos${node}
 #PBS -q ${POST_QUEUE}
 #PBS -l select=1:ncpus=1:mpiprocs=1

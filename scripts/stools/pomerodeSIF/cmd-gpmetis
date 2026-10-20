@@ -1,0 +1,5 @@
+#!/bin/bash
+
+singularity --quiet exec --bind ${SCRIPTS}/.. ${SINGULARITY} bash -c "
+    gpmetis -minconn -contig -niter=200 x1.${RES}.graph.info ${cores}
+"

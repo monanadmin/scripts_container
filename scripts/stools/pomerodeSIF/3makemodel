@@ -1,0 +1,68 @@
+#!/bin/bash
+
+cat << 'EOF_WRAP' > ${DIRRUN}/wrapper_openacc.sh
+#!/bin/bash
+
+export NUM_GPUS=0
+if [ -n "$CUDA_VISIBLE_DEVICES" ]; then
+    IFS="," read -ra GPUS <<< "$CUDA_VISIBLE_DEVICES"
+    NUM_GPUS=${#GPUS[@]}
+    if [ "$NUM_GPUS" -gt 0 ]; then
+        export ACC_DEVICE_NUM=$(( OMPI_COMM_WORLD_LOCAL_RANK % NUM_GPUS ))
+        export ACC_DEVICE_TYPE=nvidia
+    fi
+fi
+./${executable}
+
+EOF_WRAP
+
+
+cat << EOF0 > ${DIRRUN}/model.bash
+#!/bin/bash
+#SBATCH --job-name=${MODEL_jobname}
+#SBATCH --partition=${MODEL_QUEUE}
+#SBATCH --nodes=${MODEL_nnodes}
+#SBATCH --ntasks=${MODEL_ncores}
+#SBATCH --tasks-per-node=${MODEL_ncpn}
+#SBATCH --gres=${MODEL_gres}
+#SBATCH --time=${MODEL_walltime}
+#SBATCH --output=${DATAOUT}/${YYYYMMDDHHi}/Model/logs/model.bash.o%j    # File name for standard output
+#SBATCH --error=${DATAOUT}/${YYYYMMDDHHi}/Model/logs/model.bash.e%j     # File name for standard error output
+#SBATCH --mem=64G
+
+
+export SINGULARITYENV_CUDA_DEVICE_ORDER=PCI_BUS_ID
+export SINGULARITYENV_PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
+
+ulimit -c unlimited
+ulimit -v unlimited
+ulimit -s unlimited
+
+. ${SCRIPTS}/setenv.bash
+
+chmod -R 755 ${DIRRUN}
+cd ${DIRRUN}
+
+date
+singularity --quiet exec --nv --bind ${SCRIPTS}/.. ${SINGULARITY} bash -c '
+   export executable=atmosphere_model 
+   mpirun -np ${MODEL_ncores} ./wrapper_openacc.sh
+'
+date
+
+#
+# move dataout, clean up and remove files/links
+#
+
+mv MONAN_DIAG_* ${DATAOUT}/${YYYYMMDDHHi}/Model
+cp -f ${EXECS}/MONAN-VERSION.txt ${DATAOUT}/${YYYYMMDDHHi}/Model
+cp -f ${EXECS}/MONAN-VERSION.txt ${DATAOUT}/${YYYYMMDDHHi}/Model/logs/
+cp -f ${DIRHOMES}/VERSION.txt ${DATAOUT}/${YYYYMMDDHHi}/Model/logs/SCRIPTSCDCT-VERSION.txt
+cp -f ${MONANDIR}/README.md ${DATAOUT}/${YYYYMMDDHHi}/Model/logs/
+
+mv log.atmosphere.* ${DATAOUT}/${YYYYMMDDHHi}/Model/logs
+mv namelist.atmosphere ${DATAOUT}/${YYYYMMDDHHi}/Model/logs
+mv stream* ${DATAOUT}/${YYYYMMDDHHi}/Model/logs
+
+
+EOF0
