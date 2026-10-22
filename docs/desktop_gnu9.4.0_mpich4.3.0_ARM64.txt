@@ -53,6 +53,8 @@ $ limactl edit apptainer
 mounts: 
   - location: "~/MONAN"	
     writable: true
+ssh:
+  forwardX11: true
 $ limactl start apptainer
 $ limactl shell apptainer
 paiva@lima-apptainer:/Users/paiva$ uname -m
