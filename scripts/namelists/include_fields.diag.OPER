@@ -9,6 +9,7 @@ relhum_isobaric relhum
 uzonal_isobaric uzonal
 umeridional_isobaric umeridional
 w_isobaric w
+omega_isobaric omega
 surface_pressure surface_pressure
 mslp mslp
 precipw precipw
@@ -16,9 +17,16 @@ rainnc rainnc
 rainc rainc
 cape cape
 cin cin
-acswdnb acswdnb
 aclwupb aclwupb
 aclwupt aclwupt
+aclwuptc aclwuptc
+aclwdnb aclwdnb
+aclwdnbc aclwdnbc
+acswdnb acswdnb
+acswdnbc acswdnbc
+acswdnt acswdnt
+acswupt acswupt
+acswuptc acswuptc
 u10 u10
 v10 v10
 q2 q2
@@ -28,4 +36,3 @@ lh lh
 cldfrac_tot_UPP cldfrac_tot_UPP
 ter ter
 landmask landmask
-omega_isobaric omega

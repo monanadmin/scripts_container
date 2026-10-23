@@ -8,6 +8,7 @@ spechum_isobaric
 relhum_isobaric
 uzonal_isobaric
 umeridional_isobaric
+omega_isobaric
 w_isobaric
 surface_pressure
 mslp
@@ -16,9 +17,16 @@ rainnc
 rainc
 cape
 cin
-acswdnb
 aclwupb
 aclwupt
+aclwuptc
+aclwdnb
+aclwdnbc
+acswdnb
+acswdnbc
+acswdnt
+acswupt
+acswuptc
 u10
 v10
 q2
@@ -28,4 +36,3 @@ lh
 cldfrac_tot_UPP
 ter
 landmask
-omega_isobaric

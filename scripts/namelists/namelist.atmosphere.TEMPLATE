@@ -58,11 +58,11 @@
     config_sst_update = false
     config_sstdiurn_update = false
     config_deepsoiltemp_update = false
-    config_radtlw_interval = '00:30:00'
-    config_radtsw_interval = '00:30:00'
+    config_radtlw_interval = '#CONFIG_RAD_INTERVAL#'
+    config_radtsw_interval = '#CONFIG_RAD_INTERVAL#'
     config_conv_interval = '#CONFIG_CONV_INTERVAL#'
     config_bucket_update = 'none'
-    config_physics_suite = 'convection_permitting_monan'     
+    config_physics_suite = 'mesoscale_reference_monan'
     config_mynn_edmf = 0
 /
 &gf_monan
