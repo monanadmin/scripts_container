@@ -68,7 +68,8 @@ start_date=${YYYYMMDDHHi:0:4}-${YYYYMMDDHHi:4:2}-${YYYYMMDDHHi:6:2}_${YYYYMMDDHH
 cores=${MODEL_ncores}
 hhi=${YYYYMMDDHHi:8:2}
 NLEV=55
-CONFIG_CONV_INTERVAL="00:30:00"
+CONFIG_CONV_INTERVAL="00:15:00"
+CONFIG_RAD_INTERVAL="00:30:00"
 VARTABLE=".OPER"
 export DIRRUN=${DIRHOMED}/run.${YYYYMMDDHHi}; rm -fr ${DIRRUN}; mkdir -p ${DIRRUN}
 #------------------------------------------------------------------------------------
@@ -86,17 +87,33 @@ printf -v t_strout "%02d:%02d:%02d" "$h" "$m" "$s"
 
 # Calculating default parameters for different resolutions
 if [ $RES -eq 1024002 ]; then  #24Km
-   CONFIG_DT=150.0
+   CONFIG_DT=150
    CONFIG_CONV_INTERVAL="00:15:00"
+   CONFIG_RAD_INTERVAL="00:30:00"
 elif [ $RES -eq 2621442 ]; then  #15Km
-   CONFIG_DT=90.0
+   CONFIG_DT=90
    CONFIG_CONV_INTERVAL="00:15:00"
+   CONFIG_RAD_INTERVAL="00:30:00"
 elif [ $RES -eq 40962 ]; then  #120Km
-   CONFIG_DT=600.0
-elif [ $RES -eq 5898242 ]; then  #10Km
-   CONFIG_DT=60.0
-   CONFIG_LEN_DISP=10000.0
+   CONFIG_DT=600
+   CONFIG_CONV_INTERVAL="00:20:00"   
+   CONFIG_RAD_INTERVAL="00:30:00"
+elif [ $RES -eq 10242 ]; then  #240Km
+   CONFIG_DT=1200
+   CONFIG_CONV_INTERVAL="00:20:00"
+   CONFIG_RAD_INTERVAL="00:20:00"
+elif [ $RES -eq 2562 ]; then  #480Km
+   CONFIG_DT=1800
+   CONFIG_CONV_INTERVAL="00:30:00"
+   CONFIG_RAD_INTERVAL="00:30:00"
+elif [ $RES -eq 163842 ]; then  #60Km
+   CONFIG_DT=300
    CONFIG_CONV_INTERVAL="00:15:00"
+   CONFIG_RAD_INTERVAL="00:30:00"
+elif [ $RES -eq 5898242 ]; then  #10Km
+   CONFIG_DT=60
+   CONFIG_CONV_INTERVAL="00:15:00"
+   CONFIG_RAD_INTERVAL="00:30:00"
 fi
 #-------------------------------------------------------
 
