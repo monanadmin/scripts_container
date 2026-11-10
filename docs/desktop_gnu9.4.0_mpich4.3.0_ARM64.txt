@@ -25,13 +25,23 @@ $ cd MONAN
 
 
 
-2. Rosetta install
+2. XQuartz install
+------------------
+Download the latest XQuartz .pkg installer for MacOS from https://www.xquartz.org/
+Double-click the downloaded .pkg file.
+Follow the installation instructions and click Continue and Install.
+Enter your MacOS password if requested.
+Log out and log back in to MacOS to complete the installation.
+
+
+
+3. Rosetta install
 ------------------
 $ softwareupdate --install-rosetta --agree-to-license      # Apple Silicon (M1-M4) only
 
 
 
-3. Homebrew install
+4. Homebrew install
 -------------------
 $ /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 $ echo >> /Users/paiva/.zprofile
@@ -43,7 +53,7 @@ Homebrew 6.0.17
 
 
 
-4. Lima install
+5. Lima install
 ---------------
 $ brew install lima
 $ limactl --version
@@ -51,7 +61,7 @@ limactl version 2.2.0
 
 
 
-5. Create an apptainer VM
+6. Create an apptainer VM
 -------------------------
 $ limactl start template://apptainer --cpus 4 --memory 8
 $ limactl stop apptainer
@@ -84,7 +94,7 @@ $ source ~/.bashrc
 
 
 
-6. Download and extract the MONAN container
+7. Download and extract the MONAN container
 -------------------------------------------
 Download the MONAN container image file:
 $ wget https://dataserver.cptec.inpe.br/dataserver_dimnt/monan/CONTAINER_DATA/monan-mpich4.3.0_ARM64.sif
@@ -102,7 +112,7 @@ monan.sif -> monan-mpich4.3.0_ARM64.sif
 
 
 
-7. Clone the scripts_container repository
+8. Clone the scripts_container repository
 -----------------------------------------
 
 $ git clone https://github.com/monanadmin/scripts_container.git
@@ -112,7 +122,7 @@ $ cd scripts/
 
 
 
-8. Configure the execution environment
+9. Configure the execution environment
 --------------------------------------
 
 Check the MACHINE configuration in setenv.bash:
@@ -135,7 +145,7 @@ sdumont2SIF
 
 
 
-9. Check the available initial dates
+10. Check the available initial dates
 ------------------------------------
 
 Before running the pre-processing, check the dates available in the MONAN Data Server:
@@ -146,7 +156,7 @@ Select a YYYYMMDDHHi date corresponding to the available GFS initial conditions.
 
 
 
-10. Recommended test configuration
+11. Recommended test configuration
 ---------------------------------
 
 When running MONAN on a desktop or notebook, it is recommended to start with a low horizontal resolution because the available CPU cores and RAM may be limited.
@@ -178,7 +188,7 @@ The date above is only an example. Always check the Data Server for available in
 
 
 
-11. Adjusting the CPU Core Configuration
+12. Adjusting the CPU Core Configuration
 ----------------------------------------
 
 The number of CPU cores used by each MONAN phase can be configured in:
@@ -207,7 +217,7 @@ For a desktop or notebook with fewer CPU cores, these values should be reduced a
 
 
 
-12. Run all steps automatically
+13. Run all steps automatically
 -------------------------------
 
 The complete workflow can also be executed using the 0.run_all.bash script.
@@ -246,7 +256,7 @@ After the individual steps have been successfully validated, 0.run_all.bash can 
 
 
 
-13. Run the steps individually
+14. Run the steps individually
 ------------------------------
 
 The MONAN workflow can be executed step by step.
@@ -273,7 +283,25 @@ $ ./4.run_post.bash GFS 2562 2025061000 12
 
 
 
-14. Homologation
+15. MONAN Output Visualization
+------------------------------
+$ cd ../../
+$ ls -1
+monan-mpich4.3.0_ARM64.sif
+monan.sif -> monan-mpich4.3.0_ARM64.sif
+scripts_container
+
+$ singularity shell monan.sif
+Apptainer> ncview scripts_container/dataout/2025061000/Post/MONAN_DIAG_G_POS_GFS_2025061000_2025061000.00.00.x2562L18.nc
+Apptainer> grads -l
+ga-> open scripts_container/dataout/2025061000/Post/MONAN_DIAG_G_POS_GFS_2025061000_2025061000.00.00.x2562L18.nc.template.ctl
+ga-> set gxout shaded
+ga-> d t2m
+ga-> quit
+
+
+
+16. Homologation
 ----------------
 
 This procedure was successfully homologated only on:
