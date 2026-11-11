@@ -151,6 +151,7 @@ if [ ! -d ${SCRIPTS}/namelists/${MONANVERSION} ]; then
 else
     echo -e "${GREEN}==>${NC} Compatibility OK.\n"
 fi
+# ------------------------------------------------------------------------------------------------
 
 
 # --- Copy namelists compatible version-----------------------------------------------------------
@@ -184,49 +185,7 @@ else
   echo -e "MONAN-Model version changed; copied all namelist files and preserved user-modified files, if any, in the 'user' backup folder.\n"
     fi
 fi
-
-
-#=====================================================================================
-#
-# ATTENTION, please:
-# 
-# scripts_container versions up to 1.1.0 run MONAN-Model versions up to 1.3.0
-#
-# scripts_container versions 1.2.0 onwards run MONAN-Model versions 1.3.1 onwards
-#
-#=====================================================================================
-
-# Just making sure you will install the correct MONAN-model version,
-#  for this version of scripts-CD-CT version:
-
-#echo ""
-#echo "********************************************************************************"
-#echo "*"
-#echo "* ATTENTION, please:"
-#echo "*"
-#echo "* scripts_container versions up to 1.1.0 run MONAN-Model only versions up to 1.3.0"
-#echo "*"
-#echo "* scripts_container versions 1.2.0 onwards run MONAN-Model only versions 1.3.1 onwards"
-#echo "*"
-#echo "********************************************************************************"
-
-#echo ""
-#echo -e "${GREEN}==>${NC} tag_or_branch_name_MONAN = ${tag_or_branch_name_MONAN}"
-#echo ""
-#read -p "Are you sure you are installing the right versions scripts x MONAN-Model ? [Y/n]" confirma
-#confirma=${confirma:-Y}
-
-#if [[ "${confirma}" =~ ^[Yy]$ ]]
-#then
-#   echo ""
-#   echo -e "${GREEN}==>${NC} OK, so keep going."
-#   echo ""
-#else
-#   echo ""
-#   echo -e "    ${RED}==>${NC} Please, make the right versions and try again."
-#   exit
-#   echo ""
-#fi
+# ------------------------------------------------------------------------------------------------
 
 
 checkout_system ${MONANDIR} ${github_link_MONAN} ${tag_or_branch_name_MONAN}
