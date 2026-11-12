@@ -139,6 +139,7 @@ egeon
 egeonSIF
 jaci
 jaciSIF
+pomerodeSIF
 desktopSIF
 sdumontSIF
 sdumont2SIF
@@ -286,13 +287,16 @@ $ ./4.run_post.bash GFS 2562 2025061000 12
 15. MONAN Output Visualization
 ------------------------------
 $ cd ../../
+
+Check the files:
 $ ls -1
+
+Expected output:
 monan-mpich4.3.0_ARM64.sif
 monan.sif -> monan-mpich4.3.0_ARM64.sif
 scripts_container
 
 $ singularity shell monan.sif
-Apptainer> ncview scripts_container/dataout/2025061000/Post/MONAN_DIAG_G_POS_GFS_2025061000_2025061000.00.00.x2562L18.nc
 Apptainer> grads -l
 ga-> open scripts_container/dataout/2025061000/Post/MONAN_DIAG_G_POS_GFS_2025061000_2025061000.00.00.x2562L18.nc.template.ctl
 ga-> set gxout shaded
