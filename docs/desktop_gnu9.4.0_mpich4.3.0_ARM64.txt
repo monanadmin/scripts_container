@@ -67,11 +67,14 @@ $ limactl start template://apptainer --cpus 4 --memory 8
 $ limactl stop apptainer
 $ limactl edit apptainer
 ...
-mounts: 
+mounts:
+  - location: "~"
+    writable: true
   - location: "~/MONAN"	
     writable: true
 ssh:
   forwardX11: true
+  forwardX11Trusted: true
 vmType: "vz"
 rosetta:
   enabled: true
