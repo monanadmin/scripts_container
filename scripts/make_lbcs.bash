@@ -1,5 +1,8 @@
 #!/bin/bash 
+umask 022
 
+# Usage instructions: -------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
 if [ $# -ne 4 ]
 then
    echo ""
@@ -17,8 +20,11 @@ then
    echo ""
    exit
 fi
+#----------------------------------------------------------------------------------------------------
 
-# Set environment variables exports:
+
+# Load the MONAN environment configuration: ---------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
 echo ""
 echo -e "\033[1;32m==>\033[0m Moduling environment for MONAN model...\n"
 . setenv.bash
@@ -26,9 +32,11 @@ echo -e "\033[1;32m==>\033[0m Moduling environment for MONAN model...\n"
 echo ""
 echo "---- Make LBCs ----"
 echo ""
+#----------------------------------------------------------------------------------------------------
 
 
-# Standart directories variables:---------------------------------------
+# Standart directories variables: -------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
 DIRHOMES=${DIR_SCRIPTS}/scripts_CD-CT; mkdir -p ${DIRHOMES}  
 DIRHOMED=${DIR_DADOS}/scripts_CD-CT;   mkdir -p ${DIRHOMED}  
 SCRIPTS=${DIRHOMES}/scripts;           mkdir -p ${SCRIPTS}
@@ -36,17 +44,20 @@ DATAIN=${DIRHOMED}/datain;             mkdir -p ${DATAIN}
 DATAOUT=${DIRHOMED}/dataout;           mkdir -p ${DATAOUT}
 SOURCES=${DIRHOMES}/sources;           mkdir -p ${SOURCES}
 EXECS=${DIRHOMED}/execs;               mkdir -p ${EXECS}
-#----------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
 
 
-# Input variables:--------------------------------------
+# Input variables: ----------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
 EXP=${1};         #EXP=GFS
 RES=${2};         #RES=1024002
 YYYYMMDDHHi=${3}; #YYYYMMDDHHi=2024012000
 FCST=${4};        #FCST=24
-#-------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
 
-# Local variables--------------------------------------
+
+# Local variables: ----------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
 start_date=${YYYYMMDDHHi:0:4}-${YYYYMMDDHHi:4:2}-${YYYYMMDDHHi:6:2}_${YYYYMMDDHHi:8:2}:00:00
 yyyymmddi=${YYYYMMDDHHi:0:8}
 hhi=${YYYYMMDDHHi:8:2}
@@ -55,7 +66,9 @@ final_date=${yyyymmddhhf:0:4}-${yyyymmddhhf:4:2}-${yyyymmddhhf:6:2}_${yyyymmddhh
 GEODATA=${DATAIN}/WPS_GEOG
 cores=${LBCS_ncores}
 export DIRRUN=${DIRHOMED}/run.${YYYYMMDDHHi}; rm -fr ${DIRRUN}; mkdir -p ${DIRRUN}
-#-------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
+
+
 mkdir -p ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs
 
 if [ ! -s ${DATAIN}/fixed/x1.${RES}.graph.info.part.${cores} ]
