@@ -16,11 +16,15 @@
 #
 #-----------------------------------------------------------------------------#
 
-#Fixed parameters ------------------------------------------------------------#
-github_link_CONVERT_MPAS="https://github.com/monanadmin/convert_mpas.git"
-#-----------------------------------------------------------------------------#
 
-#Functions -------------------------------------------------------------------#
+# Fixed parameters: ---------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
+github_link_CONVERT_MPAS="https://github.com/monanadmin/convert_mpas.git"
+#----------------------------------------------------------------------------------------------------
+
+
+# Functions: ----------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
 function checkout_system() {
   local source_dir=$1
   local github_link=$2
@@ -56,10 +60,11 @@ get_github_file() {
     repo="${repo#https://github.com/}"
     curl -fsSL "https://raw.githubusercontent.com/${repo}/${branch}/${file}"
 }
+#----------------------------------------------------------------------------------------------------
 
-#-----------------------------------------------------------------------------#
 
-
+# Usage instructions: -------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
 if [ $# -lt 1 ]
 then
    echo ""
@@ -73,14 +78,19 @@ then
    echo ""
    exit
 fi
+#----------------------------------------------------------------------------------------------------
 
 
-# Set environment variables exports:
+# Load the MONAN environment configuration: ---------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
 echo ""
 echo -e "\033[1;32m==>\033[0m Moduling environment for MONAN model...\n"
 . setenv.bash
+#----------------------------------------------------------------------------------------------------
 
-# Standart directories variables:---------------------------------------
+
+# Standart directories variables: -------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
 DIRHOMES=${DIR_SCRIPTS}/scripts_container;  mkdir -p ${DIRHOMES}  
 DIRHOMED=${DIR_DADOS}/scripts_container;    mkdir -p ${DIRHOMED}  
 SCRIPTS=${DIRHOMES}/scripts;            mkdir -p ${SCRIPTS}
@@ -88,10 +98,11 @@ DATAIN=${DIRHOMED}/datain;              mkdir -p ${DATAIN}
 DATAOUT=${DIRHOMED}/dataout;            mkdir -p ${DATAOUT}
 SOURCES=${DIRHOMES}/sources;            mkdir -p ${SOURCES}
 EXECS=${DIRHOMED}/execs;                mkdir -p ${EXECS}
-#----------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
 
 
-# Input variables:-----------------------------------------------------
+# Input variables: ----------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
 github_link_MONAN=${1};   #github_link=https://github.com/monanadmin/MONAN-Model.git
 tag_or_branch_name_MONAN=${2}
 tag_or_branch_name_MONAN=${tag_or_branch_name_MONAN:="release/1.3.1-rc"}
@@ -100,19 +111,21 @@ echo "MONAN branch name in use: ${tag_or_branch_name_MONAN}"
 tag_or_branch_name_CONVERT_MPAS=${3}
 tag_or_branch_name_CONVERT_MPAS=${tag_or_branch_name_CONVERT_MPAS:="1.1.0"}
 echo "convert_mpas branch name in use: ${tag_or_branch_name_CONVERT_MPAS}"
-#----------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
 
 
-# Local variables:-----------------------------------------------------
+# Local variables: ----------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
 MONANDIR=${SOURCES}/MONAN-Model_${tag_or_branch_name_MONAN}
 CONVERT_MPAS_DIR=${SOURCES}/convert_mpas_${tag_or_branch_name_CONVERT_MPAS}
 DATE_TIME_NOW=$(date +"%Y%m%d%H%M%S")
 CDCTVERSION=$(head -n 1 ${DIRHOMES}/VERSION.txt | xargs)
 $(sed -i "s;MONANDIR=.*$;MONANDIR=$MONANDIR;" ${STOOLS}/setenv)
-#----------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
 
 
-# Check MONAN version first local and next github file:
+# Check MONAN version first local and next github file: ---------------------------------------------
+#----------------------------------------------------------------------------------------------------
 if [ -f $MONANDIR/VERSION.txt ]; then
     MONANVERSION=$(head -n 1 $MONANDIR/VERSION.txt)
 elif ! MONANVERSION=$(get_github_file "${github_link_MONAN}" "${tag_or_branch_name_MONAN}" "VERSION.txt"); then
@@ -121,9 +134,11 @@ elif ! MONANVERSION=$(get_github_file "${github_link_MONAN}" "${tag_or_branch_na
     echo -e "- Branch/Tag:${NC} ${tag_or_branch_name_MONAN}\n"
     exit 1
 fi
+#----------------------------------------------------------------------------------------------------
 
 
-#--------------- Check compatible Scritps_CD-CT x MONAN-Model--------------------
+# Check compatible Scritps_CD-CT x MONAN-Model: -----------------------------------------------------
+#----------------------------------------------------------------------------------------------------
 echo ""
 echo "*********************************************************************************"
 echo "* ATTENTION:                                                                    *"
@@ -151,10 +166,11 @@ if [ ! -d ${SCRIPTS}/namelists/${MONANVERSION} ]; then
 else
     echo -e "${GREEN}==>${NC} Compatibility OK.\n"
 fi
-# ------------------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
 
 
-# --- Copy namelists compatible version-----------------------------------------------------------
+# Copy namelists compatible version: ----------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
 echo -e "${GREEN}==>${NC} Copying 'namelists' for the corresponding 'MONAN-Model' x 'Scripts_CD-CT' versions...\n"
 if [ ! -f ${SCRIPTS}/namelists/NMLVERSION.txt ]; then
     #---first time -> copy all
@@ -185,7 +201,7 @@ else
   echo -e "MONAN-Model version changed; copied all namelist files and preserved user-modified files, if any, in the 'user' backup folder.\n"
     fi
 fi
-# ------------------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
 
 
 checkout_system ${MONANDIR} ${github_link_MONAN} ${tag_or_branch_name_MONAN}
@@ -212,7 +228,8 @@ rm -fr $MONANDIR/src/core_atmosphere/inc $MONANDIR/src/core_init_atmosphere/inc
 #fi
 
 
-
+# Installing atmosphere_model, init_atmosphere_model and convert_mpas: ------------------------------
+#----------------------------------------------------------------------------------------------------
 echo ""
 echo -e  "${GREEN}==>${NC} Making compile script...\n"
 
@@ -220,7 +237,6 @@ cd $MONANDIR
 
 source ${STOOLS}/1makeinstall
 chmod a+x make-all.sh
-
 
 echo ""
 echo -e  "${GREEN}==>${NC} Installing init_atmosphere_model and atmosphere_model...\n"
@@ -233,19 +249,34 @@ echo ""
 echo -e  "${GREEN}==>${NC} Installing convert_mpas...\n"
 # install convert_mpas
 source ${STOOLS}/1compile_convertmpas
+#----------------------------------------------------------------------------------------------------
 
 
-#CR: TODO: put verify here if executable was created ok
+# Copy and verify executable files: -----------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
 mv ${CONVERT_MPAS_DIR}/convert_mpas ${EXECS}/
 cp ${CONVERT_MPAS_DIR}/VERSION.txt ${EXECS}/CONVMPAS-VERSION.txt
 
+all_exec_files=(
+    "atmosphere_model"
+    "build_tables"
+    "init_atmosphere_model"
+    "convert_mpas"
+)
 
-if [ -s "${EXECS}/convert_mpas" ] ; then
-    echo ""
-    echo -e "${GREEN}==>${NC} File convert_mpas generated Sucessfully in ${CONVERT_MPAS_DIR} and copied to ${EXECS} !"
-    echo
-else
-    echo -e "${RED}==>${NC} !!! An error occurred during convert_mpas build. Check output"
-    exit -1
-fi
+for exec_file in "${all_exec_files[@]}"
+do
+    if [ -s "${EXECS}/${exec_file}" ]; then
+        echo ""
+        echo -e "${GREEN}==>${NC} ${exec_file} generated successfully and copied to ${EXECS}!"
+        echo ""
+    else
+        echo -e "${RED}==>${NC} !!! ERROR: ${exec_file} was not generated or is empty. Check build output."
+        exit 1
+    fi
+done
+#----------------------------------------------------------------------------------------------------
+
+
+echo -e "\n$(basename "$0") completed successfully.\n"
 

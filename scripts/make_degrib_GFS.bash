@@ -1,6 +1,8 @@
 #!/bin/bash 
+umask 022
 
-
+# Usage instructions: -------------------------------------------------------------------------------                                                                                                                          
+#----------------------------------------------------------------------------------------------------
 if [ $# -ne 4 ]
 then
    echo ""
@@ -21,14 +23,23 @@ then
 
    exit
 fi
+#----------------------------------------------------------------------------------------------------
 
-# Set environment variables exports:
+
+# Load the MONAN environment configuration: ---------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
 echo ""
 echo -e "\033[1;32m==>\033[0m Moduling environment for MONAN model...\n"
 . setenv.bash
 
+echo ""
+echo "---- Make Degrib ${EXP} ----"
+echo ""
+#----------------------------------------------------------------------------------------------------
 
-# Standart directories variables:---------------------------------------
+
+# Standart directories variables: -------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
 DIRHOMES=${DIR_SCRIPTS}/scripts_container;  mkdir -p ${DIRHOMES}  
 DIRHOMED=${DIR_DADOS}/scripts_container;    mkdir -p ${DIRHOMED}  
 SCRIPTS=${DIRHOMES}/scripts;            mkdir -p ${SCRIPTS}
@@ -36,32 +47,34 @@ DATAIN=${DIRHOMED}/datain;              mkdir -p ${DATAIN}
 DATAOUT=${DIRHOMED}/dataout;            mkdir -p ${DATAOUT}
 SOURCES=${DIRHOMES}/sources;            mkdir -p ${SOURCES}
 EXECS=${DIRHOMED}/execs;                mkdir -p ${EXECS}
-#----------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
 
 
-# Input variables:--------------------------------------
+# Input variables: ----------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
 EXP=${1};         #EXP=GFS
 RES=${2};         #RES=1024002
 YYYYMMDDHHi=${3}; #YYYYMMDDHHi=2024012000
 FCST=${4};        #FCST=24
-#-------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
 
 
-# Local variables--------------------------------------
+# Local variables: ----------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
 start_date=${YYYYMMDDHHi:0:4}-${YYYYMMDDHHi:4:2}-${YYYYMMDDHHi:6:2}_${YYYYMMDDHHi:8:2}:00:00
 OPERDIREXP=${OPERDIR}/${EXP}
 BNDDIR=${OPERDIREXP}/0p25/brutos/${YYYYMMDDHHi:0:4}/${YYYYMMDDHHi:4:2}/${YYYYMMDDHHi:6:2}/${YYYYMMDDHHi:8:2}
 GCCCIS=/p/projetos/monan_adm/monan/CIs/${EXP}
 export DIRRUN=${DIRHOMED}/run.${YYYYMMDDHHi}; rm -fr ${DIRRUN}; mkdir -p ${DIRRUN}
-#-------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
+
+
+# Ungrib phase: -------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
 mkdir -p ${DATAIN}/${YYYYMMDDHHi}
 mkdir -p ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs
 
-
-# Se nao existir CI no diretorio do IO, 
-# busca no nosso dir /beegfs/monan/CIs, se nao existir tbm, aborta!
 source ${STOOLS}/2makeungrib_datain
-
 
 cp -f ${DATAIN}/fixed/x1.${RES}.static.nc ${DIRRUN}
 cp -f ${DATAIN}/fixed/Vtable.${EXP} ${DIRRUN}/Vtable
@@ -76,9 +89,11 @@ chmod a+x ${DIRRUN}/degrib.bash
 echo -e  "${GREEN}==>${NC} Executing sbatch degrib.bash...\n"
 cd ${DIRRUN}
 source ${STOOLS}/2runungrib
+#----------------------------------------------------------------------------------------------------
 
 
-
+# Verify ungrib file: -------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
 files_ungrib=("${EXP}:${YYYYMMDDHHi:0:4}-${YYYYMMDDHHi:4:2}-${YYYYMMDDHHi:6:2}_${YYYYMMDDHHi:8:2}")
 for file in "${files_ungrib[@]}"
 do
@@ -91,6 +106,9 @@ do
     exit -1
   fi
 done
+#----------------------------------------------------------------------------------------------------
+
 
 mv ${DIRRUN}/degrib.bash ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs
 rm -fr ${DIRRUN}
+
