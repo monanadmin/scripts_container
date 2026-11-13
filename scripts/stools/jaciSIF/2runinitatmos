@@ -1,4 +1,11 @@
 #!/bin/bash
 
-qsub -W block=true ${DIRRUN}/initatmos.bash
-#qsub -Wblock=true ${DIRRUN}/initatmos.bash
+echo -e  "\n${GREEN}==>${NC} qsub initatmos.bash...\n"
+cd ${DIRRUN}
+
+JOBID=$(qsub -W block=true ${DIRRUN}/initatmos.bash)
+JOBID=${JOBID%%.*}
+
+mv ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs/initatmos.bash.o ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs/initatmos.bash.o.${JOBID}
+mv ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs/initatmos.bash.e ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs/initatmos.bash.e.${JOBID}
+

@@ -1,0 +1,11 @@
+#!/bin/bash
+
+echo -e  "\n${GREEN}==>${NC} qsub lbcs.bash...\n"
+cd ${DIRRUN}
+
+JOBID=$(qsub -W block=true ${DIRRUN}/lbcs.bash)
+JOBID=${JOBID%%.*}
+
+mv ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs/lbcs.o ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs/lbcs.o.${JOBID}
+mv ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs/lbcs.e ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs/lbcs.e.${JOBID}
+

@@ -4,13 +4,12 @@ cat << EOF0 > ${DIRRUN}/initatmos.bash
 #!/bin/bash
 #PBS -N ${INITATMOS_jobname}
 #PBS -q ${INITATMOS_QUEUE}
-#PBS -l select=${INITATMOS_nnodes}:ncpus=${INITATMOS_ncpn}:mpiprocs=${INITATMOS_ncpn}
-#PBS -l place=scatter
-#PBS -l place=excl
-#PBS -l walltime=${STATIC_walltime}
-#PBS -j oe
-#PBS -o ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs/initatmos.bash.o$PBS_JOBID
-#PBS -e ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs/initatmos.bash.e$PBS_JOBID
+#PBS -l select=${INITATMOS_nnodes}:ncpus=${INITATMOS_ncpus}:mpiprocs=${INITATMOS_ncpn}:ompthreads=${INITATMOS_nthreads}
+#PBS -l walltime=${INITATMOS_walltime}
+#PBS -o ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs/initatmos.bash.o
+#PBS -e ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs/initatmos.bash.e
+#PBS -l place=scatter:excl
+#PBS -V
 
 
 export executable=init_atmosphere_model

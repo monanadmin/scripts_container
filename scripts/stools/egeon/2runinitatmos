@@ -1,3 +1,6 @@
 #!/bin/bash
 
+echo -e  "${GREEN}==>${NC} Executing sbatch initatmos.bash...\n"
+cd ${DIRRUN}
+
 sbatch --wait ${DIRRUN}/initatmos.bash

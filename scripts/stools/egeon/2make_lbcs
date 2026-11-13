@@ -1,0 +1,44 @@
+#!/bin/bash                                                                                                                                                                                                                    
+umask 022
+
+cat << EOF0 > ${DIRRUN}/lbcs.bash 
+#!/bin/bash
+
+####PBS -l select=<N_nos>:ncpus=<CPUs_por_no>:mpiprocs=<MPI_por_no>:ompthreads=<OMP_por_no>
+
+#PBS -N ${LBCS_jobname}
+#PBS -q ${LBCS_QUEUE}
+#PBS -l select=${LBCS_nnodes}:ncpus=${LBCS_ncpus}:mpiprocs=${LBCS_ncpn}:ompthreads=${LBCS_nthreads}
+#PBS -l walltime=${LBCS_walltime}
+#PBS -o ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs/lbcs.o
+#PBS -e ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs/lbcs.e
+#PBS -l place=scatter:excl
+#PBS -V
+
+
+export executable=init_atmosphere_model
+
+ulimit -c unlimited
+ulimit -v unlimited
+ulimit -s unlimited
+
+. ${SCRIPTS}/setenv.bash
+
+cd ${DIRRUN}
+
+if [ ${SCHEDULER_SYSTEM} == "SLURM" ]; then
+   echo "-- SLURM_JOB_ID: \$SLURM_JOB_ID"
+   time mpirun -np ${LBCS_ncores} ./\${executable}
+elif [ ${SCHEDULER_SYSTEM} == "PBS" ]; then
+   echo "-- PBS_JOBID: \$PBS_JOBID"
+   time mpirun --ppn ${LBCS_ncpn} -np ${LBCS_ncores} --depth=${LBCS_nthreads} --cpu-bind depth ./\${executable}
+fi
+
+date
+
+mv ${DIRRUN}/log.init_atmosphere.0000.out ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs/log.init_atmosphere.0000.${RES}.lbcs.nc.${YYYYMMDDHHi}.out
+mv ${DIRRUN}/namelist.init_atmosphere ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs/namelist.init_atmosphere.lbcs
+mv ${DIRRUN}/streams.init_atmosphere ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs/streams.init_atmosphere.lbcs
+mv ${DIRRUN}/x1.${RES}.init.nc ${DATAOUT}/${YYYYMMDDHHi}/Pre
+mv ${DIRRUN}/lbc*.nc ${DATAOUT}/${YYYYMMDDHHi}/Pre
+

@@ -1,3 +1,6 @@
 #!/bin/bash
 
+echo -e  "${GREEN}==>${NC} Executing initatmos.bash...\n"
+cd ${DIRRUN}
+
 ${DIRRUN}/initatmos.bash

@@ -104,8 +104,6 @@ rm -f ${DIRRUN}/initatmos.bash
 source ${STOOLS}/2makeinitatmos
 chmod a+x ${DIRRUN}/initatmos.bash
 
-echo -e  "${GREEN}==>${NC} Executing sbatch initatmos.bash...\n"
-cd ${DIRRUN}
 source ${STOOLS}/2runinitatmos
 mv ${DIRRUN}/initatmos.bash ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs
 

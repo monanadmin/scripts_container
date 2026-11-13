@@ -1,0 +1,7 @@
+#!/bin/bash
+
+echo -e  "\n${GREEN}==>${NC} sbatch lbcs.bash...\n"
+cd ${DIRRUN}
+
+sbatch --wait ${DIRRUN}/lbcs.bash
+
