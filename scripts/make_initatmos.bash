@@ -93,7 +93,7 @@ then
    fi
    echo -e "${GREEN}==>${NC} Creating x1.${RES}.graph.info.part.${cores} ... \n"
    cd ${DATAIN}/fixed
-   gpmetis -minconn -contig -niter=200 x1.${RES}.graph.info ${cores}
+   source ${STOOLS}/cmd-gpmetis
    chmod 755 *
 fi
 #----------------------------------------------------------------------------------------------------

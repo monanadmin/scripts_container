@@ -26,13 +26,8 @@ ulimit -s unlimited
 
 cd ${DIRRUN}
 
-if [ ${SCHEDULER_SYSTEM} == "SLURM" ]; then
-   echo "-- SLURM_JOB_ID: \$SLURM_JOB_ID"
-   time mpirun -np ${LBCS_ncores} ./\${executable}
-elif [ ${SCHEDULER_SYSTEM} == "PBS" ]; then
-   echo "-- PBS_JOBID: \$PBS_JOBID"
-   time mpirun --ppn ${LBCS_ncpn} -np ${LBCS_ncores} --depth=${LBCS_nthreads} --cpu-bind depth ./\${executable}
-fi
+echo "-- SLURM_JOB_ID: \$SLURM_JOB_ID"
+time mpirun -np ${LBCS_ncores} ./\${executable}
 
 date
 
