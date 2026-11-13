@@ -69,7 +69,7 @@ export DIRRUN=${DIRHOMED}/run.${YYYYMMDDHHi}; rm -fr ${DIRRUN}; mkdir -p ${DIRRU
 #----------------------------------------------------------------------------------------------------
 
 
-# LBCs phase: ---------------------------------------------------------------------------------------
+# Download mesh files and generate graph partitions: ------------------------------------------------
 #----------------------------------------------------------------------------------------------------
 mkdir -p ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs
 
@@ -77,7 +77,7 @@ if [ ! -s ${DATAIN}/fixed/x1.${RES}.graph.info.part.${cores} ]
 then
    if [ ! -s ${DATAIN}/fixed/x1.${RES}.graph.info ]
    then
-      if [[ $MODERUN == "G" ]]
+      if [[ $MODERUN == "G" || $MODERUN == "R" ]]
       then
          echo -e "${GREEN}==>${NC} downloading meshes tgz files ... \n"
          cd ${DATAIN}/fixed
@@ -103,7 +103,11 @@ then
    source ${STOOLS}/cmd-gpmetis
    chmod 755 *
 fi
+#----------------------------------------------------------------------------------------------------
 
+
+# Verify required files: ----------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
 files_needed=("${SCRIPTS}/namelists/namelist.init_atmosphere.LBCS" "${SCRIPTS}/namelists/streams.init_atmosphere.LBCS" "${DATAIN}/fixed/x1.${RES}.graph.info.part.${cores}" "${DATAOUT}/${YYYYMMDDHHi}/Pre/x1.${RES}.init.nc" "${EXECS}/init_atmosphere_model")
 for file in "${files_needed[@]}"
 do
@@ -114,7 +118,11 @@ do
     exit 1
   fi
 done
+#----------------------------------------------------------------------------------------------------
 
+
+# LBCs phase: ---------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
 sed -e "s,#LABELI#,${start_date},g;s,#LABELF#,${final_date},g;s,#GEODAT#,${GEODATA},g;s,#LBCINT#,${LBCINT},g;s,#RES#,${RES},g;s,#EXP#,${EXP},g" \
 	 ${SCRIPTS}/namelists/namelist.init_atmosphere.LBCS > ${DIRRUN}/namelist.init_atmosphere
 

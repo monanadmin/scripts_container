@@ -69,7 +69,7 @@ if [ ! -s ${DATAIN}/fixed/x1.${RES}.graph.info.part.${cores} ]
 then
    if [ ! -s ${DATAIN}/fixed/x1.${RES}.graph.info ]
    then
-      if [[ $MODERUN == "G" ]]
+      if [[ $MODERUN == "G" || $MODERUN == "R" ]]
       then
          echo -e "${GREEN}==>${NC} Downloading Global meshes tgz files ... \n"
          mkdir -p ${DATAIN}/fixed   
@@ -99,7 +99,7 @@ fi
 #----------------------------------------------------------------------------------------------------
 
 
-# Check files needed: -------------------------------------------------------------------------------
+# Verify required files: ----------------------------------------------------------------------------
 #----------------------------------------------------------------------------------------------------
 files_needed=("${EXECS}/init_atmosphere_model" "${DATAIN}/fixed/x1.${RES}.graph.info.part.${cores}" "${DATAIN}/fixed/x1.${RES}.grid.nc" "${SCRIPTS}/namelists/namelist.init_atmosphere.STATIC" "${SCRIPTS}/namelists/streams.init_atmosphere.STATIC")
 for file in "${files_needed[@]}"
