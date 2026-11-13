@@ -1,5 +1,4 @@
-#!/bin/bash                                                                                                                                                                                                                    
-umask 022
+#!/bin/bash                                                                                                                                                                                                                umask 022
 
 cat << EOF0 > ${DIRRUN}/lbcs.bash 
 #!/bin/bash
@@ -42,3 +41,5 @@ mv ${DIRRUN}/streams.init_atmosphere ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs/streams.
 mv ${DIRRUN}/x1.${RES}.init.nc ${DATAOUT}/${YYYYMMDDHHi}/Pre
 mv ${DIRRUN}/lbc*.nc ${DATAOUT}/${YYYYMMDDHHi}/Pre
 
+
+EOF0
