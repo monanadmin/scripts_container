@@ -1,4 +1,11 @@
 #!/bin/bash
 
-qsub -W block=true ${DIRRUN}/static.bash
-#qsub -Wblock=true ${DIRRUN}/static.bash
+echo -e  "\n${GREEN}==>${NC} qsub static.bash...\n"
+cd ${DIRRUN}
+
+JOBID=$(qsub -W block=true ${DIRRUN}/static.bash)
+JOBID=${JOBID%%.*}
+
+mv ${DATAOUT}/logs/static.bash.o ${DATAOUT}/logs/static.bash.o.${JOBID}
+mv ${DATAOUT}/logs/static.bash.e ${DATAOUT}/logs/static.bash.e.${JOBID}
+

@@ -25,7 +25,7 @@ cd ${DIRRUN}
 
 
 date
-time mpirun -np ${INITATMOS_ncores} ./\${executable}
+time mpirun --ppn ${INITATMOS_ncpn} -np ${INITATMOS_ncores} --depth=${INITATMOS_nthreads} --cpu-bind depth ./\${executable}
 date
 
 

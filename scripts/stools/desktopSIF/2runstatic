@@ -1,3 +1,6 @@
 #!/bin/bash
 
+echo -e  "\n${GREEN}==>${NC} static.bash...\n"
+cd ${DIRRUN}
+
 ${DIRRUN}/static.bash

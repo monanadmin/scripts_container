@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # Load modules:
-
 module purge
 module load PrgEnv-intel
 module load craype-x86-turin
@@ -10,7 +9,8 @@ module load cray-netcdf/4.9.0.15
 module load cray-parallel-netcdf/1.12.3.15
 module load xpmem/0.2.119-1.3_gef379be13330
 module load grads/2.2.1.oga.1
-module load cdo/2.4.2
+module load cdo2/2.5.4
+module load nco/5.3.9
 module load METIS/5.1.0
 module load cray-pals
 module list
@@ -22,7 +22,7 @@ module list
 # Put your directories:
 export DIR_SCRIPTS=$(dirname $(dirname $(pwd)))
 export DIR_DADOS=$(dirname $(dirname $(pwd)))
-export MONANDIR=/mnt/beegfs/carlos.souza/issues/735-tag-convert-teste/scripts_CD-CT/sources/MONAN-Model_release/1.4.1-rc
+export MONANDIR=/p/projetos/monan_adm/marcelo.paiva/i1042_regional/scripts_container/sources/MONAN-Model_1.4.4
 
 
 # Submiting variables:

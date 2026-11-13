@@ -25,7 +25,7 @@ cd ${DIRRUN}
 
 
 date
-time mpirun -np ${STATIC_ncores} ./\${executable}
+time mpirun --ppn ${STATIC_ncpn} -np ${STATIC_ncores} --depth=${STATIC_nthreads} --cpu-bind depth ./\${executable}
 date
 
 
