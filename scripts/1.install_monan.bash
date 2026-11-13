@@ -137,16 +137,16 @@ fi
 #----------------------------------------------------------------------------------------------------
 
 
-# Check compatible Scritps_CD-CT x MONAN-Model: -----------------------------------------------------
+# Check compatible scripts_container x MONAN-Model: -----------------------------------------------------
 #----------------------------------------------------------------------------------------------------
 echo ""
 echo "*********************************************************************************"
 echo "* ATTENTION:                                                                    *"
 echo "*********************************************************************************"
-echo "*                    scripts_CD-CT / MONAN-Model Compatibility                  *"
+echo "*                    scripts_container / MONAN-Model Compatibility                  *"
 echo "*********************************************************************************"
 echo "*                                                                               *"
-echo "*    scripts_CD-CT Version        Compatible MONAN-Model Version                *"
+echo "*    scripts_container Version        Compatible MONAN-Model Version                *"
 echo "*    ---------------------------  --------------------------------              *"
 echo "*    (...)                        (...)                                         *"
 echo "*    1.4.0                        1.4.3-rc                                      *"
@@ -157,11 +157,11 @@ echo "*                                                                         
 echo "*********************************************************************************"
 echo ""
 echo -e "Your MONAN-Model Version = ${MONANVERSION} -> using the tag/branch: ${tag_or_branch_name_MONAN}"
-echo -e "Your Scripts_CD-CT Version = ${CDCTVERSION} -> using the tag/branch: $(git describe --tags --exact-match 2>/dev/null || git branch --show-current)"
+echo -e "Your scripts_container Version = ${CDCTVERSION} -> using the tag/branch: $(git describe --tags --exact-match 2>/dev/null || git branch --show-current)"
 echo ""
-echo -e "${GREEN}==>${NC} Check compatibility: Scripts_CD-CT x MONAN-Model...\n"
+echo -e "${GREEN}==>${NC} Check compatibility: scripts_container x MONAN-Model...\n"
 if [ ! -d ${SCRIPTS}/namelists/${MONANVERSION} ]; then
-    echo -e "${RED}==>${NC} FAIL! 'Scripts_CD-CT' and 'MONAN-Model' versions are incompatible.\n"
+    echo -e "${RED}==>${NC} FAIL! 'scripts_container' and 'MONAN-Model' versions are incompatible.\n"
     exit 1
 else
     echo -e "${GREEN}==>${NC} Compatibility OK.\n"
@@ -171,7 +171,7 @@ fi
 
 # Copy namelists compatible version: ----------------------------------------------------------------
 #----------------------------------------------------------------------------------------------------
-echo -e "${GREEN}==>${NC} Copying 'namelists' for the corresponding 'MONAN-Model' x 'Scripts_CD-CT' versions...\n"
+echo -e "${GREEN}==>${NC} Copying 'namelists' for the corresponding 'MONAN-Model' x 'scripts_container' versions...\n"
 if [ ! -f ${SCRIPTS}/namelists/NMLVERSION.txt ]; then
     #---first time -> copy all
     cp -r ${SCRIPTS}/namelists/${MONANVERSION}/* ${SCRIPTS}/namelists/

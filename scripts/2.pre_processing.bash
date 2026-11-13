@@ -87,7 +87,7 @@ export DIRRUN=${DIRHOMED}/run.${YYYYMMDDHHi}; rm -fr ${DIRRUN}; mkdir -p ${DIRRU
 #----------------------------------------------------------------------------------------------------
 
 
-echo -e  "${GREEN}==>${NC} Scripts_CD-CT last commit: \n"
+echo -e  "${GREEN}==>${NC} scripts_container last commit: \n"
 #git log -1 --name-only
 git log | head -1
 
