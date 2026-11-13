@@ -19,25 +19,28 @@ ulimit -v unlimited
 
 export PMIX_MCA_gds=hash
 
-
 export LD_LIBRARY_PATH=\$LD_LIBRARY_PATH:${HOME}/local/lib64
 
 cd ${DIRRUN}
+
 . ${SCRIPTS}/setenv.bash
+
+echo "-- PBS_JOBID: \$PBS_JOBID"
 
 ldd ungrib.exe
 
 rm -f GRIBFILE.* namelist.wps
 
-
-sed -e "s,#LABELI#,${start_date},g;s,#PREFIX#,GFS,g" \
-	${DIRRUN}/namelist.wps.TEMPLATE > ${DIRRUN}/namelist.wps
-
+sed -e "s,#LABELI#,${start_date},g;s,#LABELF#,${start_date},g;s,#LBCINT#,${LBCINT},g;s,#PREFIX#,${EXP},g" \
+       ${DIRRUN}/namelist.wps.TEMPLATE > ${DIRRUN}/namelist.wps
+	
 ./link_grib.csh ${DATAIN}/${YYYYMMDDHHi}/gfs.t${YYYYMMDDHHi:8:2}z.pgrb2.0p25.f000.${YYYYMMDDHHi}.grib2
+
+chmod 755 *
+echo "Submiting ungrib job..."
 
 date
 time mpirun -np 1 ./ungrib.exe
-#time mpirun -np 1 ungrib.exe           # module load ungrib/4.5
 date
 
 
