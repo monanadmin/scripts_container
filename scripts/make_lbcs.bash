@@ -85,7 +85,7 @@ then
       mkdir -p ${DATAIN}/fixed   
       cd ${DATAIN}/fixed
       URL="https://dataserver.cptec.inpe.br/dataserver_dimnt/monan/CONTAINER_DATA/regional_mesh"
-      for REG_MESH_FILE in "x1.${RES}.graph.info x1.${RES}.grid.nc"
+      for REG_MESH_FILE in "x1.${RES}.graph.info" "x1.${RES}.grid.nc"
       do
          if wget "${URL}/${REG_MESH_FILE}" && [[ -s "${REG_MESH_FILE}" ]]
          then

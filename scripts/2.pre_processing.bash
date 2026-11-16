@@ -203,7 +203,7 @@ if [[ ${EXP} == "GFS" || ${EXP} == "ERA" ]]; then
    if [ ! -s ${DATAIN}/fixed/x1.${RES}.static.nc ]
    then
       echo -e "${GREEN}==>${NC} Creating static.bash for submiting init_atmosphere to create x1.${RES}.static.nc...\n"
-      time ./make_static.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST}
+      time ./make_static.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST} || exit 1
    else
       echo -e "${GREEN}==>${NC} File x1.${RES}.static.nc already exist in ${DATAIN}/fixed.\n"
    fi
@@ -221,11 +221,11 @@ fi
 if [[ ${EXP} == "GFS" ]]
 then
    echo -e  "${GREEN}==>${NC} Submitting Degrib for GFS data...\n"
-   time ./make_degrib_GFS.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST}
+   time ./make_degrib_GFS.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST} || exit 1
 elif [[ ${EXP} == "ERA" ]]
 then
    echo -e  "${GREEN}==>${NC} Submitting Degrib for ERA data...\n"
-   time ./make_degrib_ERA5.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST}
+   time ./make_degrib_ERA5.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST} || exit 1
 else
    echo -e  "\n${RED}==>${NC} ***** ATTENTION *****\n"
    echo -e  "${RED}==>${NC} Degrib phase fails! Please select EXP=GFS or EXP=ERA.\n"
@@ -239,7 +239,7 @@ fi
 #----------------------------------------------------------------------------------------------------
 if [[ ${EXP} == "GFS" || ${EXP} == "ERA" ]]; then
    echo -e  "\n${GREEN}==>${NC} Submitting Init Atmosphere for real case...\n"
-   time ./make_initatmos.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST}
+   time ./make_initatmos.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST} || exit 1
 else
    echo -e  "\n${RED}==>${NC} ***** ATTENTION *****\n"
    echo -e  "${RED}==>${NC} Init Atmosphere phase fails! Please select EXP=GFS or EXP=ERA.\n"
@@ -252,7 +252,7 @@ fi
 # LBCs phase: ---------------------------------------------------------------------------------------
 #----------------------------------------------------------------------------------------------------
 if [[ $MODERUN == "R" ]]; then
-   time ./make_lbcs.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST}
+   time ./make_lbcs.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST} || exit 1
 elif [[ $MODERUN == "G" ]]; then
    : # it does not need the LBC (lateral boundary conditions)
 else
