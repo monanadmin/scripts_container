@@ -35,18 +35,6 @@ echo ""
 #----------------------------------------------------------------------------------------------------
 
 
-# Standart directories variables: -------------------------------------------------------------------
-#----------------------------------------------------------------------------------------------------
-DIRHOMES=${DIR_SCRIPTS}/scripts_container; mkdir -p ${DIRHOMES}
-DIRHOMED=${DIR_DADOS}/scripts_container;   mkdir -p ${DIRHOMED}
-SCRIPTS=${DIRHOMES}/scripts;           mkdir -p ${SCRIPTS}
-DATAIN=${DIRHOMED}/datain;             mkdir -p ${DATAIN}
-DATAOUT=${DIRHOMED}/dataout;           mkdir -p ${DATAOUT}
-SOURCES=${DIRHOMES}/sources;           mkdir -p ${SOURCES}
-EXECS=${DIRHOMED}/execs;               mkdir -p ${EXECS}
-#----------------------------------------------------------------------------------------------------
-
-
 # Input variables: ----------------------------------------------------------------------------------
 #----------------------------------------------------------------------------------------------------
 EXP=${1};         #EXP=GFS
@@ -72,32 +60,52 @@ export DIRRUN=${DIRHOMED}/run.${YYYYMMDDHHi}; rm -fr ${DIRRUN}; mkdir -p ${DIRRU
 # Download mesh files and generate graph partitions: ------------------------------------------------
 #----------------------------------------------------------------------------------------------------
 mkdir -p ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs
-
-if [ ! -s ${DATAIN}/fixed/x1.${RES}.graph.info.part.${cores} ]
+if [[ ! -s "${DATAIN}/fixed/x1.${RES}.graph.info" || ! -s "${DATAIN}/fixed/x1.${RES}.grid.nc" ]]
 then
-   if [ ! -s ${DATAIN}/fixed/x1.${RES}.graph.info ]
+   if [[ "$MODERUN" == "G" ]]
    then
-      if [[ $MODERUN == "G" || $MODERUN == "R" ]]
+      echo -e "${GREEN}==>${NC} Downloading Global meshes tgz files ... \n"
+      mkdir -p ${DATAIN}/fixed
+      cd ${DATAIN}/fixed
+      URL="https://www2.mmm.ucar.edu/projects/mpas/atmosphere_meshes"
+      if wget "${URL}/x1.${RES}.tar.gz" && [[ -s "x1.${RES}.tar.gz" ]]
       then
-         echo -e "${GREEN}==>${NC} downloading meshes tgz files ... \n"
-         cd ${DATAIN}/fixed
-         if wget https://www2.mmm.ucar.edu/projects/mpas/atmosphere_meshes/x1.${RES}.tar.gz
-         then
-            tar -xzvf x1.${RES}.tar.gz
-            rm -fr x1.${RES}.tar.gz
-         else
-            echo -e  "\n${RED}==>${NC} ***** ATTENTION *****\n"
-            echo -e  "${RED}==>${NC} Make LBCs phase fails: Global file 'x1.${RES}.tar.gz' not found on 'MPAS atmosphere meshes site'.\n"
-            echo -e  "${RED}==>${NC} Exiting script.\n"
-            exit 1
-         fi
+         echo -e "${GREEN}==>${NC} Global mesh files downloaded successfully! \n"
+         tar -xzvf x1.${RES}.tar.gz
+         rm -fr x1.${RES}.tar.gz
       else
          echo -e  "\n${RED}==>${NC} ***** ATTENTION *****\n"
-         echo -e  "${RED}==>${NC} Make LBCs phase fails: Regional file 'x1.${RES}.graph.info' not found in '${DATAIN}/fixed.'\n"
+         echo -e  "${RED}==>${NC} Make Static phase fails: Global file 'x1.${RES}.tar.gz' not found on 'MPAS atmosphere meshes site'.\n"
          echo -e  "${RED}==>${NC} Exiting script.\n"
          exit 1
       fi
+   elif [[ "$MODERUN" == "R" ]]
+   then
+      echo -e "${GREEN}==>${NC} Downloading Regional meshes files ... \n"
+      mkdir -p ${DATAIN}/fixed   
+      cd ${DATAIN}/fixed
+      URL="https://dataserver.cptec.inpe.br/dataserver_dimnt/monan/CONTAINER_DATA/regional_mesh"
+      for REG_MESH_FILE in "x1.${RES}.graph.info x1.${RES}.grid.nc"
+      do
+         if wget "${URL}/${REG_MESH_FILE}" && [[ -s "${REG_MESH_FILE}" ]]
+         then
+            echo -e "${GREEN}==>${NC} Regional mesh files downloaded successfully! \n"
+         else
+            echo -e  "\n${RED}==>${NC} ***** ATTENTION *****\n"
+            echo -e  "${RED}==>${NC} Make Static phase fails: Regional files 'x1.${RES}.graph.inf' and 'x1.${RES}.grid.nc' not found on 'https://dataserver.cptec.inpe.br'.\n"
+            echo -e  "${RED}==>${NC} Exiting script.\n"
+            exit 1
+         fi
+      done
+   else
+      echo -e  "\n${RED}==>${NC} ***** ATTENTION *****\n"
+      echo -e  "${RED}==>${NC} Make Static phase fails: Regional file 'x1.${RES}.graph.info' and 'x1.${RES}.grid.nc' not found in '${DATAIN}/fixed'.\n"                                                                    
+      echo -e  "${RED}==>${NC} Exiting script.\n"
+      exit 1
    fi
+fi
+if [[ ! -s "${DATAIN}/fixed/x1.${RES}.graph.info.part.${cores}" ]]
+then
    echo -e "${GREEN}==>${NC} Creating x1.${RES}.graph.info.part.${cores} ... \n"
    cd ${DATAIN}/fixed
    source ${STOOLS}/cmd-gpmetis

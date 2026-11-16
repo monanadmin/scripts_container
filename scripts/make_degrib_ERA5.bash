@@ -35,18 +35,6 @@ echo ""
 #----------------------------------------------------------------------------------------------------
 
 
-# Standart directories variables: -------------------------------------------------------------------
-#----------------------------------------------------------------------------------------------------
-DIRHOMES=${DIR_SCRIPTS}/scripts_container;  mkdir -p ${DIRHOMES}  
-DIRHOMED=${DIR_DADOS}/scripts_container;    mkdir -p ${DIRHOMED}  
-SCRIPTS=${DIRHOMES}/scripts;            mkdir -p ${SCRIPTS}
-DATAIN=${DIRHOMED}/datain;              mkdir -p ${DATAIN}
-DATAOUT=${DIRHOMED}/dataout;            mkdir -p ${DATAOUT}
-SOURCES=${DIRHOMES}/sources;            mkdir -p ${SOURCES}
-EXECS=${DIRHOMED}/execs;                mkdir -p ${EXECS}
-#----------------------------------------------------------------------------------------------------
-
-
 # Input variables: ----------------------------------------------------------------------------------
 #----------------------------------------------------------------------------------------------------
 EXP=${1};         #EXP=ERA
