@@ -9,8 +9,8 @@ cat << EOF0 > ${DIRRUN}/static.bash
 #PBS -q ${STATIC_QUEUE}
 #PBS -l select=${STATIC_nnodes}:ncpus=${STATIC_ncpus}:mpiprocs=${STATIC_ncpn}:ompthreads=${STATIC_nthreads}
 #PBS -l walltime=${STATIC_walltime}
-#PBS -o ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs/lbcs.o
-#PBS -e ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs/lbcs.e
+#PBS -o ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs/static.bash.o
+#PBS -e ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs/static.bash.e
 #PBS -l place=scatter:excl
 #PBS -V
 
