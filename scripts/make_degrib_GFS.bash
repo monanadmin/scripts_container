@@ -71,12 +71,22 @@ cp -f ${SCRIPTS}/namelists/namelist.wps.TEMPLATE ${DIRRUN}/namelist.wps.TEMPLATE
 cp -f ${SCRIPTS}/setenv.bash ${DIRRUN}
 cp -f ${SCRIPTS}/link_grib.csh ${DIRRUN}
 rm -f ${DIRRUN}/degrib.bash 
-source ${STOOLS}/2makeungrib
+if [[ "$MODERUN" == "G" ]]; then
+   source ${STOOLS}/2makeungrib_Global
+elif [[ "$MODERUN" == "R" ]]; then
+   source ${STOOLS}/2makeungrib_Regional
+else
+   echo -e  "\n${RED}==>${NC} ***** ATTENTION *****\n"
+   echo -e  "${RED}==>${NC} Make degrib phase fails during degrib! Please select MODERUN=R or G so that degrib can be done appropriately.\n"
+   echo -e  "${RED}==>${NC} Exiting script. \n"
+   exit 1
+fi
 chmod a+x ${DIRRUN}/degrib.bash
 
 echo -e  "${GREEN}==>${NC} Executing sbatch degrib.bash...\n"
 cd ${DIRRUN}
 source ${STOOLS}/2runungrib
+mv ${DIRRUN}/degrib_${EXP}.bash ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs
 #----------------------------------------------------------------------------------------------------
 
 
@@ -97,6 +107,6 @@ done
 #----------------------------------------------------------------------------------------------------
 
 
-mv ${DIRRUN}/degrib.bash ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs
+chmod -R 755 ${DATAOUT}/${YYYYMMDDHHi}/Pre/*
 rm -fr ${DIRRUN}
 
