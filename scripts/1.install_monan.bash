@@ -125,16 +125,16 @@ fi
 #----------------------------------------------------------------------------------------------------
 
 
-# Check compatible scripts_container x MONAN-Model: -----------------------------------------------------
+# Check compatible scripts_container x MONAN-Model: -------------------------------------------------
 #----------------------------------------------------------------------------------------------------
 echo ""
 echo "*********************************************************************************"
 echo "* ATTENTION:                                                                    *"
 echo "*********************************************************************************"
-echo "*                    scripts_container / MONAN-Model Compatibility                  *"
+echo "*                 scripts_container / MONAN-Model Compatibility                 *"
 echo "*********************************************************************************"
 echo "*                                                                               *"
-echo "*    scripts_container Version        Compatible MONAN-Model Version                *"
+echo "*    scripts_container Version    Compatible MONAN-Model Version                *"
 echo "*    ---------------------------  --------------------------------              *"
 echo "*    (...)                        (...)                                         *"
 echo "*    1.4.0                        1.4.3-rc                                      *"
@@ -226,25 +226,25 @@ cd $MONANDIR
 source ${STOOLS}/1makeinstall
 chmod a+x make-all.sh
 
+# install monan model
 echo ""
 echo -e  "${GREEN}==>${NC} Installing init_atmosphere_model and atmosphere_model...\n"
 echo ""
-# install monan model
 source ${STOOLS}/1compile_monan
 
-cd ${CONVERT_MPAS_DIR}
+# Install convert_mpas
 echo ""
 echo -e  "${GREEN}==>${NC} Installing convert_mpas...\n"
-# install convert_mpas
+echo ""
 source ${STOOLS}/1compile_convertmpas
 #----------------------------------------------------------------------------------------------------
 
 
-# Copy and verify executable files: -----------------------------------------------------------------
+# Verify all executable files: ----------------------------------------------------------------------
 #----------------------------------------------------------------------------------------------------
-mv ${CONVERT_MPAS_DIR}/convert_mpas ${EXECS}/
-cp ${CONVERT_MPAS_DIR}/VERSION.txt ${EXECS}/CONVMPAS-VERSION.txt
-
+echo ""
+echo "   Verify all executable files..."
+echo "----------------------------------------------------------------------------------------------------"
 all_exec_files=(
     "atmosphere_model"
     "build_tables"
@@ -257,12 +257,12 @@ do
     if [ -s "${EXECS}/${exec_file}" ]; then
         echo ""
         echo -e "${GREEN}==>${NC} ${exec_file} generated successfully and copied to ${EXECS}!"
-        echo ""
     else
         echo -e "${RED}==>${NC} !!! ERROR: ${exec_file} was not generated or is empty. Check build output."
         exit 1
     fi
 done
+echo ""
 #----------------------------------------------------------------------------------------------------
 
 

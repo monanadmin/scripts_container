@@ -1,29 +1,64 @@
 #!/bin/bash
 
-if [ ! -s ${BNDDIR}/gfs.t${YYYYMMDDHHi:8:2}z.pgrb2.0p25.f000.${YYYYMMDDHHi}.grib2 ]
+OPERDIREXP=${OPERDIR}/${EXP}
+BNDDIR=${OPERDIREXP}/0p25/brutos/${YYYYMMDDHHi:0:4}/${YYYYMMDDHHi:4:2}/${YYYYMMDDHHi:6:2}/${YYYYMMDDHHi:8:2}
+# Search for GFS files in the available directories.
+# Priority: IO (Lustre/NetApp) -> GCC MONAN -> DATAIN.
+if [ -s "${OPERDIRLGFS}/${YYYYMMDDHHi:0:4}/${YYYYMMDDHHi:4:2}/${YYYYMMDDHHi:6:2}/${YYYYMMDDHHi:8:2}/gfs.t${YYYYMMDDHHi:8:2}z.pgrb2.0p25.f000.${YYYYMMDDHHi}.grib2" ]
 then
-   if [ ! -s ${GCCCIS}/${YYYYMMDDHHi:0:4}/${YYYYMMDDHHi}/gfs.t${YYYYMMDDHHi:8:2}z.pgrb2.0p25.f000.${YYYYMMDDHHi}.grib2 ]
-   then
-      echo -e "${RED}==>${NC}Condicao de contorno inexistente !"
-      echo -e "${RED}==>${NC}Check ${BNDDIR} or."
-      echo -e "${RED}==>${NC}Check ${GCCCIS}"
-      exit 1
-   else
-      BNDDIR=${GCCCIS}/${YYYYMMDDHHi:0:4}/${YYYYMMDDHHi}
-   fi
+    BNDDIR="${OPERDIRLGFS}/${YYYYMMDDHHi:0:4}/${YYYYMMDDHHi:4:2}/${YYYYMMDDHHi:6:2}/${YYYYMMDDHHi:8:2}"
+elif [ -s "${BNDDIR}/gfs.t${YYYYMMDDHHi:8:2}z.pgrb2.0p25.f000.${YYYYMMDDHHi}.grib2" ]
+then
+   : # File already exists in BNDDIR; keep the current directory.
+elif [ -s "${GCCCIS}/${EXP}/${YYYYMMDDHHi:0:4}/${YYYYMMDDHHi}/gfs.t${YYYYMMDDHHi:8:2}z.pgrb2.0p25.f000.${YYYYMMDDHHi}.grib2" ]
+then
+    BNDDIR="${GCCCIS}/${EXP}/${YYYYMMDDHHi:0:4}/${YYYYMMDDHHi}"
+elif [ -s "${DATAIN}/${EXP}/${YYYYMMDDHHi}/gfs.t${YYYYMMDDHHi:8:2}z.pgrb2.0p25.f000.${YYYYMMDDHHi}.grib2" ]
+then
+    BNDDIR="${DATAIN}/${EXP}/${YYYYMMDDHHi}"
+else
+    echo -e "${RED}==>${NC} Boundary condition file not found! - ${EXP}"
+    echo -e "${RED}==>${NC} Check ${OPERDIRLGFS}"
+    echo -e "${RED}==>${NC} Check ${BNDDIR}"
+    echo -e "${RED}==>${NC} Check ${GCCCIS}/${EXP}"
+    echo -e "${RED}==>${NC} Check ${DATAIN}/${EXP}"
+    exit 1
 fi
 
+echo -e "\n${EXP} folder located at ${BNDDIR}\n"
+
 files_needed=("${DATAIN}/fixed/x1.${RES}.static.nc" "${DATAIN}/fixed/Vtable.${EXP}" "${EXECS}/ungrib.exe" "${BNDDIR}/gfs.t${YYYYMMDDHHi:8:2}z.pgrb2.0p25.f000.${YYYYMMDDHHi}.grib2")
-#files_needed=("${DATAIN}/fixed/x1.${RES}.static.nc" "${DATAIN}/fixed/Vtable.${EXP}" "${BNDDIR}/gfs.t${YYYYMMDDHHi:8:2}z.pgrb2.0p25.f000.${YYYYMMDDHHi}.grib2")    # module load ungrib/4.5
+
 for file in "${files_needed[@]}"
 do
   if [ ! -s "${file}" ]
   then
-    echo -e  "\n${RED}==>${NC} ***** ATTENTION *****\n"
+    echo -e  "\n${RED}==>${NC} ***** ATTENTION *****\n"   
     echo -e  "${RED}==>${NC} [${0}] At least the file ${file} was not generated. \n"
-    exit -1
+    exit 1
   fi
 done
 
+cp -f ${DATAIN}/fixed/x1.${RES}.static.nc ${DIRRUN}
+cp -f ${DATAIN}/fixed/Vtable.${EXP} ${DIRRUN}/Vtable
 cp -f ${EXECS}/ungrib.exe ${DIRRUN}
-cp -f ${BNDDIR}/gfs.t${YYYYMMDDHHi:8:2}z.pgrb2.0p25.f000.${YYYYMMDDHHi}.grib2 ${DATAIN}/${YYYYMMDDHHi}
+cp -f ${SCRIPTS}/namelists/namelist.wps.TEMPLATE ${DIRRUN}/namelist.wps.TEMPLATE
+cp -f ${SCRIPTS}/setenv.bash ${DIRRUN}
+cp -f ${SCRIPTS}/link_grib.csh ${DIRRUN}
+
+if [[ $MODERUN == "R" ]]; then
+   echo -e "Degribbing GFS data for Regional (limited-area) mode – lateral boundary conditions.\n"
+   dt=$((LBCINT / 3600))
+   for ((hour=0; hour<=FCST; hour+=dt)); do
+      hour_fmt=$(printf "%03d" "$hour")
+      echo "Temporarily copying GFS data: gfs.t${YYYYMMDDHHi:8:2}z.pgrb2.0p25.f${hour_fmt}.${YYYYMMDDHHi}.grib2"
+      if ! cp -f ${BNDDIR}/gfs.t${YYYYMMDDHHi:8:2}z.pgrb2.0p25.f${hour_fmt}.${YYYYMMDDHHi}.grib2 ${DATAIN}/${YYYYMMDDHHi}; then
+         echo -e "\n${RED}===>${NC} ERROR: Failed to copy GFS data.\n"
+         exit 1
+      fi
+   done
+elif [[ $MODERUN == "G" ]]; then
+   echo -e "Degribbing GFS data for Global mode – only initial conditions.\n"
+   cp -f ${BNDDIR}/gfs.t${YYYYMMDDHHi:8:2}z.pgrb2.0p25.f000.${YYYYMMDDHHi}.grib2 ${DATAIN}/${YYYYMMDDHHi}
+fi
+

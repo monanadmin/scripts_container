@@ -1,6 +1,6 @@
 #!/bin/bash 
 
-cat << EOF0 > ${DIRRUN}/degrib.bash 
+cat << EOF0 > ${DIRRUN}/degrib_${EXP}.bash 
 #!/bin/bash
 
 ####PBS -l select=<N_nos>:ncpus=<CPUs_por_no>:mpiprocs=<MPI_por_no>:ompthreads=<OMP_por_no>
@@ -9,8 +9,8 @@ cat << EOF0 > ${DIRRUN}/degrib.bash
 #PBS -q ${DEGRIB_QUEUE}
 #PBS -l select=${DEGRIB_nnodes}:ncpus=${DEGRIB_ncpus}:mpiprocs=${DEGRIB_ncpn}:ompthreads=${DEGRIB_nthreads}
 #PBS -l walltime=${DEGRIB_walltime}
-#PBS -o ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs/lbcs.o
-#PBS -e ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs/lbcs.e
+#PBS -o ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs/degrib_${EXP}.o
+#PBS -e ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs/degrib_${EXP}.e
 #PBS -l place=scatter:excl
 #PBS -V
 

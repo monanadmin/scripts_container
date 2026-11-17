@@ -50,9 +50,10 @@ FCST=${4};        #FCST=24
 # Local variables: ----------------------------------------------------------------------------------
 #----------------------------------------------------------------------------------------------------
 start_date=${YYYYMMDDHHi:0:4}-${YYYYMMDDHHi:4:2}-${YYYYMMDDHHi:6:2}_${YYYYMMDDHHi:8:2}:00:00
-OPERDIREXP=${OPERDIR}/${EXP}
-BNDDIR=${OPERDIREXP}/0p25/brutos/${YYYYMMDDHHi:0:4}/${YYYYMMDDHHi:4:2}/${YYYYMMDDHHi:6:2}/${YYYYMMDDHHi:8:2}
-GCCCIS=/p/projetos/monan_adm/monan/CIs/${EXP}
+yyyymmddi=${YYYYMMDDHHi:0:8}
+hhi=${YYYYMMDDHHi:8:2}
+yyyymmddhhf=$(date +"%Y%m%d%H" -d "${yyyymmddi} ${hhi}:00 ${FCST} hours" )
+final_date=${yyyymmddhhf:0:4}-${yyyymmddhhf:4:2}-${yyyymmddhhf:6:2}_${yyyymmddhhf:8:2}:00:00
 export DIRRUN=${DIRHOMED}/run.${YYYYMMDDHHi}; rm -fr ${DIRRUN}; mkdir -p ${DIRRUN}
 #----------------------------------------------------------------------------------------------------
 
@@ -70,7 +71,7 @@ cp -f ${SCRIPTS}/namelists/namelist.wps.TEMPLATE ${DIRRUN}/namelist.wps.TEMPLATE
 
 cp -f ${SCRIPTS}/setenv.bash ${DIRRUN}
 cp -f ${SCRIPTS}/link_grib.csh ${DIRRUN}
-rm -f ${DIRRUN}/degrib.bash 
+rm -f ${DIRRUN}/degrib_${EXP}.bash 
 if [[ "$MODERUN" == "G" ]]; then
    source ${STOOLS}/2makeungrib_Global
 elif [[ "$MODERUN" == "R" ]]; then
@@ -81,7 +82,7 @@ else
    echo -e  "${RED}==>${NC} Exiting script. \n"
    exit 1
 fi
-chmod a+x ${DIRRUN}/degrib.bash
+chmod a+x ${DIRRUN}/degrib_${EXP}.bash
 
 echo -e  "${GREEN}==>${NC} Executing sbatch degrib.bash...\n"
 cd ${DIRRUN}
