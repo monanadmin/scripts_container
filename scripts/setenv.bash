@@ -27,12 +27,12 @@ source ${STOOLS}/setenv
 
 # Standart directories variables: -------------------------------------------------------------------
 #----------------------------------------------------------------------------------------------------
-export DIRHOMES=${SIF_PATH}/scripts_container;       mkdir -p ${DIRHOMES}
-export DIRHOMED=${SIF_PATH}/scripts_container;       mkdir -p ${DIRHOMED}
-export SCRIPTS=${DIRHOMES}/scripts;                  mkdir -p ${SCRIPTS}
-export DATAIN=${DIRHOMED}/datain;                    mkdir -p ${DATAIN}
-export DATAOUT=${DIRHOMED}/dataout;                  mkdir -p ${DATAOUT}
-export SOURCES=${DIRHOMES}/sources;                  mkdir -p ${SOURCES}
-export EXECS=${DIRHOMED}/execs;                      mkdir -p ${EXECS}
+export DIRHOMES=$(dirname "$SCRIPTS");        mkdir -p ${DIRHOMES}
+export DIRHOMED=$(dirname "$SCRIPTS");        mkdir -p ${DIRHOMED}
+export SCRIPTS=${DIRHOMES}/scripts;           mkdir -p ${SCRIPTS}
+export DATAIN=${DIRHOMED}/datain;             mkdir -p ${DATAIN}
+export DATAOUT=${DIRHOMED}/dataout;           mkdir -p ${DATAOUT}
+export SOURCES=${DIRHOMES}/sources;           mkdir -p ${SOURCES}
+export EXECS=${DIRHOMED}/execs;               mkdir -p ${EXECS}
 #----------------------------------------------------------------------------------------------------
 
