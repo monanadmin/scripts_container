@@ -93,8 +93,9 @@ printf -v t_strout "%02d:%02d:%02d" "$h" "$m" "$s"
 #----------------------------------------------------------------------------------------------------
 
 
-# GLOBAL meshes - Calculating default parameters for different resolutions: -------------------------
+# Calculating default parameters for different resolutions: -----------------------------------------
 #----------------------------------------------------------------------------------------------------
+# GLOBAL meshes
 if [[ "$RES" == "2562" ]]; then        #480Km
    CONFIG_DT=1800
 elif [[ "$RES" == "10242" ]]; then     #240Km
@@ -115,7 +116,8 @@ elif [[ "$RES" == "23592962" ]]; then  #5km
    CONFIG_DT=30.0
 elif [[ "$RES" == "65536002" ]]; then  #3Km
    CONFIG_DT=18.0
-# regional mesh
+
+# REGIONAL mesh
 elif [[ "$RES" == "30km_LAC" ]]; then #30 km (AMS + Caribe)
    CONFIG_DT=180.0
 elif [[ "$RES" == "10km_LAC" ]]; then #10 km (AMS + Caribe)
@@ -123,6 +125,7 @@ elif [[ "$RES" == "10km_LAC" ]]; then #10 km (AMS + Caribe)
 elif [[ "$RES" == "05km_LAC" ]]; then #5 km (AMS + Caribe)
    CONFIG_DT=30.0
 else
+
     # Calculating CONFIG_DT for personalized mesh.
     echo -e "Calculating CONFIG_DT for personalized mesh... \n"
     MESH_RES_RAD=$(ncdump -v nominalMinDc ${DATAIN}/fixed/x1.${RES}.grid.nc | grep "nominalMinDc =" | awk '{print $3}')

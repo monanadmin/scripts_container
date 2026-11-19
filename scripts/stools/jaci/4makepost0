@@ -2,19 +2,24 @@
 
 cat > ${DIRRUN}/PostAtmos_node.${node}.sh <<EOSH
 #!/bin/bash
+
+####PBS -l select=<N_nos>:ncpus=<CPUs_por_no>:mpiprocs=<MPI_por_no>:ompthreads=<OMP_por_no>                                                                                                                                
+
 #PBS -N MO.Pos${node}
 #PBS -q ${POST_QUEUE}
-#PBS -l select=1:ncpus=1:mpiprocs=1
-#PBS -l place=scatter
-#PBS -l place=excl
+#PBS -l select=${POST_nnodes}:ncpus=${POST_ncpus}:mpiprocs=${POST_ncpn}:ompthreads=${POST_nthreads}
 #PBS -l walltime=${POST_walltime}
-#PBS -j oe
-#PBS -o ${DATAOUT}/${YYYYMMDDHHi}/Post/logs/PostAtmos_node.${node}.o$PBS_JOBID
-#PBS -e ${DATAOUT}/${YYYYMMDDHHi}/Post/logs/PostAtmos_node.${node}.e$PBS_JOBID
+#PBS -o ${DATAOUT}/${YYYYMMDDHHi}/Post/logs/PostAtmos_node.${node}.o
+#PBS -e ${DATAOUT}/${YYYYMMDDHHi}/Post/logs/PostAtmos_node.${node}.e
+#PBS -l place=scatter:excl
+#PBS -V
 
 
+cd ${DIRRUN}
 . ${SCRIPTS}/setenv.bash
 
+#echo "-- SLURM_JOB_ID: \$SLURM_JOB_ID"
+echo "-- PBS_JOBID: \$PBS_JOBID"
 
 # Saving important files to the logs directory:
 cp -f ${EXECS}/CONVMPAS-VERSION.txt ${DATAOUT}/${YYYYMMDDHHi}/Post
