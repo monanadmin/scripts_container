@@ -30,17 +30,17 @@ RES=30km_LAC_REG           # (RES_MESH)
 			   #                                        10km_LAC_REG = 10km Latin America and the Caribbean (excl. Mexico);
 			   #                                        05km_LAC_REG = 05km Latin America and the Caribbean (excl. Mexico).
 			   #                                        <your_mesh> saved in 'datain/fixed' (x1.<your_mesh>).
-YYYYMMDDHHi=2026080100     # (LABELI) Check the available dates for the initial and boundary conditions (regional), especially for ERA5 data.
+YYYYMMDDHHi=2025102500     # (LABELI) Check the available dates for the initial and boundary conditions (regional), especially for ERA5 data.
 FCST=24                    # (FCST).
 #----------------------------------------------------------------------------------------------------
 
 
 # STEP 1: Installing and compiling the A-MONAN model and utility programs:
-time ${SCRIPTS}/1.install_monan.bash ${github_link} ${monan_branch} ${convertmpas_branch}
+#time ${SCRIPTS}/1.install_monan.bash ${github_link} ${monan_branch} ${convertmpas_branch}
 #exit
 
 # STEP 2: Executing the pre-processing fase. Preparing all CI/CC files needed:
-time ${SCRIPTS}/2.pre_processing.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST} 
+#time ${SCRIPTS}/2.pre_processing.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST} 
 #exit
 
 # STEP 3: Executing the Model run:

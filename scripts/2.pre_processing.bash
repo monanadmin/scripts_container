@@ -218,14 +218,10 @@ fi
 
 # Degrib phase: -------------------------------------------------------------------------------------
 #----------------------------------------------------------------------------------------------------
-if [[ ${EXP} == "GFS" ]]
+if [[ ${EXP} == "GFS" || ${EXP} == "ERA" ]]
 then
    echo -e  "${GREEN}==>${NC} Submitting Degrib for GFS data...\n"
-   time ./make_degrib_GFS.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST} || exit 1
-elif [[ ${EXP} == "ERA" ]]
-then
-   echo -e  "${GREEN}==>${NC} Submitting Degrib for ERA data...\n"
-   time ./make_degrib_ERA5.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST} || exit 1
+   time ./make_degrib.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST} || exit 1
 else
    echo -e  "\n${RED}==>${NC} ***** ATTENTION *****\n"
    echo -e  "${RED}==>${NC} Degrib phase fails! Please select EXP=GFS or EXP=ERA.\n"

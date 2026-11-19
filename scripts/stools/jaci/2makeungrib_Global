@@ -37,7 +37,8 @@ rm -f GRIBFILE.* namelist.wps
 sed -e "s,#LABELI#,${start_date},g;s,#LABELF#,${start_date},g;s,#LBCINT#,${LBCINT},g;s,#PREFIX#,${EXP},g" \
        ${DIRRUN}/namelist.wps.TEMPLATE > ${DIRRUN}/namelist.wps
 
-./link_grib.csh ${DATAIN}/${YYYYMMDDHHi}/gfs.t${YYYYMMDDHHi:8:2}z.pgrb2.0p25.f000.${YYYYMMDDHHi}.grib2
+[[ ${EXP} == "GFS" ]] && ./link_grib.csh "${DATAIN}/${YYYYMMDDHHi}/gfs.t${YYYYMMDDHHi:8:2}z.pgrb2.0p25.f000.${YYYYMMDDHHi}.grib2"
+[[ ${EXP} == "ERA" ]] && ./link_grib.csh "${DATAIN}/${YYYYMMDDHHi}/era5.*.${YYYYMMDDHHi}.grib"
 
 chmod 755 *
 echo ""
@@ -62,8 +63,9 @@ fi
 #
    mv ungrib.log ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs/ungrib.${start_date}.log
    mv namelist.wps ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs/namelist.${start_date}.wps
-   mv GFS\:${start_date:0:13} ${DATAOUT}/${YYYYMMDDHHi}/Pre
+   mv ${EXP}\:${start_date:0:13} ${DATAOUT}/${YYYYMMDDHHi}/Pre
    rm -fr ${DATAIN}/${YYYYMMDDHHi}
+
 echo "End of degrib Job"
 
 
