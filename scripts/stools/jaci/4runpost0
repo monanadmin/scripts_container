@@ -1,4 +1,20 @@
 #!/bin/bash
 
-jobid[${node}]=$(qsub -W block=true ${DIRRUN}/PostAtmos_node.${node}.sh | cut -d '.' -f1)
+echo -e "${GREEN}==>${NC} qsub PostAtmos_node.${node}.sh...\n"
+cd ${DIRRUN}
+
+JOBID=$(qsub -W depend=${dependency} -W block=true ${DIRRUN}/PostAtmos_node.${node}.sh)
+JOBID=${JOBID%%.*}
+
+mv ${DATAOUT}/${YYYYMMDDHHi}/Post/logs/PostAtmos_node.${node}.o ${DATAOUT}/${YYYYMMDDHHi}/Post/logs/PostAtmos_node.${node}.o.${JOBID}
+mv ${DATAOUT}/${YYYYMMDDHHi}/Post/logs/PostAtmos_node.${node}.e ${DATAOUT}/${YYYYMMDDHHi}/Post/logs/PostAtmos_node.${node}.e.${JOBID}
+
+echo "total_nodes => ${total_nodes}"
+for ((n=1 ; n<total_nodes ; n++))
+do
+   echo "n => ${n}"
+   echo "jobid => ${jobid[${n}]}"
+   mv ${DATAOUT}/${YYYYMMDDHHi}/Post/logs/PostAtmos_node."${n}".o ${DATAOUT}/${YYYYMMDDHHi}/Post/logs/PostAtmos_node."${n}".o.${jobid[${n}]}
+   mv ${DATAOUT}/${YYYYMMDDHHi}/Post/logs/PostAtmos_node."${n}".e ${DATAOUT}/${YYYYMMDDHHi}/Post/logs/PostAtmos_node."${n}".e.${jobid[${n}]}
+done
 

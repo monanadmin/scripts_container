@@ -83,23 +83,6 @@ t_strouthor=$(echo "scale=4; (${t_stroutsec}/60)/60" | ${BC})
 #----------------------------------------------------------------------------------------------------
 
 
-# Set G (global) or R (regional) for MONAN_DIAG output filenames: -----------------------------------
-#----------------------------------------------------------------------------------------------------
-if [[ $MODERUN == "R" ]]; then
-   RORG=R
-   echo -e "Post is running in Regional (limited-area) mode.\n"
-elif [[ $MODERUN == "G" ]]; then
-   RORG=G
-   echo -e "Post is running in Global mode.\n"
-else
-   echo -e  "\n${RED}==>${NC} ***** ATTENTION *****\n"
-   echo -e  "${RED}==>${NC} Post fails! Please select MODERUN=R (Regional) or MODERUN=G (Global) in 'setenv.bash'.\n"
-   echo -e  "${RED}==>${NC} Exiting script. \n"
-   exit 1
-fi
-#----------------------------------------------------------------------------------------------------
-
-
 # Format to HH:MM:SS t_strout (output_interval)
 IFS=":" read -r h m s <<< "${t_strout}"
 printf -v t_strout "%02d:%02d:%02d" "$h" "$m" "$s"
@@ -241,15 +224,6 @@ fi
 #----------------------------------------------------------------------------------------------------
 
 
-# NLEVS get from t_iso_levels in Registry_isobaric.xml:
-if [ -s ${MONANDIR}/src/core_atmosphere/diagnostics/Registry_isobaric.xml ]
-then
-   NLEV=$(grep "t_iso_levels" ${MONANDIR}/src/core_atmosphere/diagnostics/Registry_isobaric.xml | grep definition | cut -d\" -f4)
-else
-   NLEV=18
-fi
-
-
 # Verify required files: ----------------------------------------------------------------------------
 #----------------------------------------------------------------------------------------------------
 files_needed=("${SCRIPTS}/namelists/include_fields.diag${VARTABLE}" "${SCRIPTS}/namelists/convert_mpas.nml" "${SCRIPTS}/namelists/target_domain.TEMPLATE" "${EXECS}/convert_mpas" "${DATAOUT}/${YYYYMMDDHHi}/Pre/x1.${RES}.init.nc")
@@ -265,27 +239,27 @@ done
 #----------------------------------------------------------------------------------------------------
 
 
-# Post phase: ---------------------------------------------------------------------------------------
+# Post phase - Generate NetCDF files on the lat-lon grid: -------------------------------------------
 #----------------------------------------------------------------------------------------------------
-# Captura quantos arquivos do modelo tiverem para serem pos-processados e
-# quando nos serao necessarios para executar ${maxpostpernode} convert_mpas por no:
-#nfiles=$(ls -l ${DATAOUT}/${YYYYMMDDHHi}/Model/MONAN*nc | wc -l)
-# from streams.atmosphere.TEMPLATE in diagnostics the output_interval is flexible
+
+# Determine the number of model output files to be post-processed and
+# the number of convert_mpas executions per node:
+# nfiles=$(ls -l ${DATAOUT}/${YYYYMMDDHHi}/Model/MONAN*nc | wc -l)
+
+# Set the DIAG output interval used to determine the number of post-processing tasks:
 output_interval=${t_strouthor}
-#nfiles=FCST/output_interval + 1(time zero file)
+# nfiles=FCST/output_interval + 1(time zero file)
 nfiles=$(echo "$FCST/$output_interval + 1" | ${BC})
 echo "${nfiles} post to submit."
 echo "Max ${maxpostpernode} submits per nodes."
 how_many_nodes ${nfiles} ${maxpostpernode}
 
-# Cria os diretorios e arquivos/links para cada saida do convert_mpas:
+# Create directories and configuration files for each convert_mpas output:
 cd ${DIRRUN}
-#cp -f ${SCRIPTS}/setenv.bash ${DIRRUN}
 for ii in $(seq 1 ${nfiles})
 do
    i=$(printf "%04d" ${ii})
    mkdir -p ${DIRRUN}/dir.${i}
-   #cp -f ${SCRIPTS}/setenv.bash ${DIRRUN}/dir.${i}
    cp -f ${SCRIPTS}/namelists/include_fields.diag${VARTABLE}  ${DIRRUN}/dir.${i}/include_fields.diag${VARTABLE}
    cp -f ${DIRRUN}/dir.${i}/include_fields.diag${VARTABLE} ${DIRRUN}/dir.${i}/include_fields
    sed -e "s,#NISOLEV#,${NLEV},g;s,#NMODELLEV#,${N_MODEL_LEV},g" \
@@ -297,7 +271,7 @@ done
 
 cd ${DIRRUN}
 
-# Laco para criar os arquivos de submissao com os blocos de convertmpas para cada node:
+# Loop to generate submission scripts with convert_mpas tasks assigned to each node:
 node=1
 inicio=1   
 fim=$((maxpostpernode <= nfiles ? maxpostpernode : nfiles))
@@ -318,24 +292,33 @@ do
    sleep 5
 done
 
+total_nodes=${node}
 
-
-
-# Dependencias JobId:
+# Build job dependencies using JobIDs:
 dependency="afterok"
 for job_id in "${jobid[@]}"
 do
    dependency="${dependency}:${job_id}"
 done
 
-
-# Script final , para conferir todos os arquivos, criar o template final  e apagar o diretorio DIRRUN
+# Final script: verify all output files, generate the final template, and remove DIRRUN
 node=0
 rm -f ${DIRRUN}/PostAtmos_node.${node}.sh
 source ${STOOLS}/4makepost0
 chmod a+x ${DIRRUN}/PostAtmos_node.${node}.sh
 source ${STOOLS}/4runpost0
+#----------------------------------------------------------------------------------------------------
 
-#CR: passar este scriptpara dentro do script PostAtmos_node.0.sh, submetido.
+
+# Post phase - Generate GrADS control (.ctl) file: --------------------------------------------------
+#----------------------------------------------------------------------------------------------------
 cd ${SCRIPTS}
 time ${SCRIPTS}/make_template.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST}
+#----------------------------------------------------------------------------------------------------
+
+
+# Set permissions for post-processing output files: -------------------------------------------------
+#----------------------------------------------------------------------------------------------------
+chmod -R 755 ${DATAOUT}/${YYYYMMDDHHi}/Post/*
+#----------------------------------------------------------------------------------------------------
+

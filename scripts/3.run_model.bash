@@ -155,20 +155,8 @@ fi
 
 # Setting configuration to apply or not lateral boundary conditions and output filename: ------------
 #----------------------------------------------------------------------------------------------------
-if [[ $MODERUN == "R" ]]; then
-   APPLY_LBCS=true
-   echo -e "Model is running in Regional (limited-area) mode.\n"
-   RORG=R
-elif [[ $MODERUN == "G" ]]; then
-   APPLY_LBCS=false
-   echo -e "Model is running in Global mode.\n"
-   RORG=G
-else
-   echo -e  "\n${RED}==>${NC} ***** ATTENTION *****\n"
-   echo -e  "${RED}==>${NC} Atmosphere phase fails! Please select MODERUN=R (Regional) or MODERUN=G (Global) in 'setenv.bash' so that MONAN knows whether to read or not lateral boundary conditions.\n"
-   echo -e  "${RED}==>${NC} Exiting script. \n"
-   exit 1
-fi
+[[ $MODERUN == "R" ]] && APPLY_LBCS=true
+[[ $MODERUN == "G" ]] && APPLY_LBCS=false
 #----------------------------------------------------------------------------------------------------
 
 
@@ -265,7 +253,7 @@ then
 s,#CONFIG_DT#,${CONFIG_DT},g;s,#CONFIG_LEN_DISP#,${CONFIG_LEN_DISP},g;s,#CONFIG_CONV_INTERVAL#,${CONFIG_CONV_INTERVAL},g;s,#APPLY_LBCS#,${APPLY_LBCS},g" \
    ${SCRIPTS}/namelists/namelist.atmosphere.TEMPLATE > ${DIRRUN}/namelist.atmosphere
    
-   sed -e "s,#RES#,${RES},g;s,#RORG#,${RORG},g;s,#LBCINT#,${LBCINT},g;s,#CIORIG#,${EXP},g;s,#LABELI#,${YYYYMMDDHHi},g;s,#NLEV#,${NLEV},g" \
+   sed -e "s,#RES#,${RES},g;s,#RORG#,${MODERUN},g;s,#LBCINT#,${LBCINT},g;s,#CIORIG#,${EXP},g;s,#LABELI#,${YYYYMMDDHHi},g;s,#NLEV#,${NLEV},g" \
    ${SCRIPTS}/namelists/streams.atmosphere.TEMPLATE > ${DIRRUN}/streams.atmosphere
 fi
 cp -f ${SCRIPTS}/namelists/stream_list.atmosphere.output ${DIRRUN}
@@ -293,7 +281,7 @@ do
    i=$(printf "%04d" ${ii})
    hh=${YYYYMMDDHHi:8:2}
    currentdate=$(date -d "${YYYYMMDDHHi:0:8} ${hh}:00:00 $(echo "(${i}-1)*${t_strout:0:2}" | ${BC}) hours $(echo "(${i}-1)*${t_strout:3:2}" | ${BC}) minutes $(echo "(${i}-1)*${t_strout:6:2}" | ${BC}) seconds" +"%Y%m%d%H.%M.%S")
-   file=MONAN_DIAG_${RORG}_MOD_${EXP}_${YYYYMMDDHHi}_${currentdate}.x${RES}L55.nc
+   file=MONAN_DIAG_${MODERUN}_MOD_${EXP}_${YYYYMMDDHHi}_${currentdate}.x${RES}L55.nc
 
    if [ ! -s ${DATAOUT}/${YYYYMMDDHHi}/Model/${file} ]
    then

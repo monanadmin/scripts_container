@@ -36,3 +36,18 @@ export SOURCES=${DIRHOMES}/sources;           mkdir -p ${SOURCES}
 export EXECS=${DIRHOMED}/execs;               mkdir -p ${EXECS}
 #----------------------------------------------------------------------------------------------------
 
+
+# Validate the model run mode (Regional or Global): -------------------------------------------------
+#----------------------------------------------------------------------------------------------------
+if [[ $MODERUN == "R" ]]; then
+   echo -e "Post is running in Regional (limited-area) mode.\n"
+elif [[ $MODERUN == "G" ]]; then
+   echo -e "Post is running in Global mode.\n"
+else
+   echo -e  "\n${RED}==>${NC} ***** ATTENTION *****\n"
+   echo -e  "${RED}==>${NC} Post fails! Please select MODERUN=R (Regional) or MODERUN=G (Global) in 'setenv.bash'.\n"
+   echo -e  "${RED}==>${NC} Exiting script. \n"
+   exit 1
+fi
+#----------------------------------------------------------------------------------------------------
+
