@@ -1,0 +1,49 @@
+#!/bin/bash
+umask 022
+
+cat << EOF0 > ${DIRRUN}/lbcs.bash 
+#!/bin/bash
+
+####PBS -l select=<N_nos>:ncpus=<CPUs_por_no>:mpiprocs=<MPI_por_no>:ompthreads=<OMP_por_no>
+
+#PBS -N ${LBCS_jobname}
+#PBS -q ${LBCS_QUEUE}
+#PBS -l select=${LBCS_nnodes}:ncpus=${LBCS_ncpus}:mpiprocs=${LBCS_ncpn}:ompthreads=${LBCS_nthreads}
+#PBS -l walltime=${LBCS_walltime}
+#PBS -o ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs/lbcs.o
+#PBS -e ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs/lbcs.e
+#PBS -l place=scatter:excl
+#PBS -V
+
+
+export executable=init_atmosphere_model
+
+ulimit -c unlimited
+ulimit -v unlimited
+ulimit -s unlimited
+
+. ${SCRIPTS}/setenv.bash
+
+cd ${DIRRUN}
+
+echo "-- PBS_JOBID: \$PBS_JOBID"
+
+export CURRENT_HOST=\$(cat \$PBS_NODEFILE)
+export HOSTFILE=${DIRRUN}/hostfile
+echo "\${CURRENT_HOST}" | sed "s,\..*$,," > \${HOSTFILE}
+
+date
+time singularity --quiet exec --bind ${SCRIPTS}/.. --bind /home ${SINGULARITY} bash -c "
+   export OMP_NUM_THREADS=${LBCS_nthreads}
+   time mpirun --hostfile \${HOSTFILE} --ppn ${LBCS_ncpn} -np ${LBCS_ncores} -bind-to core:${INITATMOS_nthreads} -map-by core ./\${executable}
+"
+date
+
+mv ${DIRRUN}/log.init_atmosphere.0000.out ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs/log.init_atmosphere.0000.${RES}.lbcs.nc.${YYYYMMDDHHi}.out
+mv ${DIRRUN}/namelist.init_atmosphere ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs/namelist.init_atmosphere.lbcs
+mv ${DIRRUN}/streams.init_atmosphere ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs/streams.init_atmosphere.lbcs
+mv ${DIRRUN}/x1.${RES}.init.nc ${DATAOUT}/${YYYYMMDDHHi}/Pre
+mv ${DIRRUN}/lbc*.nc ${DATAOUT}/${YYYYMMDDHHi}/Pre
+
+
+EOF0

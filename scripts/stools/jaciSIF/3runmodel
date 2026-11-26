@@ -1,4 +1,12 @@
 #!/bin/bash
 
-qsub -W block=true ${DIRRUN}/model.bash
-#qsub -Wblock=true ${DIRRUN}/model.bash
+echo -e  "${GREEN}==>${NC} Submitting MONAN atmosphere model and waiting for finish before exit... \n"
+echo -e  "${GREEN}==>${NC} qsub model.bash...\n"
+cd ${DIRRUN}
+
+JOBID=$(qsub -W block=true ${DIRRUN}/model.bash)
+JOBID=${JOBID%%.*}
+
+mv ${DATAOUT}/${YYYYMMDDHHi}/Model/logs/model.bash.o ${DATAOUT}/${YYYYMMDDHHi}/Model/logs/model.bash.o.${JOBID}
+mv ${DATAOUT}/${YYYYMMDDHHi}/Model/logs/model.bash.e ${DATAOUT}/${YYYYMMDDHHi}/Model/logs/model.bash.e.${JOBID}
+

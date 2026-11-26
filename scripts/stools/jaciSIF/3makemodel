@@ -2,16 +2,17 @@
 
 cat << EOF0 > ${DIRRUN}/model.bash 
 #!/bin/bash
+
+####PBS -l select=<N_nos>:ncpus=<CPUs_por_no>:mpiprocs=<MPI_por_no>:ompthreads=<OMP_por_no>
+
 #PBS -N ${MODEL_jobname}
 #PBS -q ${MODEL_QUEUE}
-##PBS -l select=${MODEL_nnodes}:ncpus=${MODEL_ncpn}:mpiprocs=${MODEL_ncpn}
-#PBS -l select=${MODEL_nnodes}:ncpus=${MODEL_ncpn}
-#PBS -l place=scatter
-#PBS -l place=excl
+#PBS -l select=${MODEL_nnodes}:ncpus=${MODEL_ncpus}:mpiprocs=${MODEL_ncpn}:ompthreads=${MODEL_nthreads}
 #PBS -l walltime=${MODEL_walltime}
-#PBS -j oe
-#PBS -o ${DATAOUT}/${YYYYMMDDHHi}/Model/logs/model.bash.o$PBS_JOBID
-#PBS -e ${DATAOUT}/${YYYYMMDDHHi}/Model/logs/model.bash.e$PBS_JOBID
+#PBS -o ${DATAOUT}/${YYYYMMDDHHi}/Model/logs/model.bash.o
+#PBS -e ${DATAOUT}/${YYYYMMDDHHi}/Model/logs/model.bash.e
+#PBS -l place=scatter:excl
+#PBS -V
 
 
 export executable=atmosphere_model
@@ -25,17 +26,25 @@ ulimit -s unlimited
 cd ${DIRRUN}
 chmod 775 *
 
+echo "-- PBS_JOBID: \$PBS_JOBID"
 
 export CURRENT_HOST=\$(cat \$PBS_NODEFILE)
 export HOSTFILE=${DIRRUN}/hostfile
 echo "\${CURRENT_HOST}" | sed "s,\..*$,," > \${HOSTFILE}
 
 date
-which singularity
+beg_secs=\`date +"%s"\`
+
 time singularity --quiet exec --bind ${SCRIPTS}/.. ${SINGULARITY} bash -c "
-   mpirun -np ${MODEL_ncores} --hostfile \${HOSTFILE} ./\${executable}
+   export OMP_NUM_THREADS=${INITATMOS_nthreads}
+   time mpirun --hostfile \${HOSTFILE} --ppn ${MODEL_ncpn} -np ${MODEL_ncores} -bind-to core:${INITATMOS_nthreads} -map-by core ./\${executable}
 "
+
 date
+end_secs=\`date +"%s"\`
+
+let wallsecs=\$end_secs-\$beg_secs
+echo "MONAN time taken by run in seconds is " \$wallsecs
 
 
 #

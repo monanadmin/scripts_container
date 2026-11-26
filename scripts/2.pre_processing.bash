@@ -248,6 +248,7 @@ fi
 # LBCs phase: ---------------------------------------------------------------------------------------
 #----------------------------------------------------------------------------------------------------
 if [[ $MODERUN == "R" ]]; then
+   echo -e  "\n${GREEN}==>${NC} Submitting LBCs (lateral boundary conditions) script...\n"
    time ./make_lbcs.bash ${EXP} ${RES} ${YYYYMMDDHHi} ${FCST} || exit 1
 elif [[ $MODERUN == "G" ]]; then
    : # it does not need the LBC (lateral boundary conditions)

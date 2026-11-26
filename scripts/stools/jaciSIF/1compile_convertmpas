@@ -1,6 +1,26 @@
 #!/bin/bash
 
+. ${SCRIPTS}/setenv.bash
+
+echo ""
+echo -e  "${GREEN}==>${NC} Moduling environment for convert_mpas...\n"
+
+cd ${CONVERT_MPAS_DIR}
+
 singularity --quiet exec --bind ${SCRIPTS}/.. --bind /home ${SINGULARITY} bash -l -c '
    make clean
    make  2>&1 | tee make.convert.output
 '
+
+cp ${CONVERT_MPAS_DIR}/convert_mpas ${EXECS}/
+cp ${CONVERT_MPAS_DIR}/VERSION.txt ${EXECS}/CONVMPAS-VERSION.txt
+
+if [ -s "${EXECS}/convert_mpas" ] ; then
+    echo ""
+    echo -e "${GREEN}==>${NC} File convert_mpas generated Sucessfully in ${CONVERT_MPAS_DIR} and copied to ${EXECS} !"
+    echo
+else
+    echo -e "${RED}==>${NC} !!! An error occurred during convert_mpas build. Check output"
+    exit 1
+fi
+

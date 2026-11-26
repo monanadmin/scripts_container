@@ -1,4 +1,11 @@
 #!/bin/bash
 
-qsub -W block=true ${DIRRUN}/degrib.bash
-#qsub -Wblock=true ${DIRRUN}/degrib.bash
+echo -e  "\n${GREEN}==>${NC} qsub degrib_${EXP}.bash...\n"
+cd ${DIRRUN}
+
+JOBID=$(qsub -W block=true ${DIRRUN}/degrib_${EXP}.bash)
+JOBID=${JOBID%%.*}
+
+mv ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs/degrib_${EXP}.o ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs/degrib_${EXP}.o.${JOBID}
+mv ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs/degrib_${EXP}.e ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs/degrib_${EXP}.e.${JOBID}
+

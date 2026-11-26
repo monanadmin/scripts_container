@@ -2,15 +2,17 @@
 
 cat << EOF0 > ${DIRRUN}/static.bash
 #!/bin/bash
+
+####PBS -l select=<N_nos>:ncpus=<CPUs_por_no>:mpiprocs=<MPI_por_no>:ompthreads=<OMP_por_no>
+
 #PBS -N ${STATIC_jobname}
 #PBS -q ${STATIC_QUEUE}
-#PBS -l select=${STATIC_nnodes}:ncpus=${STATIC_ncpn}:mpiprocs=${STATIC_ncpn}
-#PBS -l place=scatter
-#PBS -l place=excl
+#PBS -l select=${STATIC_nnodes}:ncpus=${STATIC_ncpus}:mpiprocs=${STATIC_ncpn}:ompthreads=${STATIC_nthreads}
 #PBS -l walltime=${STATIC_walltime}
-#PBS -j oe
-#PBS -o ${DATAOUT}/logs/static.bash.o${PBS_JOBID}
-#PBS -e ${DATAOUT}/logs/static.bash.e${PBS_JOBID}
+#PBS -o ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs/static.bash.o
+#PBS -e ${DATAOUT}/${YYYYMMDDHHi}/Pre/logs/static.bash.e
+#PBS -l place=scatter:excl
+#PBS -V
 
 
 export executable=init_atmosphere_model
@@ -30,7 +32,8 @@ echo "\${CURRENT_HOST}" | sed "s,\..*$,," > \${HOSTFILE}
 
 date
 time singularity --quiet exec --bind ${SCRIPTS}/.. --bind /home ${SINGULARITY} bash -c "
-   mpirun -np ${STATIC_ncores} --hostfile \${HOSTFILE} ./\${executable}
+   export OMP_NUM_THREADS=${STATIC_nthreads}
+   time mpirun --hostfile \${HOSTFILE} --ppn ${STATIC_ncpn} -np ${STATIC_ncores} -bind-to core:${STATIC_nthreads} -map-by core ./\${executable}
 "
 date
 

@@ -1,0 +1,5 @@
+#!/bin/bash
+
+singularity --quiet exec --bind ${SCRIPTS}/.. --bind /home ${SINGULARITY} bash -c '
+   ncdump -v nominalMinDc ${DATAIN}/fixed/x1.${RES}.grid.nc | grep "nominalMinDc =" | awk "{print $3}"
+'

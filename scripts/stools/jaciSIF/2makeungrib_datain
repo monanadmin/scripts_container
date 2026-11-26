@@ -1,24 +1,52 @@
 #!/bin/bash
 
-if [ ! -e "${DATAIN}/${YYYYMMDDHHi}/gfs.t00z.pgrb2.0p25.f000.${YYYYMMDDHHi}.grib2" ]; then
-   if wget "https://dataserver.cptec.inpe.br/dataserver_dimnt/monan/CONTAINER_DATA/CIs/${EXP}/${YYYYMMDDHHi:0:4}/${YYYYMMDDHHi}/gfs.t00z.pgrb2.0p25.f000.${YYYYMMDDHHi}.grib2" \
-            -O "${DATAIN}/${YYYYMMDDHHi}/gfs.t00z.pgrb2.0p25.f000.${YYYYMMDDHHi}.grib2"; then
-        echo "wget OK!"
-    else
-        echo "wget error!"
-        echo "Link: https://dataserver.cptec.inpe.br/dataserver_dimnt/monan/CONTAINER_DATA/CIs/${EXP}/${YYYYMMDDHHi:0:4}/${YYYYMMDDHHi}/gfs.t00z.pgrb2.0p25.f000.${YYYYMMDDHHi}.grib2"
-        exit 1
-    fi
+# Degrib phase - get GFS analysis: ------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
+if [[ ${EXP} == "GFS" ]]; then
+
+   files_needed=("${DATAIN}/fixed/x1.${RES}.static.nc" "${DATAIN}/fixed/Vtable.${EXP}" "${SCRIPTS}/namelists/namelist.wps.TEMPLATE" "${SCRIPTS}/link_grib.csh")
+
+   for file in "${files_needed[@]}"
+   do
+      if [ ! -s "${file}" ]
+      then
+         echo -e  "\n${RED}==>${NC} ***** ATTENTION *****\n"
+         echo -e  "${RED}==>${NC} [${0}] At least the file ${file} was not generated. \n"
+         exit 1
+      fi
+   done
+
+   cp -f ${DATAIN}/fixed/x1.${RES}.static.nc ${DIRRUN}
+   cp -f ${DATAIN}/fixed/Vtable.${EXP} ${DIRRUN}/Vtable
+   cp -f ${SCRIPTS}/namelists/namelist.wps.TEMPLATE ${DIRRUN}/namelist.wps.TEMPLATE
+   cp -f ${SCRIPTS}/link_grib.csh ${DIRRUN}
+
+   if [[ $MODERUN == "R" ]]; then
+      echo -e "Degribbing GFS data for Regional (limited-area) mode – lateral boundary conditions.\n"
+      dt=$((LBCINT / 3600))
+      for ((hour=0; hour<=FCST; hour+=dt)); do
+         hour_fmt=$(printf "%03d" "$hour")
+         echo "Temporarily copying GFS data: gfs.t${YYYYMMDDHHi:8:2}z.pgrb2.0p25.f${hour_fmt}.${YYYYMMDDHHi}.grib2"
+         URL_GRIB2="https://dataserver.cptec.inpe.br/dataserver_dimnt/monan/CONTAINER_DATA/CIs/${EXP}/${YYYYMMDDHHi:0:4}/${YYYYMMDDHHi}/gfs.t${YYYYMMDDHHi:8:2}z.pgrb2.0p25.f${hour_fmt}.${YYYYMMDDHHi}.grib2"
+	 if wget "${URL_GRIB2}" -O "${DATAIN}/${YYYYMMDDHHi}/gfs.t${YYYYMMDDHHi:8:2}z.pgrb2.0p25.f${hour_fmt}.${YYYYMMDDHHi}.grib2"; then
+	    echo -e  "\n${GREEN}==>${NC} Download OK! ${URL_GRIB2}\n"
+	 else
+            echo -e "\n${RED}===>${NC} ERROR: Failed to copy GFS data.\n"
+            exit 1
+         fi
+      done
+   elif [[ $MODERUN == "G" ]]; then
+      echo -e "Degribbing GFS data for Global mode – only initial conditions.\n"
+      URL_GRIB2="https://dataserver.cptec.inpe.br/dataserver_dimnt/monan/CONTAINER_DATA/CIs/${EXP}/${YYYYMMDDHHi:0:4}/${YYYYMMDDHHi}/gfs.t00z.pgrb2.0p25.f000.${YYYYMMDDHHi}.grib2"
+      if [ ! -e "${DATAIN}/${YYYYMMDDHHi}/gfs.t00z.pgrb2.0p25.f000.${YYYYMMDDHHi}.grib2" ]; then
+         if wget "${URL_GRIB2}" -O "${DATAIN}/${YYYYMMDDHHi}/gfs.t00z.pgrb2.0p25.f000.${YYYYMMDDHHi}.grib2"; then
+	    echo -e  "\n${GREEN}==>${NC} Download OK! ${URL_GRIB2}\n"
+         else
+            echo "wget error!"
+            echo "Link: ${URL_GRIB2}"
+            exit 1
+         fi
+      fi
+   fi
 fi
-
-files_needed=("${DATAIN}/fixed/x1.${RES}.static.nc" "${DATAIN}/fixed/Vtable.${EXP}" "${DATAIN}/${YYYYMMDDHHi}/gfs.t${YYYYMMDDHHi:8:2}z.pgrb2.0p25.f000.${YYYYMMDDHHi}.grib2")
-for file in "${files_needed[@]}"
-do
-  if [ ! -s "${file}" ]
-  then
-    echo -e  "\n${RED}==>${NC} ***** ATTENTION *****\n"
-    echo -e  "${RED}==>${NC} [${0}] At least the file ${file} was not generated. \n"
-    exit -1
-  fi
-done
-
+#----------------------------------------------------------------------------------------------------

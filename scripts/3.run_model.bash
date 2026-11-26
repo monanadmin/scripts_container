@@ -118,17 +118,18 @@ elif [[ "$RES" == "65536002" ]]; then  #3Km
    CONFIG_DT=18.0
 
 # REGIONAL mesh
-elif [[ "$RES" == "30km_LAC" ]]; then #30 km (AMS + Caribe)
+elif [[ "$RES" == "30km_LAC_REG" ]]; then #30 km (AMS + Caribe)
    CONFIG_DT=180.0
-elif [[ "$RES" == "10km_LAC" ]]; then #10 km (AMS + Caribe)
+elif [[ "$RES" == "10km_LAC_REG" ]]; then #10 km (AMS + Caribe)
    CONFIG_DT=60.0
-elif [[ "$RES" == "05km_LAC" ]]; then #5 km (AMS + Caribe)
+elif [[ "$RES" == "05km_LAC_REG" ]]; then #5 km (AMS + Caribe)
    CONFIG_DT=30.0
 else
 
     # Calculating CONFIG_DT for personalized mesh.
     echo -e "Calculating CONFIG_DT for personalized mesh... \n"
-    MESH_RES_RAD=$(ncdump -v nominalMinDc ${DATAIN}/fixed/x1.${RES}.grid.nc | grep "nominalMinDc =" | awk '{print $3}')
+    export RES=${RES}
+    MESH_RES_RAD=$(source "${STOOLS}/cmd-ncdump")
     MESH_RES_KM=$(awk -v res="${MESH_RES_RAD}" 'BEGIN {printf "%.0f", res * 6371.0}')
     CONFIG_DT_CALC=$((MESH_RES_KM * 6))
    # Check for divisibility by the convection interval
@@ -259,7 +260,7 @@ fi
 cp -f ${SCRIPTS}/namelists/stream_list.atmosphere.output ${DIRRUN}
 cp -f ${SCRIPTS}/namelists/stream_list.atmosphere.diagnostics${VARTABLE} ${DIRRUN}/stream_list.atmosphere.diagnostics
 cp -f ${SCRIPTS}/namelists/stream_list.atmosphere.surface ${DIRRUN}
-cp -f ${SCRIPTS}/setenv.bash ${DIRRUN}
+#cp -f ${SCRIPTS}/setenv.bash ${DIRRUN}
 
 chmod 755 ${DIRRUN}
 rm -f ${DIRRUN}/model.bash 
