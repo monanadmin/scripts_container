@@ -2,7 +2,7 @@
 
 # Select the target machine: ------------------------------------------------------------------------
 #----------------------------------------------------------------------------------------------------
-export MACHINE="jaciSIF"   # < egeon | egeonSIF | jaci | jaciSIF | pomerodeSIF | desktopSIF | sdumontSIF | sdumont2SIF >
+export MACHINE="jaci"   # < egeon | egeonSIF | jaci | jaciSIF | pomerodeSIF | desktopSIF | sdumontSIF | sdumont2SIF >
 #----------------------------------------------------------------------------------------------------
 
 
