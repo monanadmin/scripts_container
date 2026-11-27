@@ -31,7 +31,7 @@ if [[ ${EXP} == "GFS" ]]; then
 	 if wget "${URL_GRIB2}" -O "${DATAIN}/${YYYYMMDDHHi}/gfs.t${YYYYMMDDHHi:8:2}z.pgrb2.0p25.f${hour_fmt}.${YYYYMMDDHHi}.grib2"; then
 	    echo -e  "\n${GREEN}==>${NC} Download OK! ${URL_GRIB2}\n"
 	 else
-            echo -e "\n${RED}===>${NC} ERROR: Failed to copy GFS data.\n"
+            echo -e "\n${RED}===>${NC} ERROR: Failed to download regional(R) GFS data.\n"
             exit 1
          fi
       done
@@ -42,11 +42,73 @@ if [[ ${EXP} == "GFS" ]]; then
          if wget "${URL_GRIB2}" -O "${DATAIN}/${YYYYMMDDHHi}/gfs.t00z.pgrb2.0p25.f000.${YYYYMMDDHHi}.grib2"; then
 	    echo -e  "\n${GREEN}==>${NC} Download OK! ${URL_GRIB2}\n"
          else
-            echo "wget error!"
+	    echo -e "\n${RED}===>${NC} ERROR: Failed to download global(G) GFS data.\n"
             echo "Link: ${URL_GRIB2}"
             exit 1
          fi
       fi
    fi
+#----------------------------------------------------------------------------------------------------
+
+# Degrib phase - get ERA5 analysis: -----------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
+elif [[ ${EXP} == "ERA" ]]; then
+
+   files_needed=("${DATAIN}/fixed/x1.${RES}.static.nc" "${DATAIN}/fixed/Vtable.${EXP}" "${SCRIPTS}/namelists/namelist.wps.TEMPLATE" "${SCRIPTS}/link_grib.csh")                                                                  
+
+   for file in "${files_needed[@]}"
+   do
+      if [ ! -s "${file}" ]
+      then
+         echo -e  "\n${RED}==>${NC} ***** ATTENTION *****\n"
+         echo -e  "${RED}==>${NC} [${0}] At least the file ${file} was not generated. \n"
+         exit 1
+      fi
+   done
+
+   cp -f ${DATAIN}/fixed/x1.${RES}.static.nc ${DIRRUN}
+   cp -f ${DATAIN}/fixed/Vtable.${EXP} ${DIRRUN}/Vtable
+   cp -f ${SCRIPTS}/namelists/namelist.wps.TEMPLATE ${DIRRUN}/namelist.wps.TEMPLATE
+   cp -f ${SCRIPTS}/link_grib.csh ${DIRRUN}
+
+   if [[ $MODERUN == "R" ]]; then
+      echo -e "Degribbing ERA5 data for Regional (limited-area) mode – lateral boundary conditions.\n"
+      dt=$((LBCINT / 3600))
+      for ((hour=0; hour<=FCST; hour+=dt)); do
+         valid_date=$(date -u -d "${YYYYMMDDHHi:0:4}-${YYYYMMDDHHi:4:2}-${YYYYMMDDHHi:6:2} ${YYYYMMDDHHi:8:2}:00:00 UTC ${hour} hour" +"%Y%m%d%H")
+         echo "Temporarily copying ERA5 data: era5.pl|sl.${valid_date}.grib"
+
+         URL_GRIB="https://dataserver.cptec.inpe.br/dataserver_dimnt/monan/CONTAINER_DATA/CIs/${EXP}/${YYYYMMDDHHi:0:4}/${YYYYMMDDHHi}"
+         GRIB_FILES=("era5.pl.${valid_date}.grib" "era5.sl.${valid_date}.grib")
+         for grib_file in "${GRIB_FILES[@]}"; do
+            if [ ! -e "${DATAIN}/${YYYYMMDDHHi}/${grib_file}" ]; then
+               if wget "${URL_GRIB}/${grib_file}" -O "${DATAIN}/${YYYYMMDDHHi}/${grib_file}"; then
+                  echo -e  "\n${GREEN}==>${NC} Download OK! ${URL_GRIB}/${grib_file}\n"
+               else
+		  echo -e "\n${RED}===>${NC} ERROR: Failed to download regional(R) ERA5 data.\n"
+                  echo "Link: ${URL_GRIB}/${grib_file}"
+                  exit 1
+               fi
+            fi
+         done
+      done
+   elif [[ $MODERUN == "G" ]]; then
+      echo -e "Degribbing ERA5 data for Global mode – only initial conditions.\n"
+      URL_GRIB="https://dataserver.cptec.inpe.br/dataserver_dimnt/monan/CONTAINER_DATA/CIs/${EXP}/${YYYYMMDDHHi:0:4}/${YYYYMMDDHHi}"
+      GRIB_FILES=("era5.pl.${YYYYMMDDHHi}.grib" "era5.sl.${YYYYMMDDHHi}.grib")
+      for grib_file in "${GRIB_FILES[@]}"; do
+         if [ ! -e "${DATAIN}/${YYYYMMDDHHi}/${grib_file}" ]; then
+            if wget "${URL_GRIB}/${grib_file}" -O "${DATAIN}/${YYYYMMDDHHi}/${grib_file}"; then
+               echo -e  "\n${GREEN}==>${NC} Download OK! ${URL_GRIB}/${grib_file}\n"
+            else
+		    echo -e "\n${RED}===>${NC} ERROR: Failed to download global(G) ERA5 data.\n"
+               echo "wget error!"
+               echo "Link: ${URL_GRIB}/${grib_file}"
+               exit 1
+            fi
+         fi
+      done
+   fi
 fi
 #----------------------------------------------------------------------------------------------------
+
