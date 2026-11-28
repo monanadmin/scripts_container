@@ -3,7 +3,7 @@
 cat > ${DIRRUN}/PostAtmos_node.${node}.sh <<EOSH
 #!/bin/bash
 
-####PBS -l select=<N_nos>:ncpus=<CPUs_por_no>:mpiprocs=<MPI_por_no>:ompthreads=<OMP_por_no>                                                                                                                                
+####PBS -l select=<N_nos>:ncpus=<CPUs_por_no>:mpiprocs=<MPI_por_no>:ompthreads=<OMP_por_no>
 
 #PBS -N MO.Pos${node}
 #PBS -q ${POST_QUEUE}

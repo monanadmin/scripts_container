@@ -163,21 +163,21 @@ elif [[ "$RES" == "65536002" ]]; then  # 3 Km
    ENDLON=360.0
 
 # REGIONAL mesh
-elif [[ "$RES" == "30km_LAC" ]]; then #30 km (AMS + Caribe)
+elif [[ "$RES" == "30km_LAC_REG" ]]; then #30 km (AMS + Caribe)
    NLAT=354     #106/0.3 +1
    NLON=301     #90/0.3 +1
    STARTLAT=-64.0
    ENDLAT=42
    STARTLON=254.0
    ENDLON=344.0
-elif [[ "$RES" == "10km_LAC" ]]; then #10 km (AMS + Caribe)
+elif [[ "$RES" == "10km_LAC_REG" ]]; then #10 km (AMS + Caribe)
    NLAT=1061   #106/0.1 +1
    NLON=901   #90/0.1 +1
    STARTLAT=-64.0
    ENDLAT=42.0
    STARTLON=254.0
    ENDLON=344.0
-elif [[ "$RES" == "05km_LAC" ]]; then #5 km (AMS + Caribe)
+elif [[ "$RES" == "05km_LAC_REG" ]]; then #5 km (AMS + Caribe)
    NLAT=2121    #106/0.05 +1
    NLON=1801    #90/0.05 +1
    STARTLAT=-64.0

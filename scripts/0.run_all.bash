@@ -16,7 +16,7 @@ echo -e "\033[1;32m==>\033[0m Moduling environment for MONAN model...\n"
 github_link="https://github.com/monanadmin/MONAN-Model.git"   # Switch to your fork when you need to make changes or develop the model.
 monan_branch=1.4.4
 convertmpas_branch=1.2.0
-EXP=GFS                    # (EXP) Options: GFS or ERA.
+EXP=ERA                    # (EXP) Options: GFS or ERA.
 RES=30km_LAC_REG           # (RES_MESH)                 
                            #            Options-Global:     2562 = 480km;
 			   #                               10242 = 240km;
@@ -30,7 +30,7 @@ RES=30km_LAC_REG           # (RES_MESH)
 			   #                                        10km_LAC_REG = 10km Latin America and the Caribbean (excl. Mexico);
 			   #                                        05km_LAC_REG = 05km Latin America and the Caribbean (excl. Mexico).
 			   #                                        <your_mesh> saved in 'datain/fixed' (x1.<your_mesh>).
-YYYYMMDDHHi=2026111500     # (LABELI) Check the available dates for the initial and boundary conditions (regional), especially for ERA5 data.
+YYYYMMDDHHi=2025102500     # (LABELI) Check the available dates for the initial and boundary conditions (regional), especially for ERA5 data.
 FCST=24                    # (FCST).
 #----------------------------------------------------------------------------------------------------
 
